@@ -2,14 +2,14 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { Loading } from '@components'
 import { connect } from '@tarojs/redux'
-import * as actions from '@actions/cate'
+// import * as actions from '@actions/cate'
 import { getWindowHeight } from '@utils/style'
 import Menu from './menu'
 import List from './list'
 import Banner from './banner'
 import './cate.scss'
 
-@connect(state => state.cate, { ...actions })
+// @connect(state => state.cate, { ...actions })
 class Cate extends Component {
   config = {
     navigationBarTitleText: '分类'

@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { Loading } from '@components'
 import { connect } from '@tarojs/redux'
-import * as actions from '@actions/home'
+// import * as actions from '@actions/home'
 import { dispatchCartNum } from '@actions/cart'
 import { getWindowHeight } from '@utils/style'
 import Banner from './banner'
@@ -14,7 +14,7 @@ import './home.scss'
 
 const RECOMMEND_SIZE = 20
 
-@connect(state => state.home, { ...actions, dispatchCartNum })
+
 class Home extends Component {
   config = {
     navigationBarTitleText: '贝壳口腔'

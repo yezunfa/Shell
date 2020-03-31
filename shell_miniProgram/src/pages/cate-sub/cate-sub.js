@@ -2,12 +2,12 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
 import { ItemList, Loading } from '@components'
 import { connect } from '@tarojs/redux'
-import * as actions from '@actions/cate'
+// import * as actions from '@actions/cate'
 import { getWindowHeight } from '@utils/style'
 import Tab from './tab'
 import './cate-sub.scss'
 
-@connect(state => state.cate, actions)
+// @connect(state => state.cate, actions)
 class CateSub extends Component {
   config = {
     navigationBarTitleText: ''
