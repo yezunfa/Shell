@@ -7,6 +7,8 @@ export const host = HOST
 export const hostM = HOST_M
 /* eslint-enable */
 
+// const HOST = '"https://miniapp.you.163.com"'
+// const HOST_M = '"https://m.you.163.com"'
 // pic
 export const CDN = 'https://yanxuan.nosdn.127.net'
 

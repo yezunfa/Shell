@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { ButtonItem, ItemList, Loading } from '@components'
 import { connect } from '@tarojs/redux'
-import * as actions from '@actions/cart'
+// import * as actions from '@actions/cart'
 import { API_CHECK_LOGIN } from '@constants/api'
 import fetch from '@utils/request'
 import { getWindowHeight } from '@utils/style'
@@ -13,7 +13,7 @@ import List from './list'
 import Footer from './footer'
 import './cart.scss'
 
-@connect(state => state.cart, actions)
+// @connect(state => state.cart, actions)
 class Index extends Component {
   config = {
     navigationBarTitleText: '购物车'
