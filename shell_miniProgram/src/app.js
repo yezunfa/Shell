@@ -41,12 +41,12 @@ class App extends Component {
         pagePath: "pages/home/home",
         iconPath: "./assets/tab-bar/home.png",
         selectedIconPath: "./assets/tab-bar/home-active.png",
-        text: "首页"
+        text: "贝壳口腔"
       }, {
         pagePath: "pages/cate/cate",
         iconPath: "./assets/tab-bar/cate.png",
         selectedIconPath: "./assets/tab-bar/cate-active.png",
-        text: "分类"
+        text: "项目分类"
       }, {
         pagePath: "pages/cart/cart",
         iconPath: "./assets/tab-bar/cart.png",
@@ -56,7 +56,7 @@ class App extends Component {
         pagePath: "pages/user/user",
         iconPath: "./assets/tab-bar/user.png",
         selectedIconPath: "./assets/tab-bar/user-active.png",
-        text: "个人"
+        text: "会员中心"
       }]
     }
   }

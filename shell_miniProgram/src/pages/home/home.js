@@ -1,19 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
+import { ClSearchBar, ClSwiper } from "mp-colorui"
 import { Loading } from '@components'
 import { connect } from '@tarojs/redux'
-// import * as actions from '@actions/home'
-import { dispatchCartNum } from '@actions/cart'
 import { getWindowHeight } from '@utils/style'
-import Banner from './banner'
-import Policy from './policy'
-import Pin from './pin'
-import Recommend from './recommend'
-import searchIcon from './assets/search.png'
 import './home.scss'
-
-const RECOMMEND_SIZE = 20
-
 
 class Home extends Component {
   config = {
@@ -21,106 +12,71 @@ class Home extends Component {
   }
 
   state = {
-    loaded: false,
+    loaded: true,
     loading: false,
-    lastItemId: 0,
-    hasMore: true
   }
+
+  Pictures = [
+    {url: '//assets.51fusion.com/8650769d-3fe9-4b64-8535-dddc89c3b495.png'},
+    {url: '//assets.51fusion.com/5bddbf4e-5b3a-4402-8ec3-1ed1983fc958.png'},
+    {url: '//assets.51fusion.com/f60048bd-82ac-41f9-9161-e75a587cbc6a.png'},
+    {url: '//assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'}
+  ]
 
   componentDidMount() {
-    // NOTE 暂时去掉不适配的内容
-    Taro.showToast({
-      title: '注意，由于严选小程序首页界面、接口大幅变动，暂时去掉不相符的部分，后续再跟进改动',
-      icon: 'none',
-      duration: 6000
-    })
 
-    // this.props.dispatchHome().then(() => {
-    //   this.setState({ loaded: true })
-    // })
-    // this.props.dispatchCartNum()
-    // this.props.dispatchSearchCount()
-    // this.props.dispatchPin({ orderType: 4, size: 12 })
-    this.loadRecommend()
   }
 
-  loadRecommend = () => {
-    if (!this.state.hasMore || this.state.loading) {
-      return
-    }
-
-    const payload = {
-      lastItemId: this.state.lastItemId,
-      size: RECOMMEND_SIZE
-    }
-    this.setState({ loading: true })
-    this.props.dispatchRecommend(payload).then((res) => {
-      const lastItem = res.rcmdItemList[res.rcmdItemList.length - 1]
-      this.setState({
-        loading: false,
-        hasMore: res.hasMore,
-        lastItemId: lastItem && lastItem.id
-      })
-    }).catch(() => {
-      this.setState({ loading: false })
-    })
-  }
-
-  handlePrevent = () => {
-    // XXX 时间关系，首页只实现底部推荐商品的点击
+  onSearch = value => {
     Taro.showToast({
-      title: '目前只可点击底部推荐商品',
+      title: `您搜索了${value}`,
       icon: 'none'
     })
   }
-
+ 
   render () {
-    if (!this.state.loaded) {
+    const { loaded, } = this.state
+    if (!loaded) {
       return <Loading />
     }
-
-    const { homeInfo, searchCount, recommend, pin } = this.props
     return (
       <View className='home'>
         <View className='home__search'>
-          <View className='home__search-wrap' onClick={this.handlePrevent}>
-            <Image className='home__search-img' src={searchIcon} />
-            <Text className='home__search-txt'>
-              {`搜索商品，共${searchCount}款好物`}
-            </Text>
+          <ClSearchBar
+              shape='round'
+              rightButtonColor='black'
+              rightTextColor='white'
+              placeholder='请输入你想输入的内容'
+              leftIcons={[
+                'emoji'
+              ]}
+              onIconClick={(index) => {
+                Taro.showToast({
+                  title: `您点击了第${index + 1}个图标`,
+                  icon: 'none'
+                })
+              }}
+              onSearch={value => {
+                this.onSearch(value)
+              }}
+            />
           </View>
-        </View>
         <ScrollView
           scrollY
           className='home__wrap'
-          onScrollToLower={this.loadRecommend}
           style={{ height: getWindowHeight() }}
         >
-          <View onClick={this.handlePrevent}>
-            <Banner list={homeInfo.focus} />
-            <Policy list={homeInfo.policyDesc} />
-
-            {/* 免费拼团 */}
-            <Pin
-              banner={homeInfo.newUserExclusive}
-              list={pin}
-            />
-
-          </View>
-
-          {/* 为你推荐 */}
-          <Recommend list={recommend} />
-
-          {this.state.loading &&
-            <View className='home__loading'>
-              <Text className='home__loading-txt'>正在加载中...</Text>
-            </View>
-          }
-          {!this.state.hasMore &&
-            <View className='home__loading home__loading--not-more'>
-              <Text className='home__loading-txt'>更多内容，敬请期待</Text>
-            </View>
-          }
+          <ClSwiper
+            type='screen'
+            list={this.Pictures}
+            autoplay
+            circular
+            dot='round'
+            indicatorDots
+            indicatorColor='#8799a3'
+            indicatorActiveColor='#0081ff'
+          />
+          
         </ScrollView>
       </View>
     )

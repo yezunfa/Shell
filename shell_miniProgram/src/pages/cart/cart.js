@@ -1,17 +1,35 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-import { ButtonItem, ItemList, Loading } from '@components'
-import { connect } from '@tarojs/redux'
-// import * as actions from '@actions/cart'
-import { API_CHECK_LOGIN } from '@constants/api'
-import fetch from '@utils/request'
+import { View, ScrollView } from '@tarojs/components'
+import { ClShopBar } from "mp-colorui";
 import { getWindowHeight } from '@utils/style'
-import Tip from './tip'
-import Gift from './gift'
-import Empty from './empty'
-import List from './list'
-import Footer from './footer'
+import isEmpty from './empty'
 import './cart.scss'
+
+const buttons = [ {text:'加入购物车', bgColor: 'orange'}, {text: '立即购买'} ]
+const openTypes = [
+  {
+    icon: "friendfamous",
+    title: "用户",
+    moreAction: {
+      openType: 'getUserInfo',
+      onGetUserInfo: res => {
+        if (res.detail.userInfo) {
+          Taro.showToast({
+            title: res.detail.userInfo.nickName,
+            icon: "none"
+          });
+        }
+      }
+    }
+  },
+  {
+    icon: "share",
+    title: '分享',
+    moreAction: {
+      openType: 'share'
+    }
+  }
+]
 
 // @connect(state => state.cart, actions)
 class Index extends Component {
@@ -21,59 +39,16 @@ class Index extends Component {
 
   state = {
     loaded: false,
-    login: false
+    isShowFooter: true,
+    isEmpty: true,
   }
 
   componentDidShow() {
-    fetch({ url: API_CHECK_LOGIN, showToast: false, autoLogin: false }).then((res) => {
-      if (res) {
-        this.setState({ loaded: true, login: true })
-        this.props.dispatchCart()
-        this.props.dispatchCartNum()
-        this.props.dispatchRecommend()
-      } else {
-        this.setState({ loaded: true, login: false })
-      }
-    })
-  }
-
-  toLogin = () => {
-    Taro.navigateTo({
-      url: '/pages/user-login/user-login'
-    })
+    
   }
 
   render () {
-    const { cartInfo, recommend } = this.props
-    const { cartGroupList = [] } = cartInfo
-    const cartList = cartGroupList.filter(i => !i.promType)
-    const extList = recommend.extList || []
-    const isEmpty = !cartList.length
-    const isShowFooter = !isEmpty
-
-    if (!this.state.loaded) {
-      return <Loading />
-    }
-
-    if (!this.state.login) {
-      return (
-        <View className='cart cart--not-login'>
-          <Empty text='未登陆' />
-          <View className='cart__login'>
-            <ButtonItem
-              type='primary'
-              text='登录'
-              onClick={this.toLogin}
-              compStyle={{
-                background: '#b59f7b',
-                borderRadius: Taro.pxTransform(4)
-              }}
-            />
-          </View>
-        </View>
-      )
-    }
-
+    const { isShowFooter } = this.state
     return (
       <View className='cart'>
         <ScrollView
@@ -81,49 +56,18 @@ class Index extends Component {
           className='cart__wrap'
           style={{ height: getWindowHeight() }}
         >
-          <Tip list={cartInfo.policyDescList} />
-          {isEmpty && <Empty />}
-
-          {!isEmpty && <Gift data={cartGroupList[0]} />}
-
-          {!isEmpty && cartList.map((group, index) => (
-            <List
-              key={`${group.promId}_${index}`}
-              promId={group.promId}
-              promType={group.promType}
-              list={group.cartItemList}
-              onUpdate={this.props.dispatchUpdate}
-              onUpdateCheck={this.props.dispatchUpdateCheck}
-            />
-          ))}
-
-          {/* 相关推荐 */}
-          {extList.map((ext, index) => (
-            <ItemList key={`${ext.id}_${index}`} list={ext.itemList}>
-              <View className='cart__ext'>
-                {!!ext.picUrl && <Image className='cart__ext-img' src={ext.picUrl} />}
-                <Text className='cart__ext-txt'>{ext.desc}</Text>
-              </View>
-            </ItemList>
-          ))}
-
-          {/* 猜你喜欢 */}
-          <ItemList list={recommend.itemList}>
-            <View className='cart__recommend'>
-              <Text className='cart__recommend-txt'>{recommend.desc}</Text>
-            </View>
-          </ItemList>
-
-          {isShowFooter &&
-            <View className='cart__footer--placeholder' />
+          {isEmpty && <isEmpty/>
           }
         </ScrollView>
 
         {isShowFooter &&
           <View className='cart__footer'>
-            <Footer
-              cartInfo={cartInfo}
-              onUpdateCheck={this.props.dispatchUpdateCheck}
+            <ClShopBar
+              onClickButton={index => {
+                this.clickButton(index);
+              }}
+              tabs={openTypes}
+              buttons={buttons}
             />
           </View>
         }
