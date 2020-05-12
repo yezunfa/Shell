@@ -39,7 +39,7 @@ class Home extends Component {
     if (!loaded) {
       return <Loading />
     }
-    // asdfsf
+    // test push
     return (
       <View className='home'>
         <View className='home__search'>
