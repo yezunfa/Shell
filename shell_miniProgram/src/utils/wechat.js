@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-03-28 19:05:39
+ * @LastEditTime: 2020-06-30 03:07:20
+ * @Description: Do not edit
+ */ 
 import Taro from '@tarojs/taro'
 import { USER_LOGIN } from '@constants/api'
 import fetch from '@utils/request'
@@ -17,6 +23,7 @@ exports.Login = async () => {
         const params = { Login: false }
         params.method = 'POST'
         params.showToast = false
+        params.pureReturn = true
         params.url = USER_LOGIN
         params.payload = { LoginCode: code } 
         

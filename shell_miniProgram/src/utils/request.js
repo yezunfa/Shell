@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2019-07-22 16:56:19
+ * @LastEditTime: 2020-06-30 01:43:00
+ * @Description: Do not edit
+ */ 
 
 import Taro from '@tarojs/taro'
 import { getStore } from '@tarojs/redux'
@@ -69,7 +75,7 @@ export default async function fetch(options) {
 
         if (options && options.pureReturn) return response.data;
 
-        return response.data
+        return data
 
     } catch (error) {
         console.log(url)
