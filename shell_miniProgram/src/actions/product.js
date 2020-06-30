@@ -5,8 +5,8 @@
  * @Description: Do not edit
  */ 
 import { createAction } from '@utils/redux'
-import { PRODUCT_INFO, PRODUCT_TYPE } from '@constants/product'
-import { GET_PRODUCT_INFO, GET_PRODUCT_TYPE } from '@constants/api'
+import { PRODUCT_INFO, PRODUCT_TYPE, PRODUCT_DETAIL } from '@constants/product'
+import { GET_PRODUCT_INFO, GET_PRODUCT_TYPE, GET_PRODUCT_DETAIL } from '@constants/api'
 
 // 获取商品类型 product_type
 export const dispatchProductType = payload => createAction({
@@ -20,5 +20,11 @@ export const dispatchProductInfo = payload => createAction({
     url: GET_PRODUCT_INFO,
     type: PRODUCT_INFO,
     payload
-  })
+})
+
+export const dispatchItem = payload => createAction({
+  url: GET_PRODUCT_DETAIL,
+  type: PRODUCT_DETAIL,
+  payload
+})
   

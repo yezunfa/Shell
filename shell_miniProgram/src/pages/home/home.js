@@ -1,8 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
+import { View, Text, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
 import { ClSearchBar, ClSwiper } from "mp-colorui"
+import { AtGrid } from "taro-ui"
+import icons from './assets'
 import { Loading } from '@components'
 import { connect } from '@tarojs/redux'
+import HomeContainer from './homeContainer/index'
 import { getWindowHeight } from '@utils/style'
 import './home.scss'
 
@@ -33,9 +36,105 @@ class Home extends Component {
       icon: 'none'
     })
   }
+
+  renderStoreDescription = () => {
+    const { timeIcon, logoIcon, descIcon } = icons
+    return (
+      <View>
+        <HomeContainer title='精品推荐'>
+          <View className='activityContainer'>
+            <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630012907.jpg' /></View>
+            <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630013228.jpg' /></View>
+          </View>
+        </HomeContainer>
+        <HomeContainer title='商户介绍'>
+          <View className='container'>
+            <View className='flex-row'>
+              <View><Image className='icon' src={timeIcon} /></View>
+              <View className='line'>9:00 - 18:00</View>
+            </View>
+            <View className='flex-row'>
+              <View><Image className='icon' src={logoIcon} /></View>
+              <View className='line tag-border'>WI-FI</View>
+              <View className='line tag-border'>停车场</View>
+              <View className='line tag-border'>微信支付</View>
+              <View className='line tag-border'>支付宝支付</View>
+            </View>
+            <View className='flex-row'>
+              <View><Image className='icon' src={descIcon} /></View>
+              <View className='line'>商家介绍</View>
+            </View>
+            <View className='flex-row'>
+              <Image mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630015150.jpg' />
+            </View>
+            <View className='flex-row'>
+              贝壳口腔门诊部是一家全方位现代化口腔医疗机构，以预防
+              口腔疾病为主，并同时开展牙周预防、儿童牙科、口腔正畸
+              、美学修复、综合治疗等口腔医疗项目。门诊以做最温暖的
+              医疗企业为愿景秉承卓越医疗与温暖服务相结合的经营理念
+              ，不断引进国际先进技术和诊断理念，让更多人拥有健康口
+              腔、绽放自信笑容。
+            </View>
+          </View>
+        </HomeContainer>
+        <HomeContainer title='店铺照片'>
+          <Swiper
+            displayMultipleItems={3}
+            >
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020338.jpg' />
+            </SwiperItem>
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020420.jpg' />
+            </SwiperItem>
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020446.jpg' />
+            </SwiperItem>
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020514.jpg' />
+            </SwiperItem>
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020539.jpg' />
+            </SwiperItem>
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020623.jpg' />
+            </SwiperItem>
+            <SwiperItem>
+              <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020651.jpg' />
+            </SwiperItem>
+          </Swiper>
+        </HomeContainer>
+      </View>
+    )
+  }
+
+  renderIconList = () => {
+    return (
+      <AtGrid hasBorder={false} columnNum={4} data={
+        [
+           {
+             image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
+             value: '领取中心'
+           },
+           {
+             image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
+             value: '找折扣'
+           },
+           {
+             image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
+             value: '领会员'
+           },
+           {
+             image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
+             value: '新品首发'
+           },
+         ]
+       } />
+    )
+  }
  
   render () {
-    const { loaded, } = this.state
+    const { loaded } = this.state
     if (!loaded) {
       return <Loading />
     }
@@ -77,7 +176,11 @@ class Home extends Component {
             indicatorColor='#8799a3'
             indicatorActiveColor='#0081ff'
           />
-          
+          {this.renderIconList()}
+          {this.renderStoreDescription()}
+          <View className='home__bottonTip flex-row-space-center'>
+            ——马丁鱼科技有限公司提供技术支持——
+          </View>
         </ScrollView>
       </View>
     )
