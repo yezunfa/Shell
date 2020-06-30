@@ -7,3 +7,4 @@
 
 export const PRODUCT_INFO = 'PRODUCT_INFO'
 export const PRODUCT_TYPE = 'PRODUCT_TYPE'
+export const PRODUCT_DETAIL = 'PRODUCT_DETAIL'

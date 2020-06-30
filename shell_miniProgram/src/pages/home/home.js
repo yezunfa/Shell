@@ -67,7 +67,7 @@ class Home extends Component {
             <View className='flex-row'>
               <Image mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630015150.jpg' />
             </View>
-            <View className='flex-row underline'>
+            <View className='flex-row'>
               贝壳口腔门诊部是一家全方位现代化口腔医疗机构，以预防
               口腔疾病为主，并同时开展牙周预防、儿童牙科、口腔正畸
               、美学修复、综合治疗等口腔医疗项目。门诊以做最温暖的

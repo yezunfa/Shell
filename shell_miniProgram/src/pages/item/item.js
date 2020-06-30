@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { Popup, Loading } from '@components'
 import { connect } from '@tarojs/redux'
-// import * as actions from '@actions/item'
+import * as actions from '@actions/item'
 import { dispatchAdd } from '@actions/cart'
 import { getWindowHeight } from '@utils/style'
 import Gallery from './gallery'
@@ -14,6 +14,7 @@ import Spec from './spec'
 import './item.scss'
 
 // @connect(state => state.item, { ...actions, dispatchAdd })
+@connect(state => state.item, { ...actions })
 class Item extends Component {
   config = {
     navigationBarTitleText: '商品详情'
