@@ -25,11 +25,11 @@ class Item extends Component {
       loaded: false,
       selected: {}
     }
-    this.itemId = parseInt(this.$router.params.itemId)
   }
 
   componentDidMount() {
-    this.props.dispatchItem({ itemId: this.itemId }).then(() => {
+    const { itemId } = this.$router.params
+    this.props.dispatchItem({ itemId }).then(() => {
       this.setState({ loaded: true })
     })
   }
