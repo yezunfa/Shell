@@ -27,7 +27,7 @@ class User extends Component {
   async wechatLogin(params = {}) {
     const { dispatchUserInformation } = this.props
     try {
-        // await Taro.showLoading({title: '更新用户信息', mask: true})
+        //  await Taro.showLoading({title: '更新用户信息', mask: true})
         const { scene, userdata, redirect, redirectparams } = params
         const response = await Login({scene, userdata}) // 登录
         if (response.code === 200 ) {
