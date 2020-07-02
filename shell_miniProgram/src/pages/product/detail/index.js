@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import './index.scss'
 
-export default class Detail extends Component {
+export default class Index extends Component {
   static defaultProps = {
     html: ''
   }
@@ -12,13 +12,7 @@ export default class Detail extends Component {
 
     // XXX 这边直接把 img 提取出来展示，没有用 RichText
     const imgList = []
-    // const reg = /<img.*?src="(.*?)".*?\/>/g
-    // let res = null
-    // while (res = reg.exec(html)) {
-    //   imgList.push(res[1])
-    // }
     const imgReg = /<img.*?(?:>|\/>)/gi
-    // const srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i
     const srcReg = /src=[\'\"]?\\(.*)\\[\'\"]?/
     const imgArr = html.match(imgReg)
     if (imgArr && imgArr.length) {
@@ -31,9 +25,9 @@ export default class Detail extends Component {
     }
     return (
       <View className='item-detail'>
-        {imgList.map((item, index) => (
+        {imgList && imgList.map((item, index) => (
           <Image
-            key={index}
+            key={JSON.stringify(index)}
             className='item-detail__img'
             src={item}
             mode='widthFix'

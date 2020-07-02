@@ -39,7 +39,7 @@ class Index extends Component {
         }
         const response = await fetch(params)
         // console.log(response)
-        const { Name, Introduce, Price, BannerList, Summary, Notice, Detail } = response
+        const { Name, Introduce, Price, BannerList, Summary, Notice, Detail: _Detail } = response
         await this.asyncSetState({ 
             productInfo: {
                 name: Name,         // 产品名
@@ -52,7 +52,7 @@ class Index extends Component {
                     { attrName: '适用情况', attrValue: Summary },
                     { attrName: '注意事项', attrValue: Notice } 
                 ],
-                productDetail: Detail                     // html格式，数据库改变数据即可改变商品的详情，这里我只放了一些图片
+                productDetail: _Detail                     // html格式，数据库改变数据即可改变商品的详情，这里我只放了一些图片
             },
             gallery: JSON.parse(BannerList),
             loaded: true
@@ -72,7 +72,7 @@ class Index extends Component {
     }
 
     render() {
-        const { productInfo, gallery, visible, selected } = this.state
+        const { productInfo={}, gallery, visible, selected } = this.state
         const { productDetail } = productInfo
         const height = getWindowHeight(false)
         
@@ -98,7 +98,7 @@ class Index extends Component {
                         {/* 产品参数 */}
                         <InfoParam list={productInfo.attrList} />
                         {/* 产品详情 */}
-                        <Detail html={productDetail} />
+                        <Detail html={productDetail || ''} />
                 </ScrollView>
                 {/* 点击购买弹出的窗口 */}
                 <Popup
