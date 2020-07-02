@@ -1,8 +1,15 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2019-07-22 16:56:19
+ * @LastEditTime: 2020-07-02 21:01:13
+ * @Description: Do not edit
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { ClShopBar } from "mp-colorui";
 import { getWindowHeight } from '@utils/style'
 import isEmpty from './empty'
+import List from './list'
 import './cart.scss'
 
 const buttons = [ {text:'加入购物车', bgColor: 'orange'}, {text: '立即购买'} ]
@@ -56,8 +63,9 @@ class Index extends Component {
           className='cart__wrap'
           style={{ height: getWindowHeight() }}
         >
-          {isEmpty && <isEmpty/>
-          }
+          {/* {isEmpty && <isEmpty/>
+          } */}
+          <List />
         </ScrollView>
 
         {isShowFooter &&

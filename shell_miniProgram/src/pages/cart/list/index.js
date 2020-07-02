@@ -3,9 +3,24 @@ import { View, Text, Image } from '@tarojs/components'
 import { CheckboxItem, InputNumber } from '@components'
 import './index.scss'
 
+
 export default class List extends Component {
   static defaultProps = {
-    list: [],
+    list: [
+      { id : "123123",
+        checked: true,
+        pic:'http://cdn.shuaixiaoxiao.com/image/20200701002929.jpg',
+        prefix: 'prefix',
+        itemName: 'itemName',
+        specList:[
+         { specValue: 'specValue'},
+         { specValue: 'specValue'},
+         { specValue: 'specValue'},
+        ],
+        actualPrice:1212,
+        cnt:1212
+    }
+    ],
     onUpdate: () => {},
     onUpdateCheck: () => {}
   }
@@ -50,7 +65,7 @@ export default class List extends Component {
           >
             <CheckboxItem
               checked={item.checked}
-              onClick={this.handleUpdateCheck.bind(this, item)}
+              // onClick={this.handleUpdateCheck.bind(this, item)}
             />
             <Image
               className='cart-list__item-img'
@@ -79,7 +94,7 @@ export default class List extends Component {
                 <View className='cart-list__item-num'>
                   <InputNumber
                     num={item.cnt}
-                    onChange={this.handleUpdate.bind(this, item)}
+                    // onChange={this.handleUpdate.bind(this, item)}
                   />
                 </View>
               </View>
