@@ -63,9 +63,12 @@ class Cate extends Component {
             <ClVerticalTab tabs={productType} height={'full'} backTop={true}>
             <View>
               {productInfo.map((item) => (
-                <View id={item.Type} key={item.Name}>
+                <View id={item.Type} key={JSON.stringify(item.Id)}>
                   <ClVerticalTabCell>
-                    <View>{item.Name}</View> 
+                    <View onClick={() => {
+                      // console.log('item', item)
+                      Taro.navigateTo({ url: `/pages/product/index?Id=${item.Id}` })
+                    }}>{item.Name}</View> 
                     </ClVerticalTabCell>
                 </View>
               ))}

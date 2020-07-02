@@ -42,3 +42,6 @@ export const API_ITEM_RECOMMEND = `${host}/xhr/rcmd/itemDetail.json`
 // user 在这里设置用户接口
 export const USER_LOGIN = `${host}/api/shell_login/wechat`  // √
 export const POST_WECHAT_CRYP_DATA = `${host}/api/shell_wechat/cryptdata`
+
+// 商品接口
+export const GET_PRODUCT_DETAIL = `${host}/api/product/detail`  // √
