@@ -19,7 +19,21 @@ export default class List extends Component {
         ],
         actualPrice:1212,
         cnt:1212
+    },
+    { id : "123123",
+        checked: true,
+        pic:'http://cdn.shuaixiaoxiao.com/image/20200701002929.jpg',
+        prefix: 'prefix',
+        itemName: 'itemName',
+        specList:[
+         { specValue: 'specValue'},
+         { specValue: 'specValue'},
+         { specValue: 'specValue'},
+        ],
+        actualPrice:1212,
+        cnt:1212
     }
+    
     ],
     onUpdate: () => {},
     onUpdateCheck: () => {}
