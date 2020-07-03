@@ -45,3 +45,6 @@ export const POST_WECHAT_CRYP_DATA = `${host}/api/shell_wechat/cryptdata`
 
 // 商品接口
 export const GET_PRODUCT_DETAIL = `${host}/api/product/detail`  // √
+
+// 购物车
+export const POST_CREATE_CART_PRODUCT = `${host}/api/cart/add`  // √
