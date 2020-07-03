@@ -105,7 +105,8 @@ class Index extends Component {
         const params = {
             url: POST_CREATE_CART_PRODUCT,
             payload,
-            method: 'POST'
+            method: 'POST',
+            Login: true,
         }
         const response = await fetch(params)
     }
