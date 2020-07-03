@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-03 11:22:53
+ * @LastEditTime: 2020-07-03 11:35:53
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -27,7 +27,7 @@ class Index extends Component {
   }
 
   componentDidShow() {
-    console.log(this.props)
+    const { dispatchCart, cartInfo } = this.props
   }
 
   render () {
