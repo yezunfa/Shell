@@ -19,13 +19,9 @@ function getStorage(key) {
 // 简易封装接口 todo: 从session 取
 function parseUrl(url, userid) {
     let url_login = ''
-    if (url.indexOf('?') === -1) {
-        url_login = `${url}`
-    } else if(url.indexOf('&') !== url.length - 1) {
-        url_login = `${url}&userid=${userid}`
-    } else {
-        url_login = `${url}userid=${userid}`
-    }
+    if (!userid) url_login = url
+    else if (url.indexOf('?') === -1) url_login = `${url}?userid=${userid}`
+    else url_login = `${url}&userid=${userid}`
     return url_login
 }
 
@@ -64,11 +60,11 @@ export default async function fetch(options) {
     // header['CSRF-TOKEN'] = csrf ? csrf : ''
     if (method === 'POST') header['Content-Type'] = 'application/x-www-form-urlencoded'
 
+    let userinfo = ''
     if (needLogin) {
         try {
             await Login({ forceLogin: true })
-            const userinfo = await getUserInfoFromLocalStorerage(USER_STORE_KEY)
-            payload.UserId = userinfo.Id
+            userinfo = await getUserInfoFromLocalStorerage(USER_STORE_KEY)
         } catch (error) {
             console.log(url)
             console.error(error)
@@ -80,7 +76,7 @@ export default async function fetch(options) {
         const params = { method, header, dataType }
         params.data = payload
         params.body = payload
-        params.url = parseUrl(url)
+        params.url = parseUrl(`${url}?`, userinfo.Id)
         const response = await Taro.request(params)
 
         const { code, data } = response.data

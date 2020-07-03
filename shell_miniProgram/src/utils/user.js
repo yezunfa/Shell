@@ -3,7 +3,7 @@ import { USER_LOGIN, SAVE_USER_INFO } from '@constants/api'
 import fetch from '@utils/request'
 
 const CODE_KEY = "WX_LOGIN_CODE";           // 临时凭证:通过wx.login来获得，应写入缓存中
-const SESSOIN_KEY = "authtoken";            // 与服务器会话的session_key，需要将临时凭证发往微信那边的服务器来获取
+const SESSOIN_KEY = "authtoken";            // 与微信服务器会话的session_key，需要将临时凭证发往微信那边的服务器来获取
 const USER_STORE_KEY = 'user_local_store'   // 用户信息
 
 // 获取微信登录凭证
