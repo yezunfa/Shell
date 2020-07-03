@@ -8,6 +8,9 @@
 import Taro from '@tarojs/taro'
 import { getStore } from '@tarojs/redux'
 import { system_code } from '@constants/enums'
+import { Login, getUserInfoFromLocalStorerage } from '@utils/user'
+
+const USER_STORE_KEY = 'user_local_store'
 
 // 简易封装数据缓存使其支持 async awaiy
 function getStorage(key) {
@@ -50,7 +53,7 @@ const handleCode = (code, response) => {
  */
 export default async function fetch(options) {
     const errmsg = "网络异常, 请刷新重试"
-    const { url, payload, method = 'GET', showToast = true, Login = false, dataType = 'json' } = options
+    const { url, payload, method = 'GET', showToast = true, Login: needLogin = false, dataType = 'json' } = options
 
     // const token = await getStorage('token')
     // const csrf = await getStorage('csrf')
@@ -60,6 +63,17 @@ export default async function fetch(options) {
     // header['Cookie'] = token ? 'wechat_token=' + token : ''
     // header['CSRF-TOKEN'] = csrf ? csrf : ''
     if (method === 'POST') header['Content-Type'] = 'application/x-www-form-urlencoded'
+
+    if (needLogin) {
+        try {
+            await Login({ forceLogin: true })
+            const userinfo = await getUserInfoFromLocalStorerage(USER_STORE_KEY)
+            payload.UserId = userinfo.Id
+        } catch (error) {
+            console.log(url)
+            console.error(error)
+        }
+    }
 
     try {
 
