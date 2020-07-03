@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { InputNumber } from '@components'
+import { InputNumber, ButtonItem } from '@components'
 import classNames from 'classnames'
 import './index.scss'
 
@@ -8,7 +8,8 @@ export default class Spec extends Component {
   static defaultProps = {
     data: {},
     selected: {},
-    onSelect: () => {}
+    onSelect: () => {},
+    onAddCart: () => {}
   }
 
   state = {
@@ -27,8 +28,10 @@ export default class Spec extends Component {
     return skuMap[item.id] ? skuMap[item.id].sellVolume : false
   }
 
+  // 判断当前规格的类型是否被选择
   isSelected = (item, groupId) => this.state.selected[groupId] === item.id
 
+  // 选择规格类型，将类型和数量写回父组件
   handleSelect = (item, groupId) => {
     if (this.isValid(item)) {
       const selected = {
@@ -47,6 +50,12 @@ export default class Spec extends Component {
 
   handleUpdate = (cnt) => {
     this.setState({ cnt })
+  }
+
+  handleAddCart = () => {
+    const { selected, cnt } = this.state
+    const { data } = this.props
+    this.props.onAddCart({ selected, cnt, data });
   }
 
   render () {
@@ -73,13 +82,13 @@ export default class Spec extends Component {
           </View>
         </View>
 
-        {skuSpecList.map(group => (
+        {skuSpecList && skuSpecList.map(group => (
           <View key={JSON.stringify(group.id)} className='item-spec__group'>
             <Text className='item-spec__group-title'>{group.name}</Text>
             <View className='item-spec__group-list'>
-              {group.skuSpecValueList.map(item => (
+              {group && group.skuSpecValueList && group.skuSpecValueList.map(item => (
                 <Text
-                  key={item.id}
+                  key={JSON.stringify(item.id)}
                   className={classNames('item-spec__group-list-item', {
                     'item-spec__group-list-item--active': this.isSelected(item, group.id),
                     'item-spec__group-list-item--disabled': !this.isValid(item)
@@ -105,6 +114,14 @@ export default class Spec extends Component {
             numStyle={{
               width: Taro.pxTransform(130)
             }}
+          />
+        </View>
+        <View className='item-spec__group'>
+          <Text className='item-spec__group-title'>   </Text>
+          <ButtonItem 
+            text='确定'
+            type='primary'
+            onClick={this.handleAddCart}
           />
         </View>
       </View>

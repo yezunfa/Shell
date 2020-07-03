@@ -1,7 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { Popup, Loading } from '@components'
-import { GET_PRODUCT_DETAIL } from '@constants/api'
+import { 
+    GET_PRODUCT_DETAIL,
+    POST_CREATE_CART_PRODUCT
+} from '@constants/api'
 import { getWindowHeight } from '@utils/style'
 import fetch from '@utils/request'
 import Gallery from './gallery'
@@ -38,11 +41,11 @@ class Index extends Component {
             payload
         }
         const response = await fetch(params)
-        // console.log(response)
-        const { Name, Introduce, Price, BannerList, Summary, Notice, Detail: _Detail } = response
+        const { Id: ProductId, Name, Introduce, Price, BannerList, Summary, Notice, Detail: _Detail } = response
         await this.asyncSetState({ 
             productInfo: {
-                name: Name,         // 产品名
+                Id: ProductId,
+                name: Name,             // 产品名
                 simpleDesc: Introduce,  // 产品介绍
                 activityPrice: Price,   // 产品现价
                 retailPrice: parseFloat(Price)+500,     // 产品原价
@@ -52,23 +55,59 @@ class Index extends Component {
                     { attrName: '适用情况', attrValue: Summary },
                     { attrName: '注意事项', attrValue: Notice } 
                 ],
-                productDetail: _Detail                     // html格式，数据库改变数据即可改变商品的详情，这里我只放了一些图片
+                primaryPicUrl: JSON.parse(BannerList)[0],   // 小图
+                skuSpecList: [
+                    {id: 'group1', name: 'group1', skuSpecValueList: [ 
+                        { id: 'group1-item1', name: 'group1-name1', value: 'group1-value1' },
+                        { id: 'group1-item2', name: 'group1-name2', value: 'group1-value2' },
+                        { id: 'group1-item3', name: 'group1-name3', value: 'group1-value3' },
+                    ]},
+                    {id: 'group2', name: 'group2', skuSpecValueList: [ 
+                        { id: 'group2-item1', name: 'group2-name1', value: 'group2-value1' },
+                        { id: 'group2-item2', name: 'group2-name2', value: 'group2-value2' },
+                        { id: 'group2-item3', name: 'group2-name3', value: 'group2-value3' },
+                    ]},
+                    {id: 'group3', name: 'group3', skuSpecValueList: [ 
+                        { id: 'group3-item1', name: 'group3-name1', value: 'group3-value1' },
+                        { id: 'group3-item2', name: 'group3-name2', value: 'group3-value2' },
+                        { id: 'group3-item3', name: 'group3-name3', value: 'group3-value3' },
+                    ]}
+                ], // 规格类型
+                productDetail: _Detail                      // html格式，数据库改变数据即可改变商品的详情，这里我只放了一些图片
             },
-            gallery: JSON.parse(BannerList),
+            gallery: JSON.parse(BannerList),        // 产品画廊，轮播图的形式
             loaded: true
         })
     }
 
+    // 关闭选择框，并清空当前组件中保存的产品规格+数量信息
     toggleVisible = async () => {
         await this.asyncSetState({ visible: !this.state.visible, selected: {} })
     }
 
+    // 选择规格
     handleSelect = async (selected) => {
         await this.asyncSetState({ selected })
     }
 
-    handleAdd = () => {
-        console.log('点击添加购物车');
+    handleAdd = async () => {
+        await this.asyncSetState({ visible: true });
+    }
+
+    // 添加到购物车中，入库
+    handleAddCart = async (product) => {
+        const { selected, cnt, data } = product
+        const { Id } = data
+        const payload = { 
+            ProductId:  Id,
+            Amount: cnt,
+        }
+        const params = {
+            url: POST_CREATE_CART_PRODUCT,
+            payload,
+            method: 'POST'
+        }
+        const response = await fetch(params)
     }
 
     render() {
@@ -108,8 +147,9 @@ class Index extends Component {
                 >
                     <Spec
                         data={productInfo}
-                        selected={selected}
-                        onSelect={this.handleSelect}
+                        selected={selected}            
+                        onSelect={this.handleSelect}   // 选规格的
+                        onAddCart={this.handleAddCart}  // 加入购物车(入库)
                     />
                 </Popup>
                 <View className='page__footer'>
