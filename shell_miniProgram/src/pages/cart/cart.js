@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-03 11:35:53
+ * @LastEditTime: 2020-07-03 12:07:56
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -14,7 +14,7 @@ import List from './list'
 import Footer from './footer'
 import './cart.scss'
 
-@connect(state => state.cart, actions)
+@connect(state => ({...state.cart, ...state.global}) , { ...actions }) 
 class Index extends Component {
   config = {
     navigationBarTitleText: '购物车'
@@ -26,8 +26,10 @@ class Index extends Component {
     isEmpty: true,
   }
 
-  componentDidShow() {
+  async componentDidShow() {
+    console.log(this.props)
     const { dispatchCart, cartInfo } = this.props
+    await dispatchCart()
   }
 
   render () {
