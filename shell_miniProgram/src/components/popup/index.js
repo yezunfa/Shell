@@ -51,7 +51,8 @@ export default class Popup extends Component {
           <ScrollView
             scrollY
             className='comp-popup__content'
-            style={{ height: Taro.pxTransform(750) }}
+            // style={{ height: Taro.pxTransform(750) }}
+            style={{ height: Taro.pxTransform(350) }}
           >
             {this.props.children}
           </ScrollView>
