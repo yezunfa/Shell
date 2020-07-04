@@ -30,7 +30,7 @@ export default function cart(state = INITIAL_STATE, action) {
     case CART_INFO:
         return {
             ...state,
-            cartInfo: action.payload
+            cartInfo: action.payload ? action.payload.productArray : []
           } 
     case CART_ADD: 
     case CART_UPDATE_CHECK: {
