@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-06-30 02:55:49
+ * @LastEditTime: 2020-07-03 10:44:27
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -47,7 +47,7 @@ class Cate extends Component {
     const height = getWindowHeight()
     return (
       <View className='cate'>
-        <ClSearchBar
+        {/* <ClSearchBar
             shape='round'
             placeholder='请搜索你需要的服务项目'
             searchType='none'
@@ -57,7 +57,7 @@ class Cate extends Component {
                 icon: 'none'
               })
             }}
-          />
+          /> */}
         <View style={{height:`${height}`}}>
             <ClVerticalTab tabs={productType} height={'full'} backTop={true}>
             <View>

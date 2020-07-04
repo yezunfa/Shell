@@ -35,7 +35,7 @@ class User extends Component {
           await dispatchUserInformation({ ...userinfo })
         }
         // 更新用户信息
-       
+       await Taro.hideLoading()
     } catch (error) {
         console.error(error)
         const icon = 'none'

@@ -23,10 +23,11 @@ export const GET_PRODUCT_TYPE = `${host}/api/productType/getType`
 export const GET_PRODUCT_INFO = `${host}/api/productList/getAllProduct`
 
 // cart
-export const API_CART = `${host}/xhr/promotionCart/getCarts.json`
+export const API_CART_ADD = `${host}/api/cart/add`
+export const API_CART = `${host}/api/cart/getByUserId`
+
 export const API_CART_NUM = `${host}/xhr/promotionCart/getMiniCartNum.json`
 export const API_CART_RECOMMEND = `${host}/xhr/rcmd/cart.json`
-export const API_CART_ADD = `${host}/xhr/promotionCart/add.json`
 export const API_CART_UPDATE = `${host}/xhr/promotionCart/update.json`
 export const API_CART_UPDATE_CHECK = `${host}/xhr/promotionCart/updateCheck.json`
 
