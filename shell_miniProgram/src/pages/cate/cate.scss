@@ -1,7 +1,33 @@
 @import "@styles/theme.scss";
+@import "@styles/public.scss";
+@import "~taro-ui/dist/style/components/flex.scss";
 
 .cate {
   // display: flex;
   overflow: hidden;
   background: #ffffff;
+  .cur {
+    color: $theme-color !important;
+  }
+  &__item {
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &_img {
+      width: 150px;
+      .image {
+        height: 100%;
+      }
+    }
+    &_container {
+      width: 250px;
+    }
+    &_icon {
+      width: 50px;
+      display: flex;
+      flex-direction: row;
+      align-self: flex-end;
+    }
+  }
 }

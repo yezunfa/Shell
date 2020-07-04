@@ -6,8 +6,11 @@
  */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { ClSearchBar, ClVerticalTab, ClVerticalTabCell } from "mp-colorui";
+import { DefaultLog } from '@constants/api'
+import { Popup, Spec } from '@components'
+import { ClSearchBar, ClVerticalTab, ClVerticalTabCell, ClText } from "mp-colorui";
 import { connect } from '@tarojs/redux'
+import icons from '@assets'
 import * as actions from '@actions/product'
 import { getWindowHeight } from '@utils/style'
 import './cate.scss'
@@ -23,6 +26,7 @@ class Cate extends Component {
   state = {
     productType:[],
     productInfo:[],
+    visible: true,
   }
 
   async componentDidMount() {
@@ -41,10 +45,27 @@ class Cate extends Component {
     await this.asyncSetState({productInfo, productType})
   }
 
+  toggleVisible = async () => {
+    await this.asyncSetState({ visible: !this.state.visible, selected: {} })
+  }
+
+  addCart = () => {
+
+  }
+
+  handleAddCart = () => {
+
+  }
+
   render () {
-    const { productInfo, productType } = this.state
+    const { productInfo, productType, visible } = this.state
     if (!productType.length) return 
     const height = getWindowHeight()
+
+    const popupStyle = process.env.TARO_ENV === 'rn' ?
+        { transform: [{ translateY: Taro.pxTransform(-100) }] } :
+        { transform: `translateY(${Taro.pxTransform(-100)})` }
+
     return (
       <View className='cate'>
         {/* <ClSearchBar
@@ -61,18 +82,44 @@ class Cate extends Component {
         <View style={{height:`${height}`}}>
             <ClVerticalTab tabs={productType} height={'full'} backTop={true}>
             <View>
-              {productInfo.map((item) => (
-                <View id={item.Type} key={JSON.stringify(item.Id)}>
+              {productInfo.map((item) => {
+                const { BannerList, Name, Price, Introduce } = item
+                const banner = JSON.parse(BannerList)
+                return <View id={item.Type} key={JSON.stringify(item.Id)}>
                   <ClVerticalTabCell>
-                    <View onClick={() => {
+                    <View className='cate__item' onClick={() => {
                       // console.log('item', item)
                       Taro.navigateTo({ url: `/pages/product/index?Id=${item.Id}` })
-                    }}>{item.Name}</View> 
-                    </ClVerticalTabCell>
+                    }}>
+                      <View className='cate__item_img'>
+                        <Image className='image' src={banner[0] || DefaultLog} mode='aspectFit' />
+                      </View>
+                      <View className='cate__item_container'>
+                        <ClText text={Name} size='normal' textColor='black' />
+                        <ClText text={`￥${Price}`} size='xsmall' textColor='red' />
+                        <ClText text={Introduce.length > 50 ? `${Introduce.substring(0,50)}...` : Introduce } size='xsmall' />
+                      </View>
+                      <View className='cate__item_icon'>
+                        <Image onClick={this.addCart} className='icon' src={icons.cart} />
+                      </View>
+                    </View>
+                  </ClVerticalTabCell>
                 </View>
-              ))}
+              })}
             </View>
           </ClVerticalTab>
+          {/* <Popup
+              visible={visible}
+              onClose={this.toggleVisible}
+              compStyle={popupStyle}
+          >
+              <Spec
+                  data={productInfo}
+                  selected={selected}            
+                  onSelect={this.handleSelect}   // 选规格的
+                  onAddCart={this.handleAddCart}  // 加入购物车(入库)
+              />
+          </Popup> */}
         </View>
         
       </View>

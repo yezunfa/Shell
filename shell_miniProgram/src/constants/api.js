@@ -11,6 +11,7 @@ export const hostM = HOST_M
 // const HOST_M = '"https://m.you.163.com"'
 // pic
 export const CDN = 'https://yanxuan.nosdn.127.net'
+export const DefaultLog = 'http://cdn.shuaixiaoxiao.com/image/20200704155855.jpg'
 
 // home
 export const API_HOME = `${host}/xhr/index/index.json`
