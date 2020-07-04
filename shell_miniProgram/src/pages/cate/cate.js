@@ -26,7 +26,6 @@ class Cate extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.props)
     const { productInfo, productType, dispatchProductInfo, dispatchProductType } = this.props
     if (!productInfo.length || !productType.length) {
       await dispatchProductType()

@@ -49,7 +49,7 @@ const handleCode = (code, response) => {
  */
 export default async function fetch(options) {
     const errmsg = "网络异常, 请刷新重试"
-    const { url, payload, method = 'GET', showToast = true, Login: needLogin = false, dataType = 'json' } = options
+    const { url, payload, method = 'GET', showToast = true, Login = false, dataType = 'json' } = options
 
     // const token = await getStorage('token')
     // const csrf = await getStorage('csrf')
@@ -60,16 +60,7 @@ export default async function fetch(options) {
     // header['CSRF-TOKEN'] = csrf ? csrf : ''
     if (method === 'POST') header['Content-Type'] = 'application/x-www-form-urlencoded'
 
-    let userinfo = ''
-    if (needLogin) {
-        try {
-            await Login({ forceLogin: true })
-            userinfo = await getUserInfoFromLocalStorerage(USER_STORE_KEY)
-        } catch (error) {
-            console.log(url)
-            console.error(error)
-        }
-    }
+    let userinfo = await getUserInfoFromLocalStorerage(USER_STORE_KEY)
 
     try {
 
