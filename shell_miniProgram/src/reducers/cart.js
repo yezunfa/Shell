@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-03 11:17:33
- * @LastEditTime: 2020-07-03 11:23:59
+ * @LastEditTime: 2020-07-04 17:55:35
  * @Description: Do not edit
  */ 
 import Taro from '@tarojs/taro'
@@ -9,6 +9,7 @@ import { CART_INFO,  CART_ADD, CART_NUM, CART_UPDATE_CHECK } from '@constants/ca
 
 const INITIAL_STATE = {
   cartInfo: {}, 
+  isUpdate: false,
 }
 
 // TODO H5、RN 还不支持 setTabBarBadge
@@ -36,7 +37,8 @@ export default function cart(state = INITIAL_STATE, action) {
     case CART_UPDATE_CHECK: {
       return {
         ...state,
-        cartInfo: action.payload
+        cartInfo: action.payload.NewList,
+        isUpdate: action.payload.isUpdate
       }
     }
     case CART_NUM: {

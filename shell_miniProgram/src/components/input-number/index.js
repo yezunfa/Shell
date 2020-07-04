@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2019-07-22 16:56:19
+ * @LastEditTime: 2020-07-04 18:11:10
+ * @Description: Do not edit
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import classNames from 'classnames'
@@ -16,13 +22,13 @@ export default class InputNumber extends Component {
   }
 
   handleMinus = () => {
-    if (this.props.num > 1) {
-      this.props.onChange(this.props.num - 1)
+    if (parseInt(this.props.num) > 1) {
+      this.props.onChange(parseInt(this.props.num) - 1)
     }
   }
 
   handlePlus = () => {
-    this.props.onChange(this.props.num + 1)
+    this.props.onChange(parseInt(this.props.num) + 1)
   }
 
   render () {

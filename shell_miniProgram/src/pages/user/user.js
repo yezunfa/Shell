@@ -1,7 +1,12 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-07-02 21:19:00
+ * @LastEditTime: 2020-07-04 18:02:12
+ * @Description: Do not edit
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Login } from '@utils/wechat'
 import * as globalactions from '@actions/global'
 import { getWindowHeight } from '@utils/style'
 import Profile from './profile'
@@ -17,34 +22,7 @@ class User extends Component {
   async componentDidMount() {
     // this.props.dispatchUser()
     // this.props.dispatchCartNum()
-    await this.wechatLogin()
   }
-
-    /**
-   * 登录事件
-   * @param {*} params 
-   */
-  async wechatLogin(params = {}) {
-    const { dispatchUserInformation } = this.props
-    try {
-        //  await Taro.showLoading({title: '更新用户信息', mask: true})
-        const { scene, userdata, redirect, redirectparams } = params
-        const response = await Login({scene, userdata}) // 登录
-        if (response.code === 200 ) {
-          const { userinfo } = response.data
-          await dispatchUserInformation({ ...userinfo })
-        }
-        // 更新用户信息
-       await Taro.hideLoading()
-    } catch (error) {
-        console.error(error)
-        const icon = 'none'
-        const title = "网络异常, 请刷新重试"
-        // await Taro.hideLoading()
-        Taro.showToast({icon, title})
-    }
-  }
-
 
   render () {
     const { userinfo } = this.props

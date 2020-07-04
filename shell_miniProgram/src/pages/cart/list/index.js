@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-04 17:34:50
+ * @LastEditTime: 2020-07-04 18:13:18
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -21,16 +21,10 @@ export default class List extends Component {
 
   async componentDidShow() {
     await this.getData()
-    
   }
 
   async componentWillReceiveProps(nextProps){
     const { cartInfo } = nextProps
-    const { ProductList:_oldcartInfo} = this.state
-    console.log(_oldcartInfo)
-    console.log(cartInfo)
-    console.log(_oldcartInfo === cartInfo)
-    // if (_oldcartInfo === cartInfo) return
     await this.setState({ProductList: cartInfo})
   }
 
@@ -41,22 +35,24 @@ export default class List extends Component {
 
   }  
 
-  handleUpdate = (item, cnt) => {
-    const payload = {
-      skuList: [{ ...this.getBaseItem(item), cnt }]
-    }
-    this.props.onUpdate(payload)
+  handleUpdate = async  (item, newAmount) => {
+    const { dispatchUpdateCheck, isUpdate } = this.props
+    const { ProductList } = this.state
+    const NewList = ProductList
+    const ItemIndex = ProductList.findIndex((ele)=>item.Id === ele.Id)
+    
+    NewList[ItemIndex] = { ...item, Amount: newAmount }
+    await dispatchUpdateCheck({NewList, isUpdate:!isUpdate})
   }
 
   handleUpdateCheck = async (item) => {
-    const { dispatchUpdateCheck } = this.props
+    const { dispatchUpdateCheck, isUpdate } = this.props
     const { ProductList } = this.state
     const NewList = ProductList
     const ItemIndex = ProductList.findIndex((ele)=>item.Id === ele.Id)
     NewList[ItemIndex] = { ...item, checked: !item.checked }
-   
-    // this.setState({ProductList:NewList})
-    await dispatchUpdateCheck(NewList)
+
+    await dispatchUpdateCheck({NewList, isUpdate:!isUpdate})
   }
 
   handleRemove = () => {
@@ -67,7 +63,7 @@ export default class List extends Component {
     const { ProductList:list } = this.state
     return (
       <View className='cart-list'>
-        {list.map(item => (
+        {list && list.map(item => (
           <View
             key={item.Id}
             className='cart-list__item'
@@ -104,7 +100,7 @@ export default class List extends Component {
                 <View className='cart-list__item-num'>
                   <InputNumber
                     num={item.Amount}
-                    // onChange={this.handleUpdate.bind(this, item)}
+                     onChange={this.handleUpdate.bind(this, item)}
                   />
                 </View>
               </View>
