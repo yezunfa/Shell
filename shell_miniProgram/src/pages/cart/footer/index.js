@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-05 13:02:52
+ * @LastEditTime: 2020-07-05 13:11:10
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -34,7 +34,6 @@ export default class Footer extends Component {
 
   async getSelectArray(){
     const { cartInfo } = this.props
-    const { SelectCart: old_SelectCart } = this.state
     let TotalPrice = 0
     const SelectCart = []
     for (let index = 0; index < cartInfo.length; index++) {
@@ -47,9 +46,6 @@ export default class Footer extends Component {
       }
     }
     await this.setState({SelectCart, TotalPrice})
-    console.log(SelectCart)
-    console.log(cartInfo)
-    console.log(old_SelectCart)
     if (SelectCart && SelectCart.length !== cartInfo.length) {
       await this.setState({AllCheck: false})
     } else if(SelectCart.length === cartInfo.length){
