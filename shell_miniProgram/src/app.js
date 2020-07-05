@@ -25,6 +25,7 @@ class App extends Component {
       'pages/cart/cart',
       'pages/user/user',
       // 'pages/item/item',
+      'pages/order-check/index',
       'pages/product/index',
     ],
     window: {

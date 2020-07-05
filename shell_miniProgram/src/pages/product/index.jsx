@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { Popup, Loading } from '@components'
+import { Popup, Loading, Spec } from '@components'
 import { 
     GET_PRODUCT_DETAIL,
     POST_CREATE_CART_PRODUCT
@@ -12,7 +12,7 @@ import InfoBase from './info-base'
 import InfoParam from './info-param'
 import Footer from './footer'
 import Detail from './detail'
-import Spec from './spec'
+// import Spec from './spec'
 import './index.scss'
 
 const baseClass = 'page'
@@ -45,9 +45,12 @@ class Index extends Component {
         await this.asyncSetState({ 
             productInfo: {
                 Id: ProductId,
-                name: Name,             // 产品名
+                // name: Name,             // 产品名
                 simpleDesc: Introduce,  // 产品介绍
-                activityPrice: Price,   // 产品现价
+                // activityPrice: Price,   // 产品现价
+                Price,
+                Name,
+                BannerList,
                 retailPrice: parseFloat(Price)+500,     // 产品原价
                 itemStar: { goodCmtRate: 99 },                   // 产品好评率
                 tagList: [ {tagName: '医生超好'}, {tagName:'性价比高'}, {tagName:'环境不错'} ],     //产品标签
@@ -109,6 +112,9 @@ class Index extends Component {
             Login: true,
         }
         const response = await fetch(params)
+        await this.asyncSetState({ visible: false })
+        if (response) return Taro.showToast({ title: '成功加入购物车', icon: 'success' })
+        return Taro.showToast({ title: '服务器繁忙，请重试', icon: 'none' })
     }
 
     render() {
