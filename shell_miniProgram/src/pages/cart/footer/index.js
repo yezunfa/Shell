@@ -1,36 +1,63 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2019-07-22 16:56:19
+ * @LastEditTime: 2020-07-05 12:46:55
+ * @Description: Do not edit
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { CheckboxItem, ButtonItem } from '@components'
+import { connect } from '@tarojs/redux'
+import * as actions from '@actions/cart'
 import './index.scss'
 
+@connect(state => ({...state.cart, ...state.global}) , { ...actions }) 
 export default class Footer extends Component {
-  static defaultProps = {
-    cartInfo: {},
-    onToggle: () => {}
+  state = {
+    ProductList:[],
+    SelectCart: [],
+    AllCheck: false,
+    TotalPrice: 0
   }
 
-  handleUpdateCheck = () => {
+  async componentDidMount(){
     const { cartInfo } = this.props
-    const { cartGroupList = [], countCornerMark, selectedCount } = cartInfo
-    const cartList = cartGroupList.slice(1)
-    const payload = { skuList: [] }
-    const isAllChecked = !!selectedCount && parseInt(countCornerMark) === selectedCount
-    const nextChecked = !isAllChecked
-    cartList.forEach((group) => {
-      group.cartItemList.forEach((item) => {
-        payload.skuList.push({
-          skuId: item.skuId,
-          type: item.type,
-          extId: item.extId,
-          cnt: item.cnt,
-          checked: nextChecked,
-          canCheck: true,
-          promId: group.promId,
-          promType: group.promType
-        })
-      })
+    await this.setState({ ProductList: cartInfo }) 
+    await this.getSelectArray()
+  }
+
+  async componentWillReceiveProps(nextProps){
+    const { cartInfo } = nextProps
+    await this.setState({ ProductList:cartInfo })
+    await this.getSelectArray()
+  }
+
+  async getSelectArray(){
+    const { cartInfo } = this.props
+    let TotalPrice = 0
+    const SelectCart = []
+    for (let index = 0; index < cartInfo.length; index++) {
+      const element = cartInfo[index];
+      const { Amount, Price, checked } = element
+      if (element && checked) {
+        const SinCartPrice = parseInt(Amount,10) * parseInt(Price,10)
+        TotalPrice += SinCartPrice
+        SelectCart.push(element)
+      }
+    }
+    await this.setState({SelectCart, TotalPrice})
+  }
+
+  handleUpdateCheck = async () => {
+    const { dispatchUpdateCheck, isUpdate } = this.props
+    const { AllCheck } = this.state
+    const { ProductList } = this.state
+    const NewList = ProductList
+    ProductList.map((item, index)=>{
+      NewList[index].checked = !AllCheck 
     })
-    this.props.onUpdateCheck(payload)
+    await this.setState({AllCheck: !AllCheck})
+    await dispatchUpdateCheck({ NewList, isUpdate:!isUpdate})
   }
 
   handleOrder = () => {
@@ -41,22 +68,22 @@ export default class Footer extends Component {
   }
 
   render () {
-    const { cartInfo } = this.props
+    const { TotalPrice, AllCheck, SelectCart } = this.state
     return (
       <View className='cart-footer'>
         <View className='cart-footer__select'>
           <CheckboxItem
-            checked={!!cartInfo.selectedCount}
+            checked={AllCheck}
             onClick={this.handleUpdateCheck}
           >
             <Text className='cart-footer__select-txt'>
-              {!cartInfo.selectedCount ? '全选' : `已选(${cartInfo.selectedCount})`}
+              {AllCheck ? '全选' : `已选(${SelectCart.length})`}
             </Text>
           </CheckboxItem>
         </View>
         <View className='cart-footer__amount'>
           <Text className='cart-footer__amount-txt'>
-            ¥{parseFloat(cartInfo.actualPrice).toFixed(2)}
+            ¥{parseFloat(TotalPrice).toFixed(2)}
           </Text>
         </View>
         <View className='cart-footer__btn'>

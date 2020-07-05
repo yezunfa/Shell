@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-04 18:13:18
+ * @LastEditTime: 2020-07-05 11:47:24
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -19,21 +19,10 @@ export default class List extends Component {
     ProductList:[]
   }
 
-  async componentDidShow() {
-    await this.getData()
-  }
-
   async componentWillReceiveProps(nextProps){
-    const { cartInfo } = nextProps
-    await this.setState({ProductList: cartInfo})
+    const { ProductList } = nextProps
+    await this.setState({ ProductList })
   }
-
-  async getData(){
-    const { dispatchCart } = this.props
-    await dispatchCart()
-    await this.setState({ProductList: this.props.cartInfo})
-
-  }  
 
   handleUpdate = async  (item, newAmount) => {
     const { dispatchUpdateCheck, isUpdate } = this.props
