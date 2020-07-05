@@ -1,0 +1,18 @@
+@import "@styles/theme.scss";
+.store {
+    width: 100%;
+    background-color: white;
+    padding: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &__banner {
+        width: 8%;
+    }
+    &__info {
+        width: 83%;
+    }
+    &__more-tip {
+        width: 5%;
+    }
+}
