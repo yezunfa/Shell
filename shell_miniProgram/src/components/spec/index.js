@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { DefaultLog } from '@constants/api'
 import { InputNumber, ButtonItem } from '@components'
 import classNames from 'classnames'
 import './index.scss'
@@ -31,7 +32,7 @@ export default class Spec extends Component {
   // 判断当前规格的类型是否被选择
   isSelected = (item, groupId) => this.state.selected[groupId] === item.id
 
-  // 选择规格类型，将类型和数量写回父组件
+  // 选择规格类型，将类型和数量写回父组件,同时可以改变产品封面,暂时没用上
   handleSelect = (item, groupId) => {
     if (this.isValid(item)) {
       const selected = {
@@ -67,18 +68,26 @@ export default class Spec extends Component {
         <View className='item-spec__info'>
           <Image
             className='item-spec__info-img'
-            src={this.state.img || data.primaryPicUrl}
+            mode='aspectFit'
+            // src={this.state.img || data.primaryPicUrl}   // 这里的图片若此规格有图片则用，没有则用原始图片
+            src={data.BannerList ? JSON.parse(data.BannerList)[0] : DefaultLog}
           />
           <View className='item-spec__info-wrap'>
+            <View className='item-spec__info-name'>
+              <Text className='item-spec__info-name-txt'>
+                {data.Name}
+              </Text>
+            </View>
             <View className='item-spec__info-price'>
               <Text className='item-spec__info-price-txt'>
-                {`价格:¥${data.activityPrice || data.retailPrice}`}
+                {`价格:¥${data.Price}`}
               </Text>
-              {!!data.activityPrice &&
+              {/* {!!data.activityPrice &&
                 <Text className='item-spec__info-price-origin'>¥{data.retailPrice}</Text>
-              }
+              } */}
             </View>
-            <Text className='item-spec__info-tip'>请选择规格属性</Text>
+            {/* <Text className='item-spec__info-tip'>请选择规格属性</Text> */}
+            <Text className='item-spec__info-tip'>目前暂不支持选择规格属性哦~</Text>
           </View>
         </View>
 

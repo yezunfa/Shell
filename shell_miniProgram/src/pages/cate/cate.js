@@ -6,9 +6,10 @@
  */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { DefaultLog } from '@constants/api'
+import { DefaultLog, POST_CREATE_CART_PRODUCT } from '@constants/api'
 import { Popup, Spec } from '@components'
 import { ClSearchBar, ClVerticalTab, ClVerticalTabCell, ClText } from "mp-colorui";
+import fetch from '@utils/request'
 import { connect } from '@tarojs/redux'
 import icons from '@assets'
 import * as actions from '@actions/product'
@@ -26,7 +27,7 @@ class Cate extends Component {
   state = {
     productType:[],
     productInfo:[],
-    visible: true,
+    visible: false,
   }
 
   async componentDidMount() {
@@ -49,22 +50,38 @@ class Cate extends Component {
     await this.asyncSetState({ visible: !this.state.visible, selected: {} })
   }
 
-  addCart = () => {
-
+  addCart = async (product, e) => {
+    e.stopPropagation()
+    await this.asyncSetState({ visible: true, curProduct: product })
   }
 
-  handleAddCart = () => {
-
+  handleAddCart = async (product) => {
+    const { selected, cnt, data } = product
+    const { Id } = data
+    const payload = { 
+        ProductId:  Id,
+        Amount: cnt,
+    }
+    const params = {
+        url: POST_CREATE_CART_PRODUCT,
+        payload,
+        method: 'POST',
+        Login: true,
+    }
+    const response = await fetch(params)
+    await this.asyncSetState({ visible: false })
+    if (response) return Taro.showToast({ title: '成功加入购物车', icon: 'success' })
+    return Taro.showToast({ title: '服务器繁忙，请重试', icon: 'none' })
   }
 
   render () {
-    const { productInfo, productType, visible } = this.state
+    const { productInfo, productType, visible, curProduct } = this.state
     if (!productType.length) return 
     const height = getWindowHeight()
 
     const popupStyle = process.env.TARO_ENV === 'rn' ?
-        { transform: [{ translateY: Taro.pxTransform(-100) }] } :
-        { transform: `translateY(${Taro.pxTransform(-100)})` }
+        { transform: [{ translateY: Taro.pxTransform(0) }] } :
+        { transform: `translateY(${Taro.pxTransform(0)})` }
 
     return (
       <View className='cate'>
@@ -97,10 +114,10 @@ class Cate extends Component {
                       <View className='cate__item_container'>
                         <ClText text={Name} size='normal' textColor='black' />
                         <ClText text={`￥${Price}`} size='xsmall' textColor='red' />
-                        <ClText text={Introduce.length > 50 ? `${Introduce.substring(0,50)}...` : Introduce } size='xsmall' />
+                        <ClText text={Introduce.length > 25 ? `${Introduce.substring(0,25)}...` : Introduce } size='xsmall' />
                       </View>
                       <View className='cate__item_icon'>
-                        <Image onClick={this.addCart} className='icon' src={icons.cart} />
+                        <Image onClick={this.addCart.bind(this, item)} className='icon' src={icons.cart} />
                       </View>
                     </View>
                   </ClVerticalTabCell>
@@ -108,18 +125,18 @@ class Cate extends Component {
               })}
             </View>
           </ClVerticalTab>
-          {/* <Popup
+          <Popup
               visible={visible}
               onClose={this.toggleVisible}
               compStyle={popupStyle}
           >
               <Spec
-                  data={productInfo}
-                  selected={selected}            
-                  onSelect={this.handleSelect}   // 选规格的
+                  data={curProduct}
+                  // selected={selected}            
+                  // onSelect={this.handleSelect}   // 选规格的
                   onAddCart={this.handleAddCart}  // 加入购物车(入库)
               />
-          </Popup> */}
+          </Popup>
         </View>
         
       </View>
