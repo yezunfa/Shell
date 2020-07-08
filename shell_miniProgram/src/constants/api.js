@@ -31,6 +31,8 @@ export const GET_PRODUCT_INFO = `${host}/api/productList/getAllProduct`
 export const API_CART_ADD = `${host}/api/cart/add`
 export const API_CART = `${host}/api/cart/getByUserId`
 
+export const POST_CART_ORDER = `${host}/api/cart/createOrder` // 创建订单
+
 export const API_CART_NUM = `${host}/xhr/promotionCart/getMiniCartNum.json`
 export const API_CART_RECOMMEND = `${host}/xhr/rcmd/cart.json`
 export const API_CART_UPDATE = `${host}/xhr/promotionCart/update.json`

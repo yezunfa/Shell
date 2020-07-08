@@ -32,12 +32,25 @@ class Index extends Component {
   async getData(){
     const { dispatchCart  } = this.props
     await dispatchCart()
-    await this.setState({
-      ProductList: this.props.cartInfo,
-      isEmpty:false,
-      isShowFooter: true
-    })
+    await this.setDefaultData()
   }  
+
+  async setDefaultData(){
+    const { cartInfo } = this.props
+    if (cartInfo && cartInfo.length) {
+      await this.setState({
+        ProductList: this.props.cartInfo,
+        isEmpty:false,
+        isShowFooter: true
+      })
+    } else {
+      await this.setState({
+        ProductList: [],
+        isEmpty:true,
+        isShowFooter: false
+      })
+    }
+  }
 
   render () {
     const { isShowFooter, isEmpty, ProductList } = this.state
@@ -49,7 +62,7 @@ class Index extends Component {
         </ScrollView>
         {isShowFooter &&
           <View className='cart__footer'>
-            <Footer /> 
+            <Footer onAllOrdered={() => this.getData()}/> 
           </View>
         }
       </View>

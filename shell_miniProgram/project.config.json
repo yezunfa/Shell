@@ -73,18 +73,28 @@
 					"id": -1,
 					"name": "pages/home/home",
 					"pathName": "pages/home/home",
+					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
 					"name": "pages/home/home",
 					"pathName": "pages/home/home",
+					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
 					"name": "pages/home/home",
 					"pathName": "pages/home/home",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/order-check/index",
+					"pathName": "pages/order-check/index",
+					"query": "",
 					"scene": null
 				}
 			]

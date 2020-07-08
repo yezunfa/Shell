@@ -9,6 +9,7 @@ import { CART_INFO,  CART_ADD, CART_NUM, CART_UPDATE_CHECK } from '@constants/ca
 
 const INITIAL_STATE = {
   cartInfo: {}, 
+  cartParentId: '',
   isUpdate: false,
 }
 
@@ -31,6 +32,7 @@ export default function cart(state = INITIAL_STATE, action) {
     case CART_INFO:
         return {
             ...state,
+            cartParentId:action.payload ? action.payload.Id : '',
             cartInfo: action.payload ? action.payload.productArray : []
           } 
     case CART_ADD: 
