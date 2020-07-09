@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-08 17:17:55
+ * @LastEditTime: 2020-07-09 11:33:41
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -10,7 +10,7 @@ import { CheckboxItem, ButtonItem } from '@components'
 import { connect } from '@tarojs/redux'
 import * as actions from '@actions/cart'
 import fetch from '@utils/request'
-import { POST_CART_ORDER } from '@constants/api'
+import { POST_CART_ORDER, POST_SUBMIT_WECHAT_PAY } from '@constants/api'
 import './index.scss'
 
 @connect(state => ({...state.cart, ...state.global}) , { ...actions }) 
@@ -78,13 +78,23 @@ export default class Footer extends Component {
       })
       return;
     }
-    
-    // todo : showloading
     wx.showLoading({title:'系统处理中', mask:true})
     // 提交订单
     const Rorder = await this.SubmitOrder();
     if (!Rorder) return await wx.hideLoading()
     // 跳转页面 ，携带orderId
+    console.log(Rorder)
+    const Rwechatpay = await this.wxPaySummit(Rorder);
+      if (!Rwechatpay){
+          // await this.deleteOrder(Rorder)  // 删除订单、预约， 防止占位
+          return await wx.hideLoading()
+          return 
+      }
+      console.log(Rwechatpay)
+    // todo：跳转支付确认页面
+    // 暂时在此处做一下微信支付的逻辑
+
+    
     
   }
 
@@ -113,8 +123,6 @@ export default class Footer extends Component {
         if(success){
           await onAllOrdered()
         } 
-        await wx.hideLoading()
-
         return data // { Code, OrderId  }
     } catch (error) {
         const { message: title } = error
@@ -122,7 +130,46 @@ export default class Footer extends Component {
         console.error(error)
         return false
     }
-}
+  }
+
+    /**
+     * 将微信支付的返回值放到payinfo带上到后端
+     * 微信支付，选择支付成功，再提交到我们的后台进行支付成功
+     * {"success":true,"code":200,"data":{"return_code":"FAIL","return_msg":"out_trade_no参数长度有误"},"errorMessage":""}
+     * @param {string} orderId 生成的订单编号
+     */
+    async wxPaySummit({ OrderId, Code:OrderNo }){
+      const { userinfo } = this.props;
+      const { openid } = userinfo
+      console.log('wechat payment');
+      try {
+          const url = POST_SUBMIT_WECHAT_PAY
+          const payload = { orderId: OrderId, openid }
+
+          const result = await fetch({url, payload, pureReturn: true, method: 'POST' });
+          console.log(result)
+          if(!result || !result.data) throw new Error('微信订单服务错误')
+          if(!result.data.appId) throw new Error('微信订单签名异常')
+
+          const paymentresult = await Taro.requestPayment(result.data);
+          console.log(paymentresult)
+          if (!paymentresult || !paymentresult.errMsg) throw new Error('微信支付接口异常') 
+
+          const { errMsg } = paymentresult
+
+          if (errMsg === 'requestPayment:fail') throw new Error('微信支付失败')
+          if (errMsg === 'requestPayment:fail cancel') throw new Error('用户已取消支付')
+          if (errMsg !== 'requestPayment:ok') throw new Error(errMsg)
+
+          return paymentresult
+      } catch (error) {
+          const { message: title } = error
+          Taro.showToast({ title, icon: 'none' })
+          console.error(error)
+          return false
+      }
+  }
+
 
   render () {
     const { TotalPrice, AllCheck, SelectCart } = this.state
