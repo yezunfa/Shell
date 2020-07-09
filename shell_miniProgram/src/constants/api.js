@@ -50,3 +50,6 @@ export const GET_PRODUCT_DETAIL = `${host}/api/product/detail`  // √
 
 // 购物车
 export const POST_CREATE_CART_PRODUCT = `${host}/api/cart/add`  // √
+
+// 订单
+export const GET_ORDER_DETAIL = `${HOST}/api/order/detail`  // √
