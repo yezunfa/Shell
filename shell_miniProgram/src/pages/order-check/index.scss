@@ -1,3 +1,7 @@
-@import "@styles/theme.scss";
+@import '@styles/theme.scss';
 
-
+.order {
+    &__component {
+        margin-top: 30px;
+    }
+}

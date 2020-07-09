@@ -8,3 +8,7 @@ export const system_code = {
         600:{ name: "登录信息已过期", value: 600, code: 600 }
     }
 }
+
+export const pay_method = [
+    { title: '微信支付' }
+]
