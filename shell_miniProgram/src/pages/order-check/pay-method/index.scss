@@ -1,0 +1,38 @@
+@import '@styles/theme.scss';
+@import '@styles/public.scss';
+
+.payComponent {
+    width: 100%;
+    background: white;
+    &__title {
+        width: 100%;
+        height: 100px;
+        padding: 1px 30px;
+        border-bottom: 1px solid $line-color;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    &__pay {
+        width: 100%;
+        height: 100px;
+        padding: 1px 30px;
+        &-item {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            &-icon {
+                display: flex;
+                flex-direction: row;
+                &-text {
+                    margin-left: 20px;
+                }
+            }
+            &-right {
+
+            }
+        }
+    }
+}
