@@ -3,10 +3,10 @@ import { View } from '@tarojs/components'
 import { GET_ORDER_DETAIL } from '@constants/api'
 import fetch from '@utils/request'
 import Products from './products'
+import { ClButton } from "mp-colorui";
 import StoreAddressPick from './store-address-pick'
 import UserInfo from './user-info'
 import PayMethod from './pay-method'
-import Total from './total'
 
 import './index.scss'
 
@@ -21,6 +21,8 @@ class Index extends Component {
         this.getDetail()
     }
 
+    asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
+
     getDetail = async () => {
         await this.asyncSetState({ loaded: false })
         const { Id } = this.$router.params
@@ -33,7 +35,7 @@ class Index extends Component {
             const response = await fetch(params)
             console.log(response);
         } catch (error) {
-            Taro.showToast({ title: '网络繁忙，请重视', icon: 'none' })
+            Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
         }
     }
 
@@ -52,8 +54,8 @@ class Index extends Component {
                 <View className='order__component'>
                     <PayMethod />
                 </View>
-                <View className='order__component'>
-                    <Total />
+                <View className='order__component button'>
+                    <ClButton size='large' long shape='round' bgColor='gradualBlue'>确定支付</ClButton>
                 </View>
             </View>
         )

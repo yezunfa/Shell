@@ -70,7 +70,7 @@ class Home extends Component {
     return (
       <View>
         <HomeContainer title='精品推荐'>
-          <View className='activityContainer'>
+          <View className='imageContainer'>
             <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630012907.jpg' /></View>
             <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630013228.jpg' /></View>
           </View>
@@ -92,8 +92,8 @@ class Home extends Component {
               <View><Image className='icon' src={descIcon} /></View>
               <View className='line'>商家介绍</View>
             </View>
-            <View className='flex-row'>
-              <Image mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630015150.jpg' />
+            <View className='imageContainer'>
+              <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630015150.jpg' /></View>
             </View>
             <View className='flex-row'>
               贝壳口腔门诊部是一家全方位现代化口腔医疗机构，以预防

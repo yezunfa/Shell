@@ -15,6 +15,9 @@ class Index extends PureComponent {
                 <View>
                     <ClInput titleWidth={200} title="联系电话" placeholder="请输入手机号" />
                 </View>
+                <View>
+                    <ClInput placeholder="给商家留言……" />
+                </View>
             </View>
         )
     }

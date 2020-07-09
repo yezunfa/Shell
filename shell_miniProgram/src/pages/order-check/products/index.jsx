@@ -1,7 +1,9 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View, Textarea, Image } from '@tarojs/components'
 import { DefaultLog } from '@constants/api'
-import { ClText, ClInput } from "mp-colorui";
+import { ClText, ClInput } from "mp-colorui"
+
+import Total from  './total'
 
 import './index.scss'
 
@@ -37,8 +39,8 @@ class Index extends PureComponent {
                         </View>
                     })}
                 </View>
-                <View className='products-textarea'>
-                    <ClInput placeholder="给商家留言……" />
+                <View>
+                    <Total />
                 </View>
             </View>
         )

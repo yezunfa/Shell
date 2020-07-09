@@ -16,8 +16,8 @@ class Index extends PureComponent {
                     <ClText text='支付方式' size='normal' textColor='black' />
                 </View>
                 <View className={`${baseClass}__pay`}>
-                    {pay_method && pay_method.map(item => 
-                        <View className={`${baseClass}__pay-item`}>
+                    {pay_method && pay_method.map((item, index) => 
+                        <View key={JSON.stringify(index)} className={`${baseClass}__pay-item`}>
                             <View className={`${baseClass}__pay-item-icon`}>
                                 <Image className='icon' mode='aspectFit' src={icons.wechartPay} />
                                 <View className={`${baseClass}__pay-item-icon-text`}>
