@@ -16,6 +16,7 @@ export const DefaultLog = 'http://cdn.shuaixiaoxiao.com/image/20200704155855.jpg
 // pay 
 export const POST_SUBMIT_WECHAT_PAY = `${host}/payment/wxpay/submit` // 微信支付提交接口
 export const POST_SUBMIT_WECHAT_REFUND = `${host}/payment/wxpay/refund` // 微信支付退款接口
+export const POST_ORDER_PAYMENTCANCEL = `${host}/order/payment/cancel` // 微信支付失败接口
 
 // home
 export const API_HOME = `${host}/xhr/index/index.json`

@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-09 11:33:41
+ * @LastEditTime: 2020-07-09 13:29:02
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -10,7 +10,7 @@ import { CheckboxItem, ButtonItem } from '@components'
 import { connect } from '@tarojs/redux'
 import * as actions from '@actions/cart'
 import fetch from '@utils/request'
-import { POST_CART_ORDER, POST_SUBMIT_WECHAT_PAY } from '@constants/api'
+import { POST_CART_ORDER, POST_SUBMIT_WECHAT_PAY, POST_ORDER_PAYMENTCANCEL } from '@constants/api'
 import './index.scss'
 
 @connect(state => ({...state.cart, ...state.global}) , { ...actions }) 
@@ -43,7 +43,7 @@ export default class Footer extends Component {
         const element = cartInfo[index];
         const { Amount, Price, checked } = element
         if (element && checked) {
-          const SinCartPrice = parseInt(Amount,10) * parseInt(Price,10)
+          const SinCartPrice = parseInt(Amount,10) * parseFloat(Price,10)
           TotalPrice += SinCartPrice
           SelectCart.push(element)
         }
@@ -70,6 +70,7 @@ export default class Footer extends Component {
   }
 
   handleOrder = async () => {
+    const { onAllOrdered } = this.props
     const { SelectCart } = this.state
     if (!SelectCart || !SelectCart.length) {
       wx.showToast({
@@ -83,24 +84,25 @@ export default class Footer extends Component {
     const Rorder = await this.SubmitOrder();
     if (!Rorder) return await wx.hideLoading()
     // 跳转页面 ，携带orderId
-    console.log(Rorder)
-    const Rwechatpay = await this.wxPaySummit(Rorder);
-      if (!Rwechatpay){
-          // await this.deleteOrder(Rorder)  // 删除订单、预约， 防止占位
-          return await wx.hideLoading()
-          return 
-      }
-      console.log(Rwechatpay)
+    console.log(Rorder)    
     // todo：跳转支付确认页面
     // 暂时在此处做一下微信支付的逻辑
+    const Rwechatpay = await this.wxPaySummit(Rorder);
+      if (!Rwechatpay){
+          await this.deleteOrder(Rorder)  // 删除订单、修改购物车选品状态
+          return await wx.hideLoading()
+      }
+    console.log(Rwechatpay)
+    // 更新商品列表：已购买的不再显示,未购买成功的恢复列表
+    await onAllOrdered()
+    
 
-    
-    
+
   }
 
   SubmitOrder = async () => {
     console.log('submit order');
-    const { userinfo, cartParentId, onAllOrdered } = this.props
+    const { userinfo, cartParentId } = this.props
     const { SelectCart, TotalPrice } = this.state  
 
     const params = {}
@@ -119,10 +121,6 @@ export default class Footer extends Component {
         const { success, data, message } = result 
         if (!success) throw new Error(message)
         
-        // 更新商品列表：已购买的不再显示
-        if(success){
-          await onAllOrdered()
-        } 
         return data // { Code, OrderId  }
     } catch (error) {
         const { message: title } = error
@@ -168,6 +166,26 @@ export default class Footer extends Component {
           console.error(error)
           return false
       }
+  }
+
+  async deleteOrder({OrderId}){
+    console.log('订单取消')
+    const params = {}
+
+    params.method = "POST"
+    params.pureReturn = true
+    params.url = POST_ORDER_PAYMENTCANCEL
+    try {
+
+        const payload = { OrderId }  
+
+        const result = await fetch({...params, payload})
+        const { success, data, message } = result 
+        if (!success) throw new Error(message)
+    } catch (error) {
+        console.error(error)
+        return false
+    }
   }
 
 
