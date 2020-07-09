@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-06-30 01:43:00
+ * @LastEditTime: 2020-07-04 17:50:22
  * @Description: Do not edit
  */ 
 
@@ -60,7 +60,7 @@ export default async function fetch(options) {
     // header['CSRF-TOKEN'] = csrf ? csrf : ''
     if (method === 'POST') header['Content-Type'] = 'application/x-www-form-urlencoded'
 
-    let userinfo = await getUserInfoFromLocalStorerage(USER_STORE_KEY)
+    const { userinfo } = getStore().getState().global
 
     try {
 

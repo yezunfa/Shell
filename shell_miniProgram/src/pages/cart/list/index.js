@@ -1,67 +1,47 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2019-07-22 16:56:19
+ * @LastEditTime: 2020-07-05 11:47:24
+ * @Description: Do not edit
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { CheckboxItem, InputNumber } from '@components'
+import { connect } from '@tarojs/redux'
+import * as actions from '@actions/cart'
 import './index.scss'
 
 
+@connect(state => ({...state.cart, ...state.global}) , { ...actions }) 
 export default class List extends Component {
-  static defaultProps = {
-    list: [
-      { id : "123123",
-        checked: true,
-        pic:'http://cdn.shuaixiaoxiao.com/image/20200701002929.jpg',
-        prefix: 'prefix',
-        itemName: 'itemName',
-        specList:[
-         { specValue: 'specValue'},
-         { specValue: 'specValue'},
-         { specValue: 'specValue'},
-        ],
-        actualPrice:1212,
-        cnt:1212
-    },
-    { id : "123123",
-        checked: true,
-        pic:'http://cdn.shuaixiaoxiao.com/image/20200701002929.jpg',
-        prefix: 'prefix',
-        itemName: 'itemName',
-        specList:[
-         { specValue: 'specValue'},
-         { specValue: 'specValue'},
-         { specValue: 'specValue'},
-        ],
-        actualPrice:1212,
-        cnt:1212
-    }
+  
+  state = {
+    ProductList:[]
+  }
+
+  async componentWillReceiveProps(nextProps){
+    const { ProductList } = nextProps
+    await this.setState({ ProductList })
+  }
+
+  handleUpdate = async  (item, newAmount) => {
+    const { dispatchUpdateCheck, isUpdate } = this.props
+    const { ProductList } = this.state
+    const NewList = ProductList
+    const ItemIndex = ProductList.findIndex((ele)=>item.Id === ele.Id)
     
-    ],
-    onUpdate: () => {},
-    onUpdateCheck: () => {}
+    NewList[ItemIndex] = { ...item, Amount: newAmount }
+    await dispatchUpdateCheck({NewList, isUpdate:!isUpdate})
   }
 
-  getBaseItem = (item) => ({
-    skuId: item.skuId,
-    type: item.type,
-    extId: item.extId,
-    cnt: item.cnt,
-    checked: item.checked,
-    canCheck: true,
-    promId: this.props.promId,
-    promType: this.props.promType
-  })
+  handleUpdateCheck = async (item) => {
+    const { dispatchUpdateCheck, isUpdate } = this.props
+    const { ProductList } = this.state
+    const NewList = ProductList
+    const ItemIndex = ProductList.findIndex((ele)=>item.Id === ele.Id)
+    NewList[ItemIndex] = { ...item, checked: !item.checked }
 
-  handleUpdate = (item, cnt) => {
-    const payload = {
-      skuList: [{ ...this.getBaseItem(item), cnt }]
-    }
-    this.props.onUpdate(payload)
-  }
-
-  handleUpdateCheck = (item) => {
-    const payload = {
-      skuList: [{ ...this.getBaseItem(item), checked: !item.checked }]
-    }
-    this.props.onUpdateCheck(payload)
+    await dispatchUpdateCheck({NewList, isUpdate:!isUpdate})
   }
 
   handleRemove = () => {
@@ -69,46 +49,47 @@ export default class List extends Component {
   }
 
   render () {
-    const { list } = this.props
+    const { ProductList:list } = this.state
     return (
       <View className='cart-list'>
-        {list.map(item => (
+        {list && list.map(item => (
           <View
-            key={item.id}
+            key={item.Id}
             className='cart-list__item'
           >
             <CheckboxItem
               checked={item.checked}
-              // onClick={this.handleUpdateCheck.bind(this, item)}
+              onClick={this.handleUpdateCheck.bind(this, item)}
             />
             <Image
               className='cart-list__item-img'
-              src={item.pic}
+              src={JSON.parse(item.BannerList)[0]}
             />
             <View className='cart-list__item-info'>
               <View className='cart-list__item-title'>
-                {!!item.prefix &&
-                  <Text className='cart-list__item-title-tag'>{item.prefix}</Text>
+                {!!item.TypeName &&
+                  <Text className='cart-list__item-title-tag'>{item.TypeName}</Text>
                 }
                 <Text className='cart-list__item-title-name' numberOfLines={1}>
-                  {item.itemName}
+                  {item.Name}
                 </Text>
               </View>
 
               <View className='cart-list__item-spec'>
                 <Text className='cart-list__item-spec-txt'>
-                  {item.specList.map(sepc => sepc.specValue).join(' ')}
+                  暂不支持规格选择
+                  {/* {item.specList.map(sepc => sepc.specValue).join(' ')} */}
                 </Text>
               </View>
 
               <View className='cart-list__item-wrap'>
                 <Text className='cart-list__item-price'>
-                  ¥{item.actualPrice}
+                  ¥{item.Price}
                 </Text>
                 <View className='cart-list__item-num'>
                   <InputNumber
-                    num={item.cnt}
-                    // onChange={this.handleUpdate.bind(this, item)}
+                    num={item.Amount}
+                     onChange={this.handleUpdate.bind(this, item)}
                   />
                 </View>
               </View>

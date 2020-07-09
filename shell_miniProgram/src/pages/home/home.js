@@ -5,10 +5,13 @@ import { AtGrid } from "taro-ui"
 import icons from './assets'
 import { Loading } from '@components'
 import { connect } from '@tarojs/redux'
+import * as globalactions from '@actions/global'
+import { Login } from '@utils/wechat'
 import HomeContainer from './homeContainer/index'
 import { getWindowHeight } from '@utils/style'
 import './home.scss'
 
+@connect(({global}) => ({...global}),{...globalactions})
 class Home extends Component {
   config = {
     navigationBarTitleText: '贝壳口腔'
@@ -26,8 +29,33 @@ class Home extends Component {
     {url: '//assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'}
   ]
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.wechatLogin()  // 首页登陆获取用户id
+  }
 
+      /**
+   * 登录事件
+   * @param {*} params 
+   */
+  async wechatLogin(params = {}) {
+    const { dispatchUserInformation } = this.props
+    try {
+        //  await Taro.showLoading({title: '更新用户信息', mask: true})
+        const { scene, userdata, redirect, redirectparams } = params
+        const response = await Login({scene, userdata}) // 登录
+        if (response.code === 200 ) {
+          const { userinfo } = response.data
+          await dispatchUserInformation({ ...userinfo })
+        }
+        // 更新用户信息
+       await Taro.hideLoading()
+    } catch (error) {
+        console.error(error)
+        const icon = 'none'
+        const title = "网络异常, 请刷新重试"
+        // await Taro.hideLoading()
+        Taro.showToast({icon, title})
+    }
   }
 
   onSearch = value => {

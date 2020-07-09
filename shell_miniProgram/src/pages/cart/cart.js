@@ -1,15 +1,9 @@
-/*
- * @Author: yezunfa
- * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-03 12:07:56
- * @Description: Do not edit
- */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components' 
 import { getWindowHeight } from '@utils/style'
 import { connect } from '@tarojs/redux'
 import * as actions from '@actions/cart'
-import isEmpty from './empty'
+import Empty from './empty'
 import List from './list'
 import Footer from './footer'
 import './cart.scss'
@@ -22,34 +16,53 @@ class Index extends Component {
 
   state = {
     loaded: false,
-    isShowFooter: true,
+    isShowFooter: false,
     isEmpty: true,
   }
 
   async componentDidShow() {
-    console.log(this.props)
-    const { dispatchCart, cartInfo } = this.props
+    await this.getData()
+  }
+
+  async componentWillReceiveProps(nextProps){
+    const { cartInfo } = nextProps
+    await this.setState({ProductList: cartInfo})
+  }
+
+  async getData(){
+    const { dispatchCart  } = this.props
     await dispatchCart()
+    await this.setDefaultData()
+  }  
+
+  async setDefaultData(){
+    const { cartInfo } = this.props
+    if (cartInfo && cartInfo.length) {
+      await this.setState({
+        ProductList: this.props.cartInfo,
+        isEmpty:false,
+        isShowFooter: true
+      })
+    } else {
+      await this.setState({
+        ProductList: [],
+        isEmpty:true,
+        isShowFooter: false
+      })
+    }
   }
 
   render () {
-    const { isShowFooter } = this.state
+    const { isShowFooter, isEmpty, ProductList } = this.state
     return (
       <View className='cart'>
-        <ScrollView
-          scrollY
-          className='cart__wrap'
-          style={{ height: getWindowHeight() }}
-        >
-          {/* {isEmpty && <isEmpty/>
-          } */}
-          <List />
+        <ScrollView  scrollY  className='cart__wrap'  style={{ height: getWindowHeight() }} >
+          {isEmpty && <Empty/> }
+          <List ProductList={ProductList} />
         </ScrollView>
-
         {isShowFooter &&
           <View className='cart__footer'>
-          <Footer 
-          /> 
+            <Footer onAllOrdered={() => this.getData()}/> 
           </View>
         }
       </View>
