@@ -9,6 +9,8 @@ const baseClass = 'totalComponent'
 class Index extends PureComponent {
 
     render () {
+        const { data={} } = this.props
+        const { TotalPrice=0 } = data
         return (
             <View className={`${baseClass}`}>
                 <View className={`${baseClass}__item theme-title`}>
@@ -16,7 +18,7 @@ class Index extends PureComponent {
                         <ClText text='商品总额' size='normal' textColor='black' />
                     </View>
                     <View  className={`${baseClass}__item_right`}>
-                        <ClText text='￥222' size='normal' textColor='black' />
+                        <ClText text={`￥${TotalPrice}`} size='normal' textColor='black' />
                     </View>
                 </View>
                 <View className={`${baseClass}__item`}>
@@ -24,7 +26,7 @@ class Index extends PureComponent {
                         <ClText text='应付金额' size='normal' textColor='black' />
                     </View>
                     <View  className={`${baseClass}__item_right red`}>
-                        <ClText text='￥222' size='normal' textColor='red' />
+                        <ClText text={`￥${TotalPrice}`} size='normal' textColor='red' />
                     </View>
                 </View>
             </View>

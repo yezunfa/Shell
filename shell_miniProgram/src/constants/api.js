@@ -60,3 +60,4 @@ export const POST_CREATE_CART_PRODUCT = `${host}/api/cart/add`  // √
 
 // 订单
 export const GET_ORDER_DETAIL = `${HOST}/api/order/detail`  // √
+export const POST_ORDER_EDIT = `${HOST}/api/order/edit`

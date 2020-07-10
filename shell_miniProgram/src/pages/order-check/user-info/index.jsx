@@ -6,17 +6,27 @@ import './index.scss'
 
 class Index extends PureComponent {
 
+    defaultProps = {
+        submitData: {},
+        setFormState: () => {},
+    }
+
+    setFormState = async (e, key) => {
+        const { setFormState } = this.props
+        setFormState && setFormState({ key, value: e })
+    }
+
     render() {
         return (
             <View className='userinfo'>
                 <View className='theme-title'>
-                    <ClInput titleWidth={200} title="取货人" placeholder="请输入姓名" />
+                    <ClInput onBlur={(value) => { this.setFormState(value, 'UserName') }} titleWidth={200} title="取货人" placeholder="请输入姓名" />
                 </View>
                 <View>
-                    <ClInput titleWidth={200} title="联系电话" placeholder="请输入手机号" />
+                    <ClInput type='number' onBlur={(value) => { this.setFormState(value, 'UserMobile') }} titleWidth={200} title="联系电话" placeholder="请输入手机号" />
                 </View>
                 <View>
-                    <ClInput placeholder="给商家留言……" />
+                    <ClInput onBlur={(value) => { this.setFormState(value, 'Message') }} placeholder="给商家留言……" />
                 </View>
             </View>
         )
