@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 import { GET_ORDER_DETAIL, POST_SUBMIT_WECHAT_PAY, POST_ORDER_EDIT } from '@constants/api'
 import fetch from '@utils/request'
 import Products from './products'
+import * as actions from '@actions/cart'
 import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui'
 
@@ -12,7 +13,7 @@ import PayMethod from './pay-method'
 
 import './index.scss'
 
-@connect(state => ({ ...state.global }) )
+@connect(state => ({...state.cart, ...state.global}) , { ...actions }) 
 class Index extends Component {
 
     state = {
@@ -63,11 +64,13 @@ class Index extends Component {
             Id: OrderMain.Id,
             LinkName: submitData.UserName,
             LinkMobile: submitData.UserMobile,
-            Remark: submitData.Message,
+            Remark: submitData.Message || '',
         }]
         
+        if (!info.LinkName || !info.LinkMobile) return Taro.showToast({ title: '您还有信息未填写哦~', icon: 'none' })
+
         const res = await Taro.showModal({ title: '提示', content: '确定提交？'})
-        Taro.showLoading({ title: '支付中' })
+        Taro.showLoading({ title: '支付中', mask:true })
         if (res.confirm) {
             // 持久化用户填写的信息
             const Retres = await this.orderSubmit(info)
@@ -77,12 +80,10 @@ class Index extends Component {
             }
             // 发起支付
             const Rwechatpay = await this.wxPaySummit(Rorder)
-            // 支付失败则删除订单
-            if (!Rwechatpay){
-                Taro.hideLoading()
-                return await this.deleteOrder(Rorder)  // 删除订单、修改购物车选品状态
-            }
+            if (!Rwechatpay) Taro.showToast({ title: '支付失败', icon: 'none', duration: 2000 })
         }
+
+        Taro.hideLoading()
     }
 
     orderSubmit = async (data) => {
@@ -103,26 +104,6 @@ class Index extends Component {
         }
     }
 
-    async deleteOrder({OrderId}){
-        console.log('订单取消')
-        const params = {}
-    
-        params.method = "POST"
-        params.pureReturn = true
-        params.url = POST_ORDER_PAYMENTCANCEL
-        try {
-    
-            const payload = { OrderId }  
-    
-            const result = await fetch({...params, payload})
-            const { success, data, message } = result 
-            if (!success) throw new Error(message)
-        } catch (error) {
-            console.error(error)
-            return false
-        }
-      }
-
     /**
      * 将微信支付的返回值放到payinfo带上到后端
      * 微信支付，选择支付成功，再提交到我们的后台进行支付成功
@@ -132,16 +113,17 @@ class Index extends Component {
     async wxPaySummit({ OrderId, Code: OrderNo }){
         const { userinfo } = this.props;
         const { openid } = userinfo
-        console.log('wechat payment');
         try {
             const url = POST_SUBMIT_WECHAT_PAY
             const payload = { orderId: OrderId, openid }
   
-            const result = await fetch({url, payload, pureReturn: true, method: 'POST' });
+            const result = await fetch({url, payload, pureReturn: true, method: 'POST' })
+
             if(!result || !result.data) throw new Error('微信订单服务错误')
             if(!result.data.appId) throw new Error('微信订单签名异常')
   
-            const paymentresult = await Taro.requestPayment(result.data);
+            const paymentresult = await Taro.requestPayment(result.data)
+            console.log('paymentresult', paymentresult);
             if (!paymentresult || !paymentresult.errMsg) throw new Error('微信支付接口异常') 
   
             const { errMsg } = paymentresult

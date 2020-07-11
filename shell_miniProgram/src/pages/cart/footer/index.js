@@ -84,17 +84,22 @@ export default class Footer extends Component {
     const Rorder = await this.SubmitOrder();
     if (!Rorder) return await wx.hideLoading()
     // 跳转页面 ，携带orderId
-    console.log(Rorder)    
+    Taro.navigateTo({ url: `/pages/order-check/index?Id=${Rorder.OrderId}` })
+    
+    
+    // console.log(Rorder)    
     // todo：跳转支付确认页面
     // 暂时在此处做一下微信支付的逻辑
-    const Rwechatpay = await this.wxPaySummit(Rorder);
-      if (!Rwechatpay){
-          await this.deleteOrder(Rorder)  // 删除订单、修改购物车选品状态
-          return await wx.hideLoading()
-      }
-    console.log(Rwechatpay)
+    
+    // const Rwechatpay = await this.wxPaySummit(Rorder);
+    //   if (!Rwechatpay){
+    //       await this.deleteOrder(Rorder)  // 删除订单、修改购物车选品状态
+    //       return await wx.hideLoading()
+    //   }
+    // console.log(Rwechatpay)
+
     // 更新商品列表：已购买的不再显示,未购买成功的恢复列表
-    await onAllOrdered()
+    // await onAllOrdered()
     
 
 
