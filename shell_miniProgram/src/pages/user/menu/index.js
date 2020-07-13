@@ -7,6 +7,7 @@ import './index.scss'
 const MENU_LIST = [{
   key: 'order',
   text: '我的订单',
+  url: '/pages/order-list/index',
   img: require('./assets/order.png')
 }, {
   key: 'pin',
@@ -68,6 +69,8 @@ export default class Menu extends Component {
   handleClick = (menu) => {
     // NOTE 时间关系，此处只实现帮助中心，用于演示多端 webview
     if (menu.key === 'help') {
+      jump({ url: menu.url, title: menu.text })
+    } else if (menu.key === 'order') {
       jump({ url: menu.url, title: menu.text })
     } else {
       Taro.showToast({
