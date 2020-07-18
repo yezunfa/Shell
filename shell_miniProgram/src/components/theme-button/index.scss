@@ -1,9 +1,18 @@
+@import '@styles/public.scss';
+@import '@styles/theme.scss';
+
 .buttonComponent {
-    border: 1px solid black;
     border-radius: 50px;
     margin: 0 10px;
     padding: 0 40px;
     height: 60px;
     font-size: 30px;
-    line-height: 60px;   
+    line-height: 60px;
+
+}
+
+
+.primary {
+    border: 1px solid $tip-color;
+    color: $tip-color;
 }
