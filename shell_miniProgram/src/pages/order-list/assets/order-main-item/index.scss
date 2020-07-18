@@ -3,23 +3,27 @@
 
 
 .verbTabsComponent {
+    padding: 20px;
     background: white;
-    border: 1px solid black;
+    border-radius: 30px;
     width: 94%;
     margin: 3%;
     &_titleView {
         &-left {
-
+            &-storeName {
+                font-size: 34px;
+            }
         }
         &-right {
-
+            color: $tip-color;
+            font-size: $tip-size;
         }
     }
     &-containerView {
-
+        margin: 20px 0;
     }
     &-priceView {
-
+        margin-bottom: 20px;
     }
     &-bottomView {
         &__button {

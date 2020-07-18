@@ -1,5 +1,6 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import { handleLongIntroduce } from '@utils/public'
 import { DefaultLog } from '@constants/api'
 import { ClText, ClInput } from "mp-colorui"
 
@@ -23,8 +24,8 @@ class Index extends PureComponent {
                     <Image className='image' src={Banner || DefaultLog} mode='aspectFit' />
                 </View>
                 <View className='products-list__item_container'>
-                    <ClText text={ProductName} size='normal' textColor='black' />
-                    <ClText text={Introduce} size='xsmall' textColor='black' />
+                    <ClText text={ProductName} size='small' textColor='black' />
+                    <ClText text={handleLongIntroduce(Introduce, 27)} size='xsmall' textColor='black' />
                 </View>
                 <View className='products-list__item_number'>
                     <ClText text={`￥${Price}`} size='normal' textColor='black' />

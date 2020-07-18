@@ -9,6 +9,7 @@ import { View, ScrollView } from '@tarojs/components'
 import { DefaultLog, POST_CREATE_CART_PRODUCT } from '@constants/api'
 import { Popup, Spec } from '@components'
 import { ClSearchBar, ClVerticalTab, ClVerticalTabCell, ClText } from "mp-colorui";
+import { handleLongIntroduce } from '@utils/public'
 import fetch from '@utils/request'
 import { connect } from '@tarojs/redux'
 import icons from '@assets'
@@ -114,7 +115,7 @@ class Cate extends Component {
                       <View className='cate__item_container'>
                         <ClText text={Name} size='normal' textColor='black' />
                         <ClText text={`￥${Price}`} size='xsmall' textColor='red' />
-                        <ClText text={Introduce.length > 25 ? `${Introduce.substring(0,25)}...` : Introduce } size='xsmall' />
+                        <ClText text={handleLongIntroduce(Introduce)} size='xsmall' />
                       </View>
                       <View className='cate__item_icon'>
                         <Image onClick={this.addCart.bind(this, item)} className='icon' src={icons.cart} />
