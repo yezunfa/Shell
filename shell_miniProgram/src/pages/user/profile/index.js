@@ -1,6 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
-import { getUserInfo } from '@utils/wechat';
+import { connect } from '@tarojs/redux'
+import * as globalactions from '@actions/global'
+import { getUserInfo } from '@utils/wechat'
 import { POST_WECHAT_CRYP_DATA } from '@constants/api'
 import fetch from '@utils/request'
 import defaultAvatar from '@assets/default-avatar.png'
@@ -9,6 +11,7 @@ import qrCode from './assets/qr-code.png'
 import level01 from './assets/level-01.png'
 import './index.scss'
 
+@connect(({global}) => ({...global}),{...globalactions})
 export default class Profile extends Component {
   static defaultProps = {
     userinfo: {}
@@ -18,6 +21,7 @@ export default class Profile extends Component {
    * 用户同意手机号码解密并保存
    */
   async getPhoneNumber(e) {
+    const { dispatchUserInformation } = this.props
       const userInfo = await getUserInfo();
       const { signature, rawData, code } = userInfo;
       if(e.detail.errMsg === 'getPhoneNumber:ok') {
@@ -39,11 +43,12 @@ export default class Profile extends Component {
                   title: '获取失败，请重试'
               })
               return;
+          }else {
+            const { userinfo } = res.data
+            await dispatchUserInformation({ ...userinfo })
           }
          // await Login() // 刷新数据
-      } else {
-          // 不允许用手机号
-      }
+      } 
   }
 
   render () {
@@ -69,19 +74,19 @@ export default class Profile extends Component {
             <Text className='user-profile__info-name'>
               {userinfo.NickName}
             </Text>
-            {userinfo.login ?
+            {userinfo.Mobile ?
               <View className='user-profile__info-wrap'>
                 {/* XXX 没有全部 level 对应的图标，暂时都用 v1 */}
                 <Image className='user-profile__info-level' src={level01} />
                 <Text className='user-profile__info-uid'>
-                  'text'
+                  {userinfo.Mobile}
                 </Text>
               </View> :
               <View>
-                 <Button className ="user-profile__info-tip" 
+                 {/* <Button className ="user-profile__info-tip" 
                  openType='getUserInfo'>
                    授权信息
-                 </Button>
+                 </Button> */}
                  <Button className ="user-profile__info-tip" 
                  openType='getPhoneNumber' 
                  onGetPhoneNumber={this.getPhoneNumber}>

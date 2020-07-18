@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-09 13:29:02
+ * @LastEditTime: 2020-07-18 17:04:07
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -79,7 +79,7 @@ export default class Footer extends Component {
       })
       return;
     }
-    wx.showLoading({title:'系统处理中', mask:true})
+    wx.showLoading({title:'系统处理中', mask:true , duration:1000 })
     // 提交订单
     const Rorder = await this.SubmitOrder();
     if (!Rorder) return await wx.hideLoading()
@@ -100,9 +100,6 @@ export default class Footer extends Component {
 
     // 更新商品列表：已购买的不再显示,未购买成功的恢复列表
     // await onAllOrdered()
-    
-
-
   }
 
   SubmitOrder = async () => {
@@ -117,7 +114,11 @@ export default class Footer extends Component {
     params.url = POST_CART_ORDER
     try {
         const { Mobile,Id:UserId } = userinfo
-        if (!Mobile) throw new Error('请先注册个人信息')
+        if (!Mobile){
+          Taro.switchTab({ url: '/pages/user/user' })
+          Taro.showToast({title:'请先授权信息及手机', icon:'none', duration: 1000})
+          return 
+        }
         
         // type = 1 : 服务下单；
         const payload = { Mobile, SelectCart:JSON.stringify(SelectCart), TotalPrice, UserId, Type: 1, cartParentId }  

@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { GET_ORDER_DETAIL, POST_SUBMIT_WECHAT_PAY, POST_ORDER_EDIT } from '@constants/api'
+import { GET_ORDER_DETAIL, POST_SUBMIT_WECHAT_PAY, POST_ORDER_EDIT, POST_ORDER_PAYMENTCANCEL } from '@constants/api'
 import fetch from '@utils/request'
 import Products from './products'
 import * as actions from '@actions/cart'
@@ -80,11 +80,32 @@ class Index extends Component {
             }
             // 发起支付
             const Rwechatpay = await this.wxPaySummit(Rorder)
-            if (!Rwechatpay) Taro.showToast({ title: '支付失败', icon: 'none', duration: 2000 })
+            if (!Rwechatpay){
+                await this.deleteOrder(Rorder)  // 删除订单、修改购物车选品状态
+                Taro.showToast({ title: '支付失败', icon: 'none', duration: 2000 })
+            }
         }
 
         Taro.hideLoading()
     }
+
+    async deleteOrder({OrderId}){
+        console.log('订单取消')
+        const params = {}
+    
+        params.method = "POST"
+        params.pureReturn = true
+        params.url = POST_ORDER_PAYMENTCANCEL
+        try {
+            const payload = { OrderId }  
+            const result = await fetch({...params, payload})
+            const { success, data, message } = result 
+            if (!success) throw new Error(message)
+        } catch (error) {
+            console.error(error)
+            return false
+        }
+      }
 
     orderSubmit = async (data) => {
         const payload = { ...data }
