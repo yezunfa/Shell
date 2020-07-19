@@ -55,6 +55,7 @@ class Index extends Component {
                 <View className={`${baseClass}-bottomView flex-row-space-right`}>
                     {PayState !== undefined && PayState === 0 && <ThemeButton onClick={this.handleClick} text='去支付' />}
                     {PayState !== undefined && PayState === 1 && <ThemeButton text='详情' />}
+                    {PayState !== undefined && PayState === 4 && <ThemeButton text='去评价' />}
                 </View>
             </View>
         )

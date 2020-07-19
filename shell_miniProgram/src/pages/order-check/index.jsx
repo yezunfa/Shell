@@ -1,6 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { GET_ORDER_DETAIL, POST_SUBMIT_WECHAT_PAY, POST_ORDER_EDIT } from '@constants/api'
+import { 
+    GET_ORDER_DETAIL, 
+    POST_SUBMIT_WECHAT_PAY, 
+    POST_ORDER_EDIT, 
+    POST_ORDER_SUCCESS 
+} from '@constants/api'
 import fetch from '@utils/request'
 import Products from './products'
 import * as actions from '@actions/cart'
@@ -80,10 +85,33 @@ class Index extends Component {
             }
             // 发起支付
             const Rwechatpay = await this.wxPaySummit(Rorder)
-            if (!Rwechatpay) Taro.showToast({ title: '支付失败', icon: 'none', duration: 2000 })
+            if (!Rwechatpay) return Taro.showToast({ title: '支付失败', icon: 'none', duration: 2000 })
+            if (Rwechatpay.errMsg === 'requestPayment:ok') {  // 支付成功，更新订单状态，并跳转到订单列表
+                // await this.orderSuccess()
+                Taro.navigateTo({ url: '/pages/order-list/index' })
+            }
         }
 
         Taro.hideLoading()
+    }
+
+    orderSuccess = async () => {
+        const { OrderMain } = this.state
+        const payload = { ...OrderMain }
+        const params = {
+            method: 'POST',
+            url: POST_ORDER_SUCCESS,
+            payload,
+            pureReturn: true
+        }
+        try {
+            const response = await fetch(params)
+            if (!response.success) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
+            return response;
+        } catch (error) {
+            console.log(error)
+            Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
+        }
     }
 
     orderSubmit = async (data) => {

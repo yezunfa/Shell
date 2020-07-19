@@ -61,5 +61,6 @@ export const POST_CREATE_CART_PRODUCT = `${host}/api/cart/add`  // √
 // 订单
 export const GET_ORDER_DETAIL = `${HOST}/api/order/detail`          // √
 export const POST_ORDER_EDIT = `${HOST}/api/order/edit`             // √
+export const POST_ORDER_SUCCESS = `${HOST}/api/order/sub_success`   // √
 export const GET_ORDER_LIST = `${HOST}/api/order/list`              // √
 export const GET_ORDER_LIST_SUB = `${HOST}/api/order/sub_list`      // √
