@@ -33,8 +33,8 @@ class Index extends Component {
         Taro.showLoading({ title: '加载中...' })
         const { Id } = this.props
         const payload = {}
-        // State: 0删除,1正常,2退款,3异常,4已完成
-        // PayState: 0未支付,1已支付,2分期付款
+        // State: 0删除,1正常,2退款,3异常
+        // PayState: 0未支付,1已支付,2分期付款,3已使用
         if (Id === 'verb__all') {
             payload.State = [0,1,2,3]
             payload.PayState = [0,1,2]
@@ -52,8 +52,8 @@ class Index extends Component {
             payload.PayState = [0, 1]
         }
         else if (Id === 'verb__evaluate') {
-            payload.State = [4]
-            payload.PayState = [1]
+            payload.State = [1]
+            payload.PayState = [3]
         }
         // const url = orderMainArr.find(i => i === Id) ? GET_ORDER_LIST : GET_ORDER_LIST_SUB
         const params = {
