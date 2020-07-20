@@ -87,7 +87,7 @@ class Index extends Component {
             const Rwechatpay = await this.wxPaySummit(Rorder)
             if (!Rwechatpay) return Taro.showToast({ title: '支付失败', icon: 'none', duration: 2000 })
             if (Rwechatpay.errMsg === 'requestPayment:ok') {  // 支付成功，更新订单状态，并跳转到订单列表
-                // await this.orderSuccess()
+                await this.orderSuccess()
                 Taro.navigateTo({ url: '/pages/order-list/index' })
             }
         }
