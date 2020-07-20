@@ -28,6 +28,7 @@ class App extends Component {
       'pages/order-check/index',
       'pages/order-list/index',
       'pages/product/index',
+      'pages/invoice/index'
     ],
     window: {
       backgroundTextStyle: 'light',

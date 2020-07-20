@@ -92,9 +92,9 @@
 					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "pages/order-check/index",
-					"pathName": "pages/order-check/index",
+					"id": 4,
+					"name": "pages/invoice/index",
+					"pathName": "pages/invoice/index",
 					"query": "",
 					"scene": null
 				}
