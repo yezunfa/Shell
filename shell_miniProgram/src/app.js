@@ -29,6 +29,7 @@ class App extends Component {
       'pages/order-list/index',
       'pages/writeOffList/index',
       'pages/product/index',
+      'pages/invoice/index'
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -1,7 +1,6 @@
 import Taro, { Component, getWeRunData } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { GET_ORDER_LIST } from '@constants/api'
-import { uuid_decompression } from '@utils/methods'
+import { GET_ORDER_MAIN } from '@constants/api'
 import fetch from '@utils/request'
 import { OrderMainItem } from './assets/order-main-item'
 
@@ -21,20 +20,20 @@ export default class Index extends Component {
     // order-main计算还有多少个商品未用，已用了多少个商品
     componentDidMount = async () => {
         // ce2c9490b69211eab051890aa5912523
-        // const { scene } = this.$router.params
-        const scene = 'ce2c9490b69211eab051890aa5912523'
-        await this.getData(uuid_decompression(scene))
+        const { OrderMainId } = this.$router.params
+        // const scene = 'ce2c9490b69211eab051890aa5912523'
+        await this.getData(OrderMainId)
     }
 
     asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
 
-    getData = async (UserId) => {
+    getData = async (OrderMainId) => {
         const payload = {}
         payload.State = [1]
         payload.PayState = [1]
-        payload.userid = UserId
+        payload.OrderMainId = OrderMainId
         const params = {
-            url: GET_ORDER_LIST,
+            url: GET_ORDER_MAIN,
             payload,
             pureReturn: true,
         }
@@ -43,12 +42,14 @@ export default class Index extends Component {
             if (!response) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
             if (!response.success) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
             const { message, data } = response
+            const { orderMain, orderSubList } = data
+            orderMain.child = orderSubList
             if (message === '暂无相关的订单~') {
                 this.setState({ isEmpty: true })    
                 Taro.showToast({ title: '您还没有任何订单哦', icon: 'none' })
                 return
             }
-            await this.asyncSetState({ orderMains: data })
+            await this.asyncSetState({ orderMains: [orderMain] })
         } catch (error) {
             console.error(error)
             Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
@@ -58,7 +59,6 @@ export default class Index extends Component {
 
     render () {
         const { orderMains, isEmpty } = this.state
-        console.log('orderMains', orderMains);
         return (
             <View className={`${baseClass}`}>
                 {orderMains && orderMains.length !== 0 && orderMains.map(item => {

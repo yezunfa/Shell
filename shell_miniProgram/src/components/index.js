@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-07-18 19:52:44
+ * @LastEditTime: 2020-07-18 19:59:00
+ * @Description: Do not edit
+ */ 
 export { default as CheckboxItem } from './checkbox'
 export { default as ButtonItem } from './button'
 export { default as HomeTitle } from './home-title'
@@ -11,4 +17,5 @@ export { default as Spec } from './spec'
 export { default as Product } from './product'
 export { default as ThemeButton } from './theme-button'
 export { default as WriteOffButton } from './write-off-button'
+export { default as Mongolia } from "./mongolia"
 export { default as Empty } from './empty'
