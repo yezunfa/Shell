@@ -27,10 +27,11 @@ class Index extends Component {
 
   async componentDidMount() {
     await this.getDetail()
-    const { OrderMainId } = this.$router.params
+    const { OrderMainId, SysUser } = this.$router.params
+    if (SysUser) return 
     const url = `${API_GET_APP_QRCODE}?scene=${uuid_compression(OrderMainId)}`
     const qrcode = await fetch({ url }) // 获取签到二维码
-    await this.asyncSetState({ qrcode, })
+    await this.asyncSetState({ qrcode })
   }
 
   getDetail = async () => {

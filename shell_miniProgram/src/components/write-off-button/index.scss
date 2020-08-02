@@ -1,0 +1,41 @@
+@import "~taro-ui/dist/style/components/modal.scss";
+
+.item-spec__group {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: row;
+  
+    &-title {
+      color: $text-color;
+      font-size: 28px;
+      line-height: 28px;
+    }
+  
+    &-list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+  
+      &-item {
+        margin: 20px 30px 0 0;
+        padding: 0 26px;
+        height: 70px;
+        color: $text-color;
+        font-size: 24px;
+        line-height: 68px;
+        border: 1px solid $text-color-light;
+        border-radius: $border-radius;
+        @include eject(border-width, 1PX);
+  
+        &--active {
+          color: $primary-color;
+          border-color: $primary-color;
+        }
+  
+        &--disabled {
+          color: $text-color-lighter;
+          border-color: $text-color-lighter;
+        }
+      }
+    }
+  }

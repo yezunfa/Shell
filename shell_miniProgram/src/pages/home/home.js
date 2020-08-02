@@ -23,10 +23,10 @@ class Home extends Component {
   }
 
   Pictures = [
-    {url: '//assets.51fusion.com/8650769d-3fe9-4b64-8535-dddc89c3b495.png'},
-    {url: '//assets.51fusion.com/5bddbf4e-5b3a-4402-8ec3-1ed1983fc958.png'},
-    {url: '//assets.51fusion.com/f60048bd-82ac-41f9-9161-e75a587cbc6a.png'},
-    {url: '//assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'}
+    {url: 'https://assets.51fusion.com/8650769d-3fe9-4b64-8535-dddc89c3b495.png'},
+    {url: 'https://assets.51fusion.com/5bddbf4e-5b3a-4402-8ec3-1ed1983fc958.png'},
+    {url: 'https://assets.51fusion.com/f60048bd-82ac-41f9-9161-e75a587cbc6a.png'},
+    {url: 'https://assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'}
   ]
 
   async componentDidMount() {

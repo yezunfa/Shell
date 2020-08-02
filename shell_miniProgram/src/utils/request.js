@@ -19,8 +19,11 @@ function getStorage(key) {
 // 简易封装接口 todo: 从session 取
 function parseUrl(url, userid) {
     let url_login = ''
-    if (!userid) url_login = url
+    // 没有userid或者url本身带有userid，则不加
+    if (!userid || url.indexOf('userid') !== -1) url_login = url
+    // 有userid，并且无参数
     else if (url.indexOf('?') === -1) url_login = `${url}?userid=${userid}`
+    // 有userid，并且有参数
     else url_login = `${url}&userid=${userid}`
     return url_login
 }

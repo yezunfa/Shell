@@ -98,9 +98,12 @@ export default class Menu extends Component {
       const { scanType, path } = await Taro.scanCode()
       if (scanType !== 'WX_CODE' && !path) throw new Error('二维码错误')
       const { params } = resolveURL(path)
-      console.log(params)
-      console.log(uuid_decompression(params.scene))
+      const OrderMainId = uuid_decompression(params.scene)
+      // console.log(params)
+      // console.log(uuid_decompression(params.scene))
       // todo: 跳转页面
+      Taro.navigateTo({ url: `/pages/writeOffList/index?OrderMainId=${OrderMainId}` })
+      // jump({ url: `pages/writeOffList/index?scene=${params.scene}`, title: '审核' });
     } catch (error) {
       console.error(error)
       const title = error.message

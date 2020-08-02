@@ -25,8 +25,8 @@ export default class Index extends PureComponent {
             case 'normal': 
                 styles += ' normal'
                 break
-            case 'samll':
-                styles += ' samll'
+            case 'small':
+                styles += ' small'
                 break
             case 'large':
                 styles += ' large'

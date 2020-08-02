@@ -16,5 +16,6 @@ export { default as Tag } from './tag'
 export { default as Spec } from './spec'
 export { default as Product } from './product'
 export { default as ThemeButton } from './theme-button'
+export { default as WriteOffButton } from './write-off-button'
 export { default as Mongolia } from "./mongolia"
 export { default as Empty } from './empty'
