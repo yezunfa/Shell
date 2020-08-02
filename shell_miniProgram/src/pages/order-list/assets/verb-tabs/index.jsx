@@ -9,8 +9,8 @@ import OrderMainItem from '../order-main-item'
 
 import './index.scss'
 
-const orderMainArr = ['verb__all', 'verb__non-pay', 'verb__expired']
-const orderSubArr = ['verb__be-use', 'verb__evaluate']
+// const orderMainArr = ['verb__all', 'verb__non-pay', 'verb__expired']
+// const orderSubArr = ['verb__be-use', 'verb__evaluate']
 
 const baseClass = 'tab'
 class Index extends Component {
@@ -33,10 +33,28 @@ class Index extends Component {
         Taro.showLoading({ title: '加载中...' })
         const { Id } = this.props
         const payload = {}
-        if (Id === 'verb__non-pay') payload.PayState = 0
-        // else if (Id === 'verb__be-use') payload
-        else if (Id === 'verb__expired') payload.State = 2          // 退款
-        else if (Id === 'verb__evaluate') payload.PayState = 1      // 暂时是已支付
+        // State: 0删除,1正常,2退款,3异常,4已完成
+        // PayState: 0未支付,1已支付,2分期付款
+        if (Id === 'verb__all') {
+            payload.State = [0,1,2,3]
+            payload.PayState = [0,1,2]
+        }
+        if (Id === 'verb__non-pay') {
+            payload.State = [1]
+            payload.PayState = [0]
+        }
+        else if (Id === 'verb__be-use') {
+            payload.State = [1]
+            payload.PayState = [1]
+        }
+        else if (Id === 'verb__expired') {
+            payload.State = [0, 2, 3]
+            payload.PayState = [0, 1]
+        }
+        else if (Id === 'verb__evaluate') {
+            payload.State = [4]
+            payload.PayState = [1]
+        }
         // const url = orderMainArr.find(i => i === Id) ? GET_ORDER_LIST : GET_ORDER_LIST_SUB
         const params = {
             url: GET_ORDER_LIST,

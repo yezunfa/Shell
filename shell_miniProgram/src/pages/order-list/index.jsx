@@ -40,6 +40,8 @@ class Index extends Component {
                 </ClTabs>
                 {activeKey === 'verb__all' && <VerbTabs Id='verb__all' />}
                 {activeKey === 'verb__non-pay' && <VerbTabs Id='verb__non-pay' />}
+                {activeKey === 'verb__be-use' && <VerbTabs Id='verb__be-use' />}
+                {activeKey === 'verb__expired' && <VerbTabs Id='verb__expired' />}
             </View>
         )
     }
