@@ -62,7 +62,7 @@ export default class Index extends Component {
         return (
             <View className={`${baseClass}`}>
                 {orderMains && orderMains.length !== 0 && orderMains.map(item => {
-                    return <OrderMainItem key={JSON.stringify(item.Id)} data={item} />
+                    return <OrderMainItem refresh={() => { this.getData(item.Id) }} key={JSON.stringify(item.Id)} data={item} />
                 })}
                 {isEmpty && <Empty/> }
             </View>

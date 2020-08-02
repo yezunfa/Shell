@@ -14,6 +14,11 @@ class Index extends Component {
         Taro.navigateTo({ url: `/pages/order-check/index?Id=${data.Id}` })
     }
 
+    productRefresh = () => {
+        const { refresh } = this.props
+        refresh && refresh()
+    }
+
     render () {
         const { data={} } = this.props
         const {
@@ -44,7 +49,7 @@ class Index extends Component {
                 </View>
                 <View className={`${baseClass}-containerView`}>
                     {child && child.length !== 0 && child.map(item => {
-                        return <Product item={{ ...item }} model='writeOff' />
+                        return <Product refresh={this.productRefresh} item={{ ...item }} model='writeOff' />
                     })}
                 </View>
                 <View className={`${baseClass}-priceView flex-row-space-right`}>

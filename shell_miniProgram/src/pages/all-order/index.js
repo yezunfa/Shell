@@ -187,7 +187,6 @@ export default class Profile extends Component {
     const { userinfo } = this.props
     const { IsSysUser} = userinfo
     const { OrderMainList, dargStyle, downDragStyle, upDragStyle } = this.state
-    console.log(OrderMainList)
     if (!IsSysUser) return <Text>您当前没有权限查看！</Text>
     return (
         <View className='dragUpdataPage'>
