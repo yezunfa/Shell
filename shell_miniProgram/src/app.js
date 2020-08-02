@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-07-18 16:03:07
+ * @LastEditTime: 2020-08-02 19:40:52
+ * @Description: Do not edit
+ */ 
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
@@ -28,7 +34,8 @@ class App extends Component {
       'pages/order-check/index',
       'pages/order-list/index',
       'pages/product/index',
-      'pages/invoice/index'
+      'pages/invoice/index',
+      'pages/all-order/index'
     ],
     window: {
       backgroundTextStyle: 'light',
