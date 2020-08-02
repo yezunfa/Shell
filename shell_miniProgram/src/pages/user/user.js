@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-02 21:19:00
- * @LastEditTime: 2020-07-04 18:02:12
+ * @LastEditTime: 2020-08-02 19:03:18
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -35,7 +35,7 @@ class User extends Component {
           style={{ height: getWindowHeight() }}
         >
           <Profile userinfo={userinfo} />
-          <Menu />
+          <Menu userinfo={userinfo}/>
           <View className='user__empty' />
         </ScrollView>
         <View className='user__activity'>

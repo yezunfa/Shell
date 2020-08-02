@@ -1,6 +1,13 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-07-18 16:03:07
+ * @LastEditTime: 2020-08-02 19:23:04
+ * @Description: Do not edit
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import jump from '@utils/jump'
+import { uuid_decompression, resolveURL } from '@utils/methods'
 import classNames from 'classnames'
 import './index.scss'
 
@@ -9,6 +16,14 @@ const MENU_LIST = [{
   text: '我的订单',
   url: '/pages/order-list/index',
   img: require('./assets/order.png')
+}, {
+  key: 'contact',
+  text: '联系客服',
+  img: require('./assets/contact.png')
+}, {
+  key: 'feedback',
+  text: '用户反馈',
+  img: require('./assets/feedback.png')
 }, {
   key: 'pin',
   text: '我的拼团',
@@ -29,79 +44,117 @@ const MENU_LIST = [{
   key: 'coupon',
   text: '优惠券',
   img: require('./assets/coupon.png')
-}, {
-  key: 'red-packet',
-  text: '红包',
-  img: require('./assets/red-packet.png')
-}, {
-  key: 'allowance',
-  text: '津贴',
-  img: require('./assets/allowance.png')
-}, {
-  key: 'gif-card',
-  text: '礼品卡',
-  img: require('./assets/gif-card.png')
-}, {
-  key: 'location',
-  text: '地址管理',
-  img: require('./assets/location.png')
-}, {
-  key: 'safe',
-  text: '账号安全',
-  img: require('./assets/safe.png')
-}, {
-  key: 'contact',
-  text: '联系客服',
-  img: require('./assets/contact.png')
-}, {
-  key: 'feedback',
-  text: '用户反馈',
-  img: require('./assets/feedback.png')
-}, {
-  key: 'help',
-  text: '帮助中心',
-  url: 'http://m.you.163.com/help',
-  img: require('./assets/help.png')
 }]
 const COUNT_LINE = 3
 
+const SysUser_MENU_LIST =[{
+  key: 'order_all',
+  text: '最近订单',
+  url: '/pages/order-list/index',
+  img: require('./assets/order.png')
+}, {
+  key: 'check',
+  text: '订单核销',
+  img: require('./assets/contact.png')
+},
+
+]
 export default class Menu extends Component {
+
+  state = {
+    IsSysUser: 0
+  }
+
+  componentDidMount(){
+    const { userinfo } = this.props
+    if (userinfo) {
+      const { IsSysUser } = userinfo
+      this.setState({IsSysUser})
+    }
+  }
+
   handleClick = (menu) => {
     // NOTE 时间关系，此处只实现帮助中心，用于演示多端 webview
-    if (menu.key === 'help') {
-      jump({ url: menu.url, title: menu.text })
-    } else if (menu.key === 'order') {
-      jump({ url: menu.url, title: menu.text })
-    } else {
-      Taro.showToast({
-        title: '目前只实现了帮助中心~',
-        icon: 'none'
-      })
+    switch(menu.key){
+      case 'help': jump({ url: menu.url, title: menu.text })
+         break;
+      case 'order':jump({ url: menu.url, title: menu.text });
+         break;
+      case 'order_all':jump({ url: menu.url, title: menu.text });
+      break;
+      case 'check':this.openCamera();
+      break;
+      default:
+         Taro.showToast({
+          title: '暂不支持，尽请期待~',
+          icon: 'none'
+        })
+    }
+  }
+
+  openCamera = async event =>{
+    // event.stopPropagation()
+    try {
+      const { scanType, path } = await Taro.scanCode()
+      if (scanType !== 'WX_CODE' && !path) throw new Error('二维码错误')
+      const { params } = resolveURL(path)
+      console.log(params)
+      console.log(uuid_decompression(params.scene))
+      // todo: 跳转页面
+    } catch (error) {
+      console.error(error)
+      const title = error.message
+      Taro.showToast({title, icon: 'none'})
     }
   }
 
   render () {
+    const { IsSysUser } = this.state  
     return (
-      <View className='user-menu'>
-        {MENU_LIST.map((menu, index) => {
-          // NOTE 不用伪元素选择器，需自行计算
-          const nth = (index + 1) % COUNT_LINE === 0
-          const lastLine = parseInt(index / COUNT_LINE) === parseInt(MENU_LIST.length / COUNT_LINE)
-          return (
-            <View
-              key={menu.key}
-              className={classNames(
-                'user-menu__item',
-                nth && 'user-menu__item--nth',
-                lastLine && 'user-menu__item--last',
-              )}
-              onClick={this.handleClick.bind(this, menu)}
-            >
-              <Image className='user-menu__item-img' src={menu.img} />
-              <Text className='user-menu__item-txt'>{menu.text}</Text>
-            </View>
-          )
-        })}
+      <View>
+        <View className='user-menu'>
+          {MENU_LIST.map((menu, index) => {
+            // NOTE 不用伪元素选择器，需自行计算
+            const nth = (index + 1) % COUNT_LINE === 0
+            const lastLine = parseInt(index / COUNT_LINE) === parseInt(MENU_LIST.length / COUNT_LINE)
+            return (
+              <View
+                key={menu.key}
+                className={classNames(
+                  'user-menu__item',
+                  nth && 'user-menu__item--nth',
+                  lastLine && 'user-menu__item--last',
+                )}
+                onClick={this.handleClick.bind(this, menu)}
+              >
+                <Image className='user-menu__item-img' src={menu.img} />
+                <Text className='user-menu__item-txt'>{menu.text}</Text>
+              </View>
+            )
+          })}
+          </View>
+          <View className='user-menu'>
+              {IsSysUser && SysUser_MENU_LIST.map((menu, index) => {
+                // NOTE 不用伪元素选择器，需自行计算
+                const nth = (index + 1) % COUNT_LINE === 0
+                const lastLine = parseInt(index / COUNT_LINE) === parseInt(MENU_LIST.length / COUNT_LINE)
+                return (
+                  <View
+                    key={menu.key}
+                    className={classNames(
+                      'user-menu__item',
+                      nth && 'user-menu__item--nth',
+                      lastLine && 'user-menu__item--last',
+                    )}
+                    onClick={this.handleClick.bind(this, menu)}
+                  >
+                    <Image className='user-menu__item-img' src={menu.img} />
+                    <Text className='user-menu__item-txt'>{menu.text}</Text>
+                  </View>
+                )
+              })}
+          </View>
+          
       </View>
     )
   }

@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-08-02 17:05:03
- * @LastEditTime: 2020-08-02 17:05:35
+ * @LastEditTime: 2020-08-02 19:24:13
  * @Description: Do not edit
  */ 
 //包括函数相关的一系例操作方法
@@ -167,4 +167,20 @@ exports.GenerateUUID = (len, radix) =>{
         }
      
         return uuid.join(''); 
+}
+/**
+ * 获取路由中的参数
+ */
+exports.resolveURL = function(path) {
+    const group = path.split('?')
+    const params = {}
+    group[1].split("&").forEach(element => {
+        const key = element.split("=")[0]
+        const value = element.split("=")[1]
+        params[key] = value
+    });
+    return {
+        url: group[0],
+        params
+    }
 }

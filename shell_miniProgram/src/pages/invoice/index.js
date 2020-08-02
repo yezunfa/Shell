@@ -21,23 +21,20 @@ class Index extends Component {
 
   state = {
     qrcode: null,
-    loaded: false,
     OrderSubList: [], 
     OrderMain: {},
   }
 
   async componentDidMount() {
+    await this.getDetail()
     const { OrderMainId } = this.$router.params
     const url = `${API_GET_APP_QRCODE}?scene=${uuid_compression(OrderMainId)}`
     const qrcode = await fetch({ url }) // 获取签到二维码
-    await this.asyncSetState({ qrcode })
-
-    await this.getDetail()
-
+    await this.asyncSetState({ qrcode, })
   }
 
   getDetail = async () => {
-    await this.asyncSetState({ loaded: false })
+    wx.showLoading({title: '加载中~'})
     const { OrderMainId } = this.$router.params
     const payload = { Id:OrderMainId }
     const params = {
@@ -49,7 +46,7 @@ class Index extends Component {
         if (!response) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
         const { OrderSubList, OrderMain } = response
         await this.asyncSetState({ OrderSubList, OrderMain })
-        console.log(OrderMain)
+        await wx.hideLoading()
     } catch (error) {
         Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
     }
