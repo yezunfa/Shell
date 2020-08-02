@@ -1,6 +1,8 @@
 import Taro, { PureComponent } from '@tarojs/taro'
+import { POST_ORDER_WRITEOFF } from '@constants/api'
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
 import { ThemeButton, InputNumber } from '@components'
+import fetch from '@utils/request'
 import { View } from '@tarojs/components'
 
 export default class Index extends PureComponent {
@@ -19,6 +21,27 @@ export default class Index extends PureComponent {
     handleConfirm = async () => {
         // 审核一张或多张商品
         // 需要判断是否全部用完，若是，则order_main也需要修改使用完毕的状态
+        // POST_ORDER_WRITEOFF
+        const { data } = this.props
+        const { cnt } = this.state
+        const payload = {}
+        payload.OrderSubId = data.Id
+        payload.cnt = cnt
+        const params = {
+            url: POST_ORDER_WRITEOFF,
+            payload,
+            pureReturn: true,
+            method: 'POST'
+        }
+        try {
+            const response = await fetch(params)
+            if (!response) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
+            if (!response.success) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
+            console.log(response)
+        } catch (error) {
+            console.error(error)
+            Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
+        }
     }
 
     handleUpdate = (cnt) => {

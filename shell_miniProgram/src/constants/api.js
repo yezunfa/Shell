@@ -71,6 +71,7 @@ export const POST_ORDER_SUCCESS = `${HOST}/api/order/sub_success`   // √
 export const GET_ORDER_LIST = `${HOST}/api/order/list`              // √
 export const GET_ORDER_LIST_SUB = `${HOST}/api/order/sub_list`      // √
 export const GET_ORDER_MAIN = `${HOST}/api/order/order_main`        // √
+export const POST_ORDER_WRITEOFF = `${HOST}/api/order/writeOff`    
 
 // 获取主订单二维码 qrcode
 export const API_GET_APP_QRCODE = `${host}/api/wx/qr_code`
