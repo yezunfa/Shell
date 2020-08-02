@@ -1,0 +1,9 @@
+@import '@styles/theme.scss';
+@import '@styles/public.scss';
+
+.userinfo {
+    .theme-title {
+        padding: 1px;
+        border-bottom: 1px solid $line-color;
+    }
+}

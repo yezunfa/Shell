@@ -20,7 +20,7 @@ class Index extends PureComponent {
         return (
             <View className='userinfo'>
                 <View className='theme-title'>
-                    <ClInput onBlur={(value) => { this.setFormState(value, 'UserName') }} titleWidth={200} title="取货人" placeholder="请输入姓名" />
+                    <ClInput onBlur={(value) => { this.setFormState(value, 'UserName') }} titleWidth={200} title="使用人" placeholder="请输入姓名" />
                 </View>
                 <View>
                     <ClInput type='number' onBlur={(value) => { this.setFormState(value, 'UserMobile') }} titleWidth={200} title="联系电话" placeholder="请输入手机号" />

@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-04 17:50:22
+ * @LastEditTime: 2020-08-02 17:30:26
  * @Description: Do not edit
  */ 
 
@@ -67,7 +67,7 @@ export default async function fetch(options) {
         const params = { method, header, dataType }
         params.data = payload
         params.body = payload
-        params.url = parseUrl(`${url}?`, userinfo.Id)
+        params.url = parseUrl(`${url}`, userinfo.Id)
         const response = await Taro.request(params)
 
         const { code, data } = response.data
