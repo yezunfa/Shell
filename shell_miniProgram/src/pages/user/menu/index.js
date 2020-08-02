@@ -60,8 +60,13 @@ const MENU_LIST = [{
 }, {
   key: 'help',
   text: '帮助中心',
-  url: 'http://m.you.163.com/help',
+  // url: 'http://m.you.163.com/help',
   img: require('./assets/help.png')
+}, {
+  key: 'writeOff',
+  text: '核销',
+  url: '/pages/writeOffList/index',
+  img: require('./assets/hexiao.png')
 }]
 const COUNT_LINE = 3
 
@@ -71,6 +76,8 @@ export default class Menu extends Component {
     if (menu.key === 'help') {
       jump({ url: menu.url, title: menu.text })
     } else if (menu.key === 'order') {
+      jump({ url: menu.url, title: menu.text })
+    } else if (menu.key === 'writeOff') {
       jump({ url: menu.url, title: menu.text })
     } else {
       Taro.showToast({

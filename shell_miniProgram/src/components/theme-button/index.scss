@@ -2,6 +2,7 @@
 @import '@styles/theme.scss';
 
 .buttonComponent {
+    text-align: center;
     border-radius: 50px;
     margin: 0 10px;
     padding: 0 40px;
@@ -15,4 +16,12 @@
 .primary {
     border: 1px solid $tip-color;
     color: $tip-color;
+}
+
+.small {
+    margin: 0 5px;
+    padding: 0 1px;
+    height: 40px;
+    font-size: 23px;
+    line-height: 40px;
 }

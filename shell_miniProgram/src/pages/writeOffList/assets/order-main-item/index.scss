@@ -1,0 +1,39 @@
+@import '@styles/public.scss';
+@import '@styles/theme.scss';
+
+
+.verbTabsComponent {
+    padding: 20px;
+    background: white;
+    border-radius: 30px;
+    width: 94%;
+    margin: 3%;
+    &_titleView {
+        &-left {
+            &-storeName {
+                font-size: 34px;
+            }
+        }
+        &-right {
+            color: $tip-color;
+            font-size: $tip-size;
+        }
+    }
+    &-containerView {
+        margin: 20px 0;
+    }
+    &-priceView {
+        margin-bottom: 20px;
+    }
+    &-bottomView {
+        &__button {
+            border: 1px solid black;
+            border-radius: 50px;
+            margin: 0 10px;
+            padding: 0 40px;
+            height: 60px;
+            font-size: 30px;
+            line-height: 60px;
+        }
+    }
+}
