@@ -1,11 +1,11 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-08-02 17:05:03
- * @LastEditTime: 2020-08-02 19:24:13
+ * @LastEditTime: 2020-08-02 21:04:47
  * @Description: Do not edit
  */ 
 //包括函数相关的一系例操作方法
-
+import { stringify } from 'qs';
 /**
  * 函数节流
  * 一般用于短时间频繁触发的事件 如 onScroll
@@ -184,3 +184,33 @@ exports.resolveURL = function(path) {
         params
     }
 }
+
+// /**
+//  * 处理表单接口(新)
+//  * @param {*} api 接口路由
+//  * @param {*} params 接口参数
+//  */
+// export const MangoTableApi = (api, params = {}) => {
+//     const { current, pageSize, total, order, ...querys } = params;
+//     try {
+//       if (order && !(order instanceof Array)) throw new Error(`"order" have to be Array`);
+//       if (current && !(current >= 1)) throw new Error(`"current" have to be greater than zero`);
+//       if (pageSize && !(pageSize >= 1)) throw new Error(`"pageSize" have to be Array`);
+//     } catch (error) {
+//       console.error(error);
+//     }
+  
+//     const pagination = {};
+//     pagination.disabled = true;
+//     pagination.current = current;
+//     pagination.pageSize = pageSize;
+//     if (current && pageSize) pagination.disabled = false;
+  
+//     const conditions = {};
+//     conditions.pagination = JSON.stringify(pagination);
+//     if (querys) conditions.query = JSON.stringify(querys);
+//     if (order && order.length)
+//       conditions.sort = JSON.stringify(order.map(({ key, by }) => [key, by]));
+  
+//     return `${api}?${stringify(conditions)}`;
+//   };

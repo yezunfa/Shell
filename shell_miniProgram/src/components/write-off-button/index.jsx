@@ -22,7 +22,7 @@ export default class Index extends PureComponent {
         // 审核一张或多张商品
         // 需要判断是否全部用完，若是，则order_main也需要修改使用完毕的状态
         // POST_ORDER_WRITEOFF
-        const { data } = this.props
+        const { data, refresh } = this.props
         const { cnt } = this.state
         const payload = {}
         payload.OrderSubId = data.Id
@@ -37,11 +37,13 @@ export default class Index extends PureComponent {
             const response = await fetch(params)
             if (!response) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
             if (!response.success) return Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
-            console.log(response)
         } catch (error) {
             console.error(error)
             Taro.showToast({ title: '网络繁忙，请重试', icon: 'none' })
         }
+        this.handleModalShow(false)
+        Taro.showToast({ title: '核销成功', icon: 'success' })
+        refresh && refresh()
     }
 
     handleUpdate = (cnt) => {
@@ -57,10 +59,9 @@ export default class Index extends PureComponent {
                     <AtModal 
                         onClose={() => { this.handleModalShow(false) }}
                         isOpened={showModal}>
-                        <AtModalHeader>核销提示</AtModalHeader>
+                        <AtModalHeader>核销数量</AtModalHeader>
                         <AtModalContent>
                             <View className='item-spec__group'>
-                                <Text className='item-spec__group-title'>数量</Text>
                                 <InputNumber
                                     num={cnt}
                                     onChange={this.handleUpdate}

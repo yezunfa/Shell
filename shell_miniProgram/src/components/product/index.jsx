@@ -16,9 +16,13 @@ class Index extends PureComponent {
         showModal: false,
     }
    
+    productRefresh() {
+        const { refresh } = this.props
+        refresh && refresh()
+    }
 
     render () {
-        const { item={}, model } = this.props
+        const { item={}, model='normal' } = this.props
         const {
             BannerList='[]',
             ProductName='-',
@@ -42,10 +46,9 @@ class Index extends PureComponent {
                         <ClText text={`x${Count}`} size='normal' textColor='grey' />
                     </View>
                 </View>
-                <View className='products-list__botton'>
-                    {/* <ThemeButton onClick={async () => { await this.asyncSetState({ showModal }) }} text='核销' size='small' /> */}
-                    <WriteOffButton data={item} />
-                </View>
+                {model === 'writeOff' && <View className='products-list__botton'>
+                    <WriteOffButton refresh={this.productRefresh} data={item} />
+                </View>}
             </View>
         )
     }

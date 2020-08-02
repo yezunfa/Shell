@@ -13,10 +13,10 @@ class Index extends Component {
         const { data } = this.props
         Taro.navigateTo({ url: `/pages/order-check/index?Id=${data.Id}` })
     }
-
-    productRefresh = () => {
-        const { refresh } = this.props
-        refresh && refresh()
+    
+    handleDetail = () => {
+        const { data } = this.props
+        Taro.navigateTo({ url: `/pages/invoice/index?OrderMainId=${data.Id}` })
     }
 
     render () {
@@ -42,14 +42,14 @@ class Index extends Component {
                         <View className={`${baseClass}_titleView-left-storeName`}>贝壳口腔</View>
                         <Image className='small-icon' src={icons.more} />
                     </View>
-                    {/* <View className={`${baseClass}_titleView-right`}>
+                    <View className={`${baseClass}_titleView-right`}>
                         {PayState !== undefined && OrderPayStateEnum.find(i => i.key === PayState).value}
                         {State !== undefined && OrderStateEnum.find(i => i.key === State).value}
-                    </View> */}
+                    </View>
                 </View>
                 <View className={`${baseClass}-containerView`}>
                     {child && child.length !== 0 && child.map(item => {
-                        return <Product refresh={this.productRefresh} item={{ ...item }} model='writeOff' />
+                        return <Product item={{ ...item }} />
                     })}
                 </View>
                 <View className={`${baseClass}-priceView flex-row-space-right`}>
@@ -58,7 +58,9 @@ class Index extends Component {
                     {/* <View>实付款114.0</View> */}
                 </View>
                 <View className={`${baseClass}-bottomView flex-row-space-right`}>
-                    <ThemeButton text='全部核销' />
+                    {PayState !== undefined && PayState === 0 && <ThemeButton onClick={this.handleClick} text='去支付' />}
+                    {PayState !== undefined && PayState === 1 && <ThemeButton onClick={this.handleDetail} text='详情' />}
+                    {PayState !== undefined && PayState === 4 && <ThemeButton text='去评价' />}
                 </View>
             </View>
         )

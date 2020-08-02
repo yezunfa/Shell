@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-18 16:03:07
- * @LastEditTime: 2020-08-02 19:23:04
+ * @LastEditTime: 2020-08-02 19:42:03
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -50,7 +50,7 @@ const COUNT_LINE = 3
 const SysUser_MENU_LIST =[{
   key: 'order_all',
   text: '最近订单',
-  url: '/pages/order-list/index',
+  url: '/pages/all-order/index',
   img: require('./assets/order.png')
 }, {
   key: 'check',
