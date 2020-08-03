@@ -51,10 +51,11 @@ export default class Index extends PureComponent {
     }
 
     render () {
+        const { disable } = this.props
         const { showModal, cnt } = this.state
         return (
             <View>
-                <ThemeButton onClick={() => { this.handleModalShow(true) }} text='核销' size='small' />
+                <ThemeButton disable disableTopMsg='没有剩余的商品了哦~' onClick={() => { this.handleModalShow(true) }} text='核销' size='small' />
                 {showModal && 
                     <AtModal 
                         onClose={() => { this.handleModalShow(false) }}

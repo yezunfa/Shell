@@ -47,7 +47,7 @@ class Index extends PureComponent {
                     </View>
                 </View>
                 {model === 'writeOff' && <View className='products-list__botton'>
-                    <WriteOffButton refresh={this.productRefresh} data={item} />
+                    <WriteOffButton disable={Count <= 0 ? true : false} refresh={this.productRefresh} data={item} />
                 </View>}
             </View>
         )

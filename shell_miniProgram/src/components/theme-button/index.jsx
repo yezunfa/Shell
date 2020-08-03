@@ -6,7 +6,14 @@ import './index.scss'
 const baseClass = 'buttonComponent'
 export default class Index extends PureComponent {
 
-    componseClassName({ type='primary', size='normal' }) {
+    defaultProps = {
+        onClick: () => {},
+        text: null,
+        disable: false,
+        disableTopMsg: null,
+    }
+
+    componseClassName({ type='primary', size='normal', disable=false }) {
         let styles = ''
         switch(type) {
             case 'primary': 
@@ -34,13 +41,21 @@ export default class Index extends PureComponent {
             default:
                 break
         }
+        switch(disable) {
+            case true:
+                styles += ' disable'
+                break
+            default:
+                break
+        }
 
         return styles
     }
 
     handleClick = () => {
-        const { onClick } = this.props
-        onClick && onClick()
+        const { onClick, disable, disableTopMsg } = this.props
+        onClick && !disable && onClick()
+        if (disable && disableTopMsg) Taro.showToast({ title: disableTopMsg, icon: 'none', mask: true })
     }
 
     render () {
