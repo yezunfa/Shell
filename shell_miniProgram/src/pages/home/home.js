@@ -29,7 +29,7 @@ class Home extends Component {
     {url: 'https://assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'}
   ]
 
-  async componentDidMount() {
+  async componentDidShow() {
     await this.wechatLogin()  // 首页登陆获取用户id
   }
 
@@ -206,9 +206,9 @@ class Home extends Component {
           />
           {this.renderIconList()}
           {this.renderStoreDescription()}
-          <View className='home__bottonTip flex-row-space-center'>
+          {/* <View className='home__bottonTip flex-row-space-center'>
             ——马丁鱼科技有限公司提供技术支持——
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     )

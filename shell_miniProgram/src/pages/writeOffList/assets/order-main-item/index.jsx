@@ -19,6 +19,11 @@ class Index extends Component {
         refresh && refresh()
     }
 
+    handleAllWriteOff = async (surplusCount) => {
+        const res = await Taro.showModal({ title: '核销确认', content: `确定核销剩余的${surplusCount}个商品？` })
+        if (res.confirm) console.log('同意')
+    }
+
     render () {
         const { data={} } = this.props
         const {
@@ -34,6 +39,11 @@ class Index extends Component {
             Type,
             child
         } = data
+        const surplusCount = child && child.length && child.reduce((surplus, item) => {
+            // 未使用的order_sub
+            if (item.State === 0) return surplus + item.Count
+            return surplus
+        }, 0)
         return (
             <View className={`${baseClass}`}>
                 <View className={`${baseClass}_titleView flex-row-space-between`}>
@@ -58,7 +68,7 @@ class Index extends Component {
                     {/* <View>实付款114.0</View> */}
                 </View>
                 <View className={`${baseClass}-bottomView flex-row-space-right`}>
-                    <ThemeButton text='全部核销' />
+                    <ThemeButton disable={surplusCount <= 0 ? true : false} disableTopMsg='没有剩余的商品了哦~' onClick={() => { this.handleAllWriteOff(surplusCount) }} text='全部核销' />
                 </View>
             </View>
         )

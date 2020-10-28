@@ -3,3 +3,29 @@
 @import '@styles/public.scss';
 @import "~mp-colorui/dist/style/index.scss"; // 引入组件样式
 @import "~taro-ui/dist/style/components/modal.scss";
+
+
+$primary-color: #FF4900; // 主题色:rgba(255,73,0,1);
+
+
+$primary-new-color: rgb(219, 24, 22);                   // FUSION主题色:rgba(255,73,0,1);
+$primary-new-color-white: rgb(255, 255, 255);           // FUSION主题色:rgb(255, 255, 255)
+$primary-new-color-light-grey: rgb(217, 220, 221);      // FUSION主题色:rgb(217, 220, 221)
+$primary-new-color-weight-grey: rgb(159, 160, 160);     // FUSION主题色:rgb(159, 160, 160)
+$primary-new-color-black: rgb(0, 0, 0);                 // FUSION主题色:rgb(0, 0, 0)
+
+
+$disabled-color: #BFBFBF; // 禁用色:rgba(255,73,0,1);
+$image-bg: #f4f4f4; // 图片背景色
+// $background-color: #efefef; // 页面背景色:rgba(255,73,0,1);
+$background-color: rgb(217, 220, 221);
+$text-color: #404040; // 字体色[正常]rgba(64, 64, 64, 1);
+$text-color-light: #4A4A4A; // 字体色[亮]rgba(74,74,74,1)
+$text-color-lighter: #9B9B9B; // 字体色[高亮]rgba(155, 155, 155, 1);
+$border-color: #D9D9D9; // 边框色
+$shadow-color: #CECECE;// 阴影色rgba(206, 206, 206, 1)
+$border-radius: 4px; // 边框圆角
+$background-feedback-color: rgba(230,230,230,1);  //反馈页面背景色
+$feedback-question-font-size: 30px;    // 调查问卷问题字体大小
+
+$primary-shadow: 0px 6px 18px 0px rgba(255,0,0,0.5); // 主题阴影
