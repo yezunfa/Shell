@@ -8,4 +8,5 @@ export const OrderStateEnum = [
     { key: 1, value: '正常' },
     { key: 2, value: '退款' },
     { key: 3, value: '异常' },
+    { key: 4, value: '已核销' },
 ]
