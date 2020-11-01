@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-18 16:03:07
- * @LastEditTime: 2020-10-28 16:13:46
+ * @LastEditTime: 2020-11-01 16:58:32
  * @Description: Do not edit
  */ 
 export const OrderPayStateEnum = [
