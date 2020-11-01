@@ -33,6 +33,7 @@ class App extends Component {
       // 'pages/item/item',
       'pages/order-check/index',
       'pages/order-list/index',
+      'pages/writeOffList/index',
       'pages/product/index',
       'pages/invoice/index',
       'pages/all-order/index'

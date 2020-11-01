@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-20 10:28:57
- * @LastEditTime: 2020-08-02 20:38:24
+ * @LastEditTime: 2020-10-28 15:35:11
  * @Description: Do not edit
  */ 
 /**
@@ -57,6 +57,7 @@ export const API_ITEM_RECOMMEND = `${host}/xhr/rcmd/itemDetail.json`
 // user 在这里设置用户接口
 export const USER_LOGIN = `${host}/api/shell_login/wechat`  // √
 export const POST_WECHAT_CRYP_DATA = `${host}/api/shell_wechat/cryptdata`
+export const POST_USER_REGISTER = `${host}/api/shell_wechat/register`
 
 // 商品接口
 export const GET_PRODUCT_DETAIL = `${host}/api/product/detail`  // √
@@ -70,6 +71,8 @@ export const POST_ORDER_EDIT = `${HOST}/api/order/edit`             // √
 export const POST_ORDER_SUCCESS = `${HOST}/api/order/sub_success`   // √
 export const GET_ORDER_LIST = `${HOST}/api/order/list`              // √
 export const GET_ORDER_LIST_SUB = `${HOST}/api/order/sub_list`      // √
+export const GET_ORDER_MAIN = `${HOST}/api/order/order_main`        // √
+export const POST_ORDER_WRITEOFF = `${HOST}/api/order/writeOff`    
 export const GET_ALL_ORDER_MAIN = `${HOST}/api/order/get_all` 
 
 // 获取主订单二维码 qrcode

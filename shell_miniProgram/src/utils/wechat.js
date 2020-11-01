@@ -1,12 +1,13 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-03-28 19:05:39
- * @LastEditTime: 2020-06-30 03:07:20
+ * @LastEditTime: 2020-10-28 15:28:01
  * @Description: Do not edit
  */ 
 import Taro from '@tarojs/taro'
 import { USER_LOGIN } from '@constants/api'
 import fetch from '@utils/request'
+import { retryLogin } from '@utils/methods'
 // import store from '../store'
 
 /**
@@ -34,6 +35,7 @@ exports.Login = async () => {
     }
 }
 
+
 /**
  * 获取用户信息
  */
@@ -41,15 +43,29 @@ exports.getUserInfo = async () => {
     try {
         const $scope = await Taro.getSetting()
         const { authSetting } = $scope
-        // 当前获取用户信息方法被官方弃用，只能使用button
-        if (!authSetting["scope.userInfo"]) await Taro.authorize({scope: 'scope.userInfo'})
-        
-        const { code } = await Taro.login({ timeout: 2000 })
-        const userInfo = await Taro.getUserInfo()
+        let result = {}
+        if (!authSetting["scope.userInfo"]) await Taro.authorize({ scope: 'scope.userInfo' })
+        let loginresult = await Taro.login({ timeout: 2000 })
+        console.log(loginresult)
+        await Taro.checkSession({
+            success: function(res) {
+                console.log("处于登录态");
+                const { code } = loginresult
+                const userInfo =  Taro.getUserInfo()
+                result = { ...userInfo, code }
 
-        return { ...userInfo, code }
+            },
+            fail: function(res) {
+                console.log("需要重新登录");
+                result = retryLogin()
+            }
+        })
+        console.log(result)
+        return result
     } catch (error) {
-        console.error("asdghkasd")
+        console.error("getuserInfo error")
         throw error
     }
 }
+
+   

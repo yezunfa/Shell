@@ -9,9 +9,19 @@ import './index.scss'
 const baseClass = 'verbTabsComponent'
 class Index extends Component {
 
-    handleDetail = () => {
+    handleClick = () => {
         const { data } = this.props
-        Taro.navigateTo({ url: `/pages/invoice/index?OrderMainId=${data.Id}&SysUser=1` })
+        Taro.navigateTo({ url: `/pages/order-check/index?Id=${data.Id}` })
+    }
+
+    productRefresh = () => {
+        const { refresh } = this.props
+        refresh && refresh()
+    }
+
+    handleAllWriteOff = async (surplusCount) => {
+        const res = await Taro.showModal({ title: '核销确认', content: `确定核销剩余的${surplusCount}个商品？` })
+        if (res.confirm) console.log('同意')
     }
 
     render () {
@@ -29,34 +39,36 @@ class Index extends Component {
             Type,
             child
         } = data
+        const surplusCount = child && child.length && child.reduce((surplus, item) => {
+            // 未使用的order_sub
+            if (item.State === 0) return surplus + item.Count
+            return surplus
+        }, 0)
         return (
             <View className={`${baseClass}`}>
                 <View className={`${baseClass}_titleView flex-row-space-between`}>
                     <View className={`${baseClass}_titleView-left flex-row`}>
                         <Image className='icon' src={icons.store} />
-                        <View className={`${baseClass}_titleView-left-storeName`}>用户:{LinkName}</View>
+                        <View className={`${baseClass}_titleView-left-storeName`}>贝壳口腔</View>
                         <Image className='small-icon' src={icons.more} />
-                        <View className={`${baseClass}_titleView-left-storeName`}>{LinkMobile}</View>
                     </View>
-                    <View className={`${baseClass}_titleView-right`}>
-                        {/* {PayState !== undefined && OrderPayStateEnum.find(i => i.key === PayState).value} */}
+                    {/* <View className={`${baseClass}_titleView-right`}>
+                        {PayState !== undefined && OrderPayStateEnum.find(i => i.key === PayState).value}
                         {State !== undefined && OrderStateEnum.find(i => i.key === State).value}
-                    </View>
+                    </View> */}
                 </View>
                 <View className={`${baseClass}-containerView`}>
                     {child && child.length !== 0 && child.map(item => {
-                        return <Product item={{ ...item }} />
+                        return <Product refresh={this.productRefresh} item={{ ...item }} model='writeOff' />
                     })}
                 </View>
                 <View className={`${baseClass}-priceView flex-row-space-right`}>
-                    <View>已支付:￥{TotalPrice}</View>
+                    <View>总价￥{TotalPrice}</View>
                     {/* <View>优惠￥5.0</View> */}
                     {/* <View>实付款114.0</View> */}
                 </View>
                 <View className={`${baseClass}-bottomView flex-row-space-right`}>
-                    {/* {PayState !== undefined && PayState === 0 && <ThemeButton onClick={this.handleClick} text='去支付' />} */}
-                    {PayState !== undefined && PayState === 1 && <ThemeButton onClick={this.handleDetail} text='详情' />}
-                    {/* {PayState !== undefined && PayState === 4 && <ThemeButton text='去评价' />} */}
+                    <ThemeButton disable={surplusCount <= 0 ? true : false} disableTopMsg='没有剩余的商品了哦~' onClick={() => { this.handleAllWriteOff(surplusCount) }} text='全部核销' />
                 </View>
             </View>
         )

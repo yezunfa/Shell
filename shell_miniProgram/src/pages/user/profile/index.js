@@ -1,10 +1,14 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2019-07-22 16:56:19
+ * @LastEditTime: 2020-10-28 15:57:23
+ * @Description: Do not edit
+ */
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Button } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import * as globalactions from '@actions/global'
-import { getUserInfo } from '@utils/wechat'
-import { POST_WECHAT_CRYP_DATA } from '@constants/api'
-import fetch from '@utils/request'
+import { Register } from '@components'
 import defaultAvatar from '@assets/default-avatar.png'
 import bg from './assets/bg.png'
 import qrCode from './assets/qr-code.png'
@@ -15,40 +19,6 @@ import './index.scss'
 export default class Profile extends Component {
   static defaultProps = {
     userinfo: {}
-  }
-
-    /**
-   * 用户同意手机号码解密并保存
-   */
-  async getPhoneNumber(e) {
-    const { dispatchUserInformation } = this.props
-      const userInfo = await getUserInfo();
-      const { signature, rawData, code } = userInfo;
-      if(e.detail.errMsg === 'getPhoneNumber:ok') {
-          const res = await fetch({
-              url: POST_WECHAT_CRYP_DATA, // 解密手机号
-              method: "POST",
-              pureReturn: true,
-              payload: {
-                  encryptedData: e.detail.encryptedData,
-                  iv: e.detail.iv,
-                  rawData,
-                  signature,
-                  js_code: code,
-                  saveMobile: true // 同时将手机号保存到数据库
-              }
-          });
-          if(!res || !res.success) {
-              Taro.showToast({
-                  title: '获取失败，请重试'
-              })
-              return;
-          }else {
-            const { userinfo } = res.data
-            await dispatchUserInformation({ ...userinfo })
-          }
-         // await Login() // 刷新数据
-      } 
   }
 
   render () {
@@ -72,7 +42,7 @@ export default class Profile extends Component {
 
           <View className='user-profile__info' >
             <Text className='user-profile__info-name'>
-              {userinfo.NickName}
+              {userinfo.Name}
             </Text>
             {userinfo.Mobile ?
               <View className='user-profile__info-wrap'>
@@ -83,15 +53,7 @@ export default class Profile extends Component {
                 </Text>
               </View> :
               <View>
-                 {/* <Button className ="user-profile__info-tip" 
-                 openType='getUserInfo'>
-                   授权信息
-                 </Button> */}
-                 <Button className ="user-profile__info-tip" 
-                 openType='getPhoneNumber' 
-                 onGetPhoneNumber={this.getPhoneNumber}>
-                   授权手机号
-                 </Button>
+                 <Register/>
               </View>
               
               
@@ -106,6 +68,7 @@ export default class Profile extends Component {
               />
             </View>
           </View>
+          
         </View>
       </View>
     )

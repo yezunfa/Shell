@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-08-02 17:05:03
- * @LastEditTime: 2020-08-02 21:04:47
+ * @LastEditTime: 2020-10-28 12:32:06
  * @Description: Do not edit
  */ 
 //包括函数相关的一系例操作方法
@@ -214,3 +214,12 @@ exports.resolveURL = function(path) {
   
 //     return `${api}?${stringify(conditions)}`;
 //   };
+
+
+
+exports.retryLogin = async  ()=>{
+    const loginresult = await Taro.login({ timeout: 2000 })
+    const { code } = loginresult
+    const userInfo = await  Taro.getUserInfo()
+    result = { ...userInfo, code }
+}
