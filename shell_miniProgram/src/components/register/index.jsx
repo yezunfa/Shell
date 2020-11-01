@@ -138,10 +138,8 @@ export default class PageIndex extends Component {
             NickName: nickName,
             WechatName: nickName,
             openid: userinfo.openid, 
-            unionid: userinfo.unionid
+            // unionid: userinfo.unionid
         }
-
-        console.log(payload)
         const url = POST_USER_REGISTER // 保存用户信息
         
         try {
@@ -175,6 +173,7 @@ export default class PageIndex extends Component {
     
     render() {
         const { form } = this
+        console.log(this.props)
         const { type = 'default' } = this.props
         const { visible, formdata } = this.state;
         const buttonclass = type === 'default' ? 'register-button' : 'register-jcombobox'

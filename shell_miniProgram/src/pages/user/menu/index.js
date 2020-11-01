@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-18 16:03:07
- * @LastEditTime: 2020-08-02 19:42:03
+ * @LastEditTime: 2020-10-28 21:39:28
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -44,7 +44,7 @@ const MENU_LIST = [{
   key: 'coupon',
   text: '优惠券',
   img: require('./assets/coupon.png')
-}]
+},{}]
 const COUNT_LINE = 3
 
 const SysUser_MENU_LIST =[{
@@ -65,10 +65,11 @@ export default class Menu extends Component {
     IsSysUser: 0
   }
 
-  componentDidMount(){
+  componentDidShow(){
     const { userinfo } = this.props
     if (userinfo) {
       const { IsSysUser } = userinfo
+      console.log(userinfo)
       this.setState({IsSysUser})
     }
   }
@@ -83,6 +84,8 @@ export default class Menu extends Component {
       case 'order_all':jump({ url: menu.url, title: menu.text });
       break;
       case 'check':this.openCamera();
+      break;
+      case 'contact':console.log('打开客服通道～')
       break;
       default:
          Taro.showToast({
@@ -130,7 +133,11 @@ export default class Menu extends Component {
                 )}
                 onClick={this.handleClick.bind(this, menu)}
               >
-                <Image className='user-menu__item-img' src={menu.img} />
+                {menu.key === 'contact' ? 
+                <Button class="user-menu__item-contactButton" open-type="contact" session-from="weapp">
+                  <Image className='user-menu__item-img' src={menu.img} />
+                </Button>
+                 : <Image className='user-menu__item-img' src={menu.img} />}
                 <Text className='user-menu__item-txt'>{menu.text}</Text>
               </View>
             )

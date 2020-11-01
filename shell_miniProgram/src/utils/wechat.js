@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-03-28 19:05:39
- * @LastEditTime: 2020-10-28 15:28:01
+ * @LastEditTime: 2020-10-28 17:28:28
  * @Description: Do not edit
  */ 
 import Taro from '@tarojs/taro'
@@ -31,6 +31,7 @@ exports.Login = async () => {
         const response = await fetch(params)
         return response
     } catch (error) {
+        console.log(error)
         throw error
     }
 }

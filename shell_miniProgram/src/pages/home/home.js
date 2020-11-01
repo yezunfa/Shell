@@ -40,6 +40,7 @@ class Home extends Component {
   async wechatLogin(params = {}) {
     const { dispatchUserInformation } = this.props
     try {
+        await Taro.showLoading({title:'加载中～', mask:true })
         //  await Taro.showLoading({title: '更新用户信息', mask: true})
         const { scene, userdata, redirect, redirectparams } = params
         const response = await Login({scene, userdata}) // 登录
@@ -54,13 +55,13 @@ class Home extends Component {
         const icon = 'none'
         const title = "网络异常, 请刷新重试"
         // await Taro.hideLoading()
-        Taro.showToast({icon, title})
+        Taro.showToast({icon, error})
     }
   }
 
   onSearch = value => {
     Taro.showToast({
-      title: `您搜索了${value}`,
+      title: `您搜索了${value},暂不支持此功能`,
       icon: 'none'
     })
   }

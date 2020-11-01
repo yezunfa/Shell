@@ -17,6 +17,10 @@
   height: 180px;
   @include border(right bottom, 1px, solid, rgba(0, 0, 0, .15));
 
+  &-contactButton{
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0);
+  }
   &-img {
     width: 52px;
     height: 52px;
