@@ -89,6 +89,8 @@ class Index extends Component {
                 Taro.navigateTo({ url: '/pages/order-list/index' })
             }
             Taro.hideLoading()
+        }else {
+            Taro.hideLoading()
         }
     }
 

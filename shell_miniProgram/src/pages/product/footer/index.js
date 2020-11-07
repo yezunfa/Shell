@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-07-02 21:19:00
+ * @LastEditTime: 2020-11-04 12:24:50
+ * @Description: Do not edit
+ */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { ButtonItem } from '@components'
@@ -58,15 +64,15 @@ export default class Footer extends Component {
             />
           </View>
         ))}
-        <View className='item-footer__buy' onClick={this.handleBuy}>
+        {/* <View className='item-footer__buy' onClick={this.handleBuy}>
           <Text className='item-footer__buy-txt'>立即购买</Text>
-        </View>
+        </View> */}
         <ButtonItem
           type='primary'
           text='加入购物车'
           onClick={this.props.onAdd}
           compStyle={{
-            width: Taro.pxTransform(235),
+            width: Taro.pxTransform(470),
             height: Taro.pxTransform(100)
           }}
         />

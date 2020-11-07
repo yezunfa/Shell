@@ -33,6 +33,24 @@ class Home extends Component {
     await this.wechatLogin()  // 首页登陆获取用户id
   }
 
+  onShareAppMessage () {
+    return {
+      title: '赣州贝壳口腔门诊部',
+      desc: '卓越医疗，温暖服务!',
+      path: '/pages/home/home',
+      imageUrl: 'https://assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'
+    }
+  }
+  //用户点击右上角分享朋友圈, todo,
+  // 目前微信只支持安卓版本
+  onShareTimeline() {
+    return {
+      title: '赣州贝壳口腔门诊部',
+      // desc: '卓越医疗，温暖服务!',
+      // path: '/pages/home/home',
+      imageUrl: 'https://assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'
+      }
+  }
       /**
    * 登录事件
    * @param {*} params 
@@ -72,8 +90,19 @@ class Home extends Component {
       <View>
         <HomeContainer title='精品推荐'>
           <View className='imageContainer'>
-            <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630012907.jpg' /></View>
-            <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630013228.jpg' /></View>
+            <View className='activityView' onClick={() => {
+                      // console.log('item', item)
+                      Taro.navigateTo({ url: `/pages/product/index?Id=82eaf8b3-2b6f-4403-9347-af32a43a4563` })   // 舒适洁牙
+                    }}>
+              <Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630012907.jpg' />
+            </View>
+            <View className='activityView'
+                onClick={() => {
+                      // console.log('item', item)
+                      Taro.navigateTo({ url: `/pages/product/index?Id=e9de804c-2fb7-47b4-b26d-72d28e17e053` })
+                    }}>
+              <Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630013228.jpg' />
+            </View>
           </View>
         </HomeContainer>
         <HomeContainer title='商户介绍'>
@@ -170,7 +199,7 @@ class Home extends Component {
     // test push
     return (
       <View className='home'>
-        <View className='home__search'>
+        {/* <View className='home__search'>
           <ClSearchBar
               shape='round'
               rightButtonColor='black'
@@ -189,7 +218,7 @@ class Home extends Component {
                 this.onSearch(value)
               }}
             />
-          </View>
+          </View> */}
         <ScrollView
           scrollY
           className='home__wrap'

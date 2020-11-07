@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-18 17:04:07
+ * @LastEditTime: 2020-11-04 12:48:55
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -84,7 +84,7 @@ export default class Footer extends Component {
     const Rorder = await this.SubmitOrder();
     if (!Rorder) return await wx.hideLoading()
     // 跳转页面 ，携带orderId
-    Taro.navigateTo({ url: `/pages/order-check/index?Id=${Rorder.OrderId}` })
+    await Taro.navigateTo({ url: `/pages/order-check/index?Id=${Rorder.OrderId}` })
     
     
     // console.log(Rorder)    
@@ -115,8 +115,8 @@ export default class Footer extends Component {
     try {
         const { Mobile,Id:UserId } = userinfo
         if (!Mobile){
-          Taro.switchTab({ url: '/pages/user/user' })
-          Taro.showToast({title:'请先授权信息及手机', icon:'none', duration: 1000})
+          await Taro.switchTab({ url: '/pages/user/user' })
+          await Taro.showToast({title:'请先注册后再下单哦', icon:'none', duration: 3000})
           return 
         }
         

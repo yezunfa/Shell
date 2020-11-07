@@ -31,7 +31,7 @@
     "packNpmRelationList": []
   },
   "compileType": "miniprogram",
-  "libVersion": "2.10.4",
+  "libVersion": "2.13.2",
   "appid": "wx2e2fefd27c5d13c6",
   "projectname": "shellDental",
   "miniprogramRoot": "dist/",
@@ -47,26 +47,21 @@
   "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
-      "current": -1,
       "list": []
     },
     "conversation": {
-      "current": -1,
       "list": []
     },
     "plugin": {
-      "current": -1,
       "list": []
     },
     "game": {
       "list": []
     },
     "gamePlugin": {
-      "current": -1,
       "list": []
     },
     "miniprogram": {
-      "current": 3,
       "list": [
         {
           "id": -1,

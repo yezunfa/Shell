@@ -1,10 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import * as globalactions from '@actions/global'
 import { Popup, Loading, Spec } from '@components'
 import { 
     GET_PRODUCT_DETAIL,
     POST_CREATE_CART_PRODUCT
 } from '@constants/api'
+import { Login } from '@utils/wechat'
 import { getWindowHeight } from '@utils/style'
 import fetch from '@utils/request'
 import Gallery from './gallery'
@@ -12,11 +15,11 @@ import InfoBase from './info-base'
 import InfoParam from './info-param'
 import Footer from './footer'
 import Detail from './detail'
-// import Spec from './spec'
 import './index.scss'
 
 const baseClass = 'page'
 
+@connect(({global}) => ({...global}),{...globalactions})
 class Index extends Component {
 
     state = {
@@ -26,8 +29,59 @@ class Index extends Component {
         visible: false,
     }
 
+    onShareAppMessage () {
+        const { productInfo } = this.state
+        return {
+          title: '赣州贝壳口腔门诊部',
+          desc: '卓越医疗，温暖服务!',
+          path: `/pages/product/index?Id=${productInfo.Id}`,
+          imageUrl: `${productInfo.primaryPicUrl}`
+        }
+      }
+    
+    onShareTimeline () {
+        const { productInfo } = this.state
+        return {
+            title: '赣州贝壳口腔门诊部',
+            query: `Id=${productInfo.Id}`,
+            imageUrl: `${productInfo.primaryPicUrl}`
+        }
+      }
+
     componentDidMount() {
         this.getDetail()
+    }
+
+    async componentDidShow() {
+        const { userinfo } = this.props
+        if (!userinfo || !userinfo.Id) {
+            await this.wechatLogin()  // 获取用户id
+        }
+      }
+        /**
+     * 登录事件
+     * @param {*} params 
+     */
+    async wechatLogin(params = {}) {
+    const { dispatchUserInformation } = this.props
+    try {
+        await Taro.showLoading({title:'加载中～', mask:true })
+        //  await Taro.showLoading({title: '更新用户信息', mask: true})
+        const { scene, userdata, redirect, redirectparams } = params
+        const response = await Login({scene, userdata}) // 登录
+        if (response.code === 200 ) {
+            const { userinfo } = response.data
+            await dispatchUserInformation({ ...userinfo })
+        }
+        // 更新用户信息
+        await Taro.hideLoading()
+    } catch (error) {
+        console.error(error)
+        const icon = 'none'
+        const title = "网络异常, 请刷新重试"
+        // await Taro.hideLoading()
+        Taro.showToast({icon, error})
+    }
     }
 
     asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
@@ -118,7 +172,12 @@ class Index extends Component {
         }
         const response = await fetch(params)
         await this.asyncSetState({ visible: false })
-        if (response) return Taro.showToast({ title: '成功加入购物车', icon: 'success' })
+        if (response) {
+            await Taro.showToast({ title: '成功加入购物车', icon: 'success', duration:1500 });
+            return await Taro.switchTab({ url: "/pages/cart/cart" });
+            
+            
+        } 
         return Taro.showToast({ title: '服务器繁忙，请重试', icon: 'none' })
     }
 

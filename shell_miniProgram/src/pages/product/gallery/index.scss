@@ -7,7 +7,7 @@
 
 .item-gallery__swiper {
   // NOTE RN 的 Swiper 需要有高度，否则会报错
-  height: 750px;
+  height: 450px;
 
   &-item {
     display: flex;
@@ -16,7 +16,7 @@
 
     &-img {
       width: 750px;
-      height: 750px;
+      height: 450px;
     }
   }
 }
