@@ -29,6 +29,22 @@ class Index extends Component {
         visible: false,
     }
 
+    componentDidMount() {
+        this.getDetail()
+        Taro.showShareMenu({
+            withShareTicket:true,
+            //设置下方的Menus菜单，才能够让发送给朋友与分享到朋友圈两个按钮可以点击
+            menus:["shareAppMessage","shareTimeline"]
+        })
+    }
+
+    async componentDidShow() {
+        const { userinfo } = this.props
+        if (!userinfo || !userinfo.Id) {
+            await this.wechatLogin()  // 获取用户id
+        }
+    }
+
     onShareAppMessage () {
         const { productInfo } = this.state
         return {
@@ -39,25 +55,15 @@ class Index extends Component {
         }
       }
     
-    onShareTimeline () {
+    onShareTimeline() {
+        console.log('是否点击了分享朋友圈')
         const { productInfo } = this.state
         return {
-            title: '赣州贝壳口腔门诊部',
+            title: `${productInfo.Name},活动期仅需${productInfo.Price}元，快来抢购吧～ `,
             query: `Id=${productInfo.Id}`,
             imageUrl: `${productInfo.primaryPicUrl}`
         }
-      }
-
-    componentDidMount() {
-        this.getDetail()
     }
-
-    async componentDidShow() {
-        const { userinfo } = this.props
-        if (!userinfo || !userinfo.Id) {
-            await this.wechatLogin()  // 获取用户id
-        }
-      }
         /**
      * 登录事件
      * @param {*} params 
@@ -106,7 +112,7 @@ class Index extends Component {
                     Price,
                     Name,
                     BannerList,
-                    retailPrice: parseFloat(Price)+500,     // 产品原价
+                    retailPrice: parseFloat(Price),     // 产品原价
                     itemStar: { goodCmtRate: 99 },                   // 产品好评率
                     tagList: [ {tagName: '医生超好'}, {tagName:'性价比高'}, {tagName:'环境不错'} ],     //产品标签
                     attrList: [ 
@@ -142,7 +148,7 @@ class Index extends Component {
         }
     }
 
-    // 关闭选择框，并清空当前组件中保存的产品规格+数量信息
+    // 关闭选择框，并清空当前组件中保存的产品规格数量信息
     toggleVisible = async () => {
         await this.asyncSetState({ visible: !this.state.visible, selected: {} })
     }

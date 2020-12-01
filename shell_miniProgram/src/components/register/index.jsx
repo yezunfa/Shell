@@ -39,7 +39,10 @@ export default class PageIndex extends Component {
         const formdata = {}
         for (const iterator of form) {
             const { key } = iterator
-            formdata[key] = userinfo[key]
+            // formdata[key] = userinfo[key]
+            if (key === "Mobile") {   // 当前只自动注入手机号
+                  formdata[key] = userinfo[key]
+            }
         }
         await this.asyncSetState({formdata})
     }

@@ -13,24 +13,6 @@ export default class InfoBase extends Component {
   static defaultProps = {
     data: {}
   }
-  
-  onShareAppMessage () {
-    const { data } = this.props
-    return {
-      title: '赣州贝壳口腔门诊部',
-      desc: '卓越医疗，温暖服务!',
-      path: `/pages/product/index?Id=${data.Id}`,
-      imageUrl: `${data.primaryPicUrl}`
-    }
-  }
-
-  onShareTimeline () {
-    return {
-      title: '赣州贝壳口腔门诊部',
-      query: `Id=${data.Id}`,
-      imageUrl: `${data.primaryPicUrl}`
-    }
-  }
 
   render () {
     const { data } = this.props

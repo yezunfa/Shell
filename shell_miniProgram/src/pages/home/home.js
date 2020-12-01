@@ -31,12 +31,17 @@ class Home extends Component {
 
   async componentDidShow() {
     await this.wechatLogin()  // 首页登陆获取用户id
+    Taro.showShareMenu({
+      withShareTicket:true,
+      //设置下方的Menus菜单，才能够让发送给朋友与分享到朋友圈两个按钮可以点击
+      menus:["shareAppMessage","shareTimeline"]
+  })
   }
 
   onShareAppMessage () {
     return {
       title: '赣州贝壳口腔门诊部',
-      desc: '卓越医疗，温暖服务!',
+      desc: '卓越医疗，温暖服务!!',
       path: '/pages/home/home',
       imageUrl: 'https://assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'
     }
