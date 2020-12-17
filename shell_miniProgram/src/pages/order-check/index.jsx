@@ -25,11 +25,21 @@ class Index extends Component {
 
     componentDidMount = async () => {
         // /api/order/detail
-        this.getDetail()
+        await this.getDetail()
+        await this.initFormData()
     }
 
     asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
 
+    initFormData = async ()=> {
+        const { userinfo } = this.props
+        const { submitData } = this.state
+        if (userinfo && userinfo.Mobile) {
+            submitData['UserMobile'] = userinfo.Mobile
+            submitData['UserName'] = userinfo.Name
+
+        }
+    }
     setFormState = async ({ key, value }) => {
         const { submitData } = this.state
         submitData[key] = value
@@ -55,7 +65,7 @@ class Index extends Component {
 
     handleSubmit = async () => {
         const { OrderMain, submitData } = this.state
-        
+        console.log(this.state)
         // 装填待提交的数据
         const [Rorder, info] = [{
             OrderId: OrderMain.Id,
@@ -187,6 +197,7 @@ class Index extends Component {
 
     render () {
         const { OrderSubList, OrderMain, submitData } = this.state
+        const { userinfo } = this.props
         return (
             <View className='order'>
                 <View>
@@ -196,7 +207,7 @@ class Index extends Component {
                     <StoreAddressPick />
                 </View>
                 <View className='order__component'>
-                    <UserInfo submitData={submitData} setFormState={this.setFormState} />
+                    <UserInfo submitData={submitData} setFormState={this.setFormState} defaultValue={userinfo}/>
                 </View>
                 <View className='order__component'>
                     <PayMethod />

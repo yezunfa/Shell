@@ -89,24 +89,29 @@ class Home extends Component {
     })
   }
 
+  navTo = (item, index) => {
+    // todo: 各项导航页面的调整 
+    console.log(item, index)
+  }
+
   renderStoreDescription = () => {
-    const { timeIcon, logoIcon, descIcon } = icons
+    const { timeIcon, logoIcon, descIcon, contactIcon } = icons
     return (
       <View>
         <HomeContainer title='精品推荐'>
           <View className='imageContainer'>
             <View className='activityView' onClick={() => {
                       // console.log('item', item)
-                      Taro.navigateTo({ url: `/pages/product/index?Id=82eaf8b3-2b6f-4403-9347-af32a43a4563` })   // 舒适洁牙
+                      Taro.navigateTo({ url: `/pages/product/index?Id=45fc7f15-c02d-414c-a1e9-3adb643aa70b` })   // 舒适洁牙
                     }}>
-              <Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630012907.jpg' />
+              <Image className='activityImage'   src='https://assets.51fusion.com/7b8f2279-87c3-46e7-8dcf-1198f2b7ba23.png' />
             </View>
             <View className='activityView'
                 onClick={() => {
                       // console.log('item', item)
-                      Taro.navigateTo({ url: `/pages/product/index?Id=e9de804c-2fb7-47b4-b26d-72d28e17e053` })
+                      Taro.navigateTo({ url: `/pages/product/index?Id=qw4cqw51-2fb7-47b4-b26d-72d28e17e053` })
                     }}>
-              <Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630013228.jpg' />
+              <Image className='activityImage'   src='https://assets.51fusion.com/080a4f48-87e4-4890-b777-d433a10fa00a.png' />
             </View>
           </View>
         </HomeContainer>
@@ -114,7 +119,11 @@ class Home extends Component {
           <View className='container'>
             <View className='flex-row'>
               <View><Image className='icon' src={timeIcon} /></View>
-              <View className='line'>9:00 - 18:00</View>
+              <View className='line'>营业时间: 8:00 - 22:00</View>
+            </View>
+            <View className='flex-row'>
+               <View><Image className='icon' src={contactIcon} /></View>
+              <View className='line'>联系我们: 0797-8068628</View>
             </View>
             <View className='flex-row'>
               <View><Image className='icon' src={logoIcon} /></View>
@@ -128,7 +137,9 @@ class Home extends Component {
               <View className='line'>商家介绍</View>
             </View>
             <View className='imageContainer'>
-              <View className='activityView'><Image className='activityImage' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630015150.jpg' /></View>
+              <View className='activityView'>
+                <Image className='activityImage'  src='http://cdn.shuaixiaoxiao.com/image/20200630015150.jpg' />
+              </View>
             </View>
             <View className='flex-row'>
               贝壳口腔门诊部是一家全方位现代化口腔医疗机构，以预防
@@ -173,24 +184,32 @@ class Home extends Component {
 
   renderIconList = () => {
     return (
-      <AtGrid hasBorder={false} columnNum={4} data={
+      <AtGrid  columnNum={3} onClick={this.navTo.bind(this)} data={
         [
            {
              image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-             value: '领取中心'
+             value: '新人专项'
            },
            {
              image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
-             value: '找折扣'
+             value: '限时秒杀'
            },
            {
              image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
-             value: '领会员'
+             value: '最新活动'
+           },
+           {
+            image: 'https://img14.360buyimg.com/jdphoto/s72x72_jfs/t17251/336/1311038817/3177/72595a07/5ac44618Na1db7b09.png',
+            value: '会员中心'
            },
            {
              image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
-             value: '新品首发'
+             value: '经典案例'
            },
+           {
+            image: 'https://assets.51fusion.com/2eaae996-ba5f-47d7-bfa1-f3e5fc2ac09c.png',
+            value: '专家团队'
+          }
          ]
        } />
     )

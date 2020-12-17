@@ -22,7 +22,7 @@ export default class PageIndex extends Component {
     form = [
         { label: '姓名', required: true, key: 'Name' },
         { label: '电话', required: true, key: 'Mobile' },
-        { label: '身份证', key: 'CertificateCode', placeholder: '选填' },
+        // { label: '身份证', key: 'CertificateCode', placeholder: '选填' },
     ]
 
     state = {

@@ -29,3 +29,8 @@ $background-feedback-color: rgba(230,230,230,1);  //反馈页面背景色
 $feedback-question-font-size: 30px;    // 调查问卷问题字体大小
 
 $primary-shadow: 0px 6px 18px 0px rgba(255,0,0,0.5); // 主题阴影
+
+page {
+    font-family:"PingFangSC-Thin";
+    //  font-size:32rpx;          /*微信小程序中，使用rpx做单位*/
+  }

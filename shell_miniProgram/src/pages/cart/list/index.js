@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2019-07-22 16:56:19
- * @LastEditTime: 2020-07-05 11:47:24
+ * @LastEditTime: 2020-12-02 16:24:27
  * @Description: Do not edit
  */ 
 import Taro, { Component } from '@tarojs/taro'
@@ -64,9 +64,15 @@ export default class List extends Component {
             <Image
               className='cart-list__item-img'
               src={JSON.parse(item.BannerList)[0]}
+              onClick={() => {
+                Taro.navigateTo({ url: `/pages/product/index?Id=${item.Id}` })  
+              }}
             />
             <View className='cart-list__item-info'>
-              <View className='cart-list__item-title'>
+              <View className='cart-list__item-title' 
+                onClick={() => {
+                Taro.navigateTo({ url: `/pages/product/index?Id=${item.Id}` })  
+              }}>
                 {!!item.TypeName &&
                   <Text className='cart-list__item-title-tag'>{item.TypeName}</Text>
                 }
@@ -75,7 +81,10 @@ export default class List extends Component {
                 </Text>
               </View>
 
-              <View className='cart-list__item-spec'>
+              <View className='cart-list__item-spec'  
+                onClick={() => {
+                Taro.navigateTo({ url: `/pages/product/index?Id=${item.Id}` })  
+              }}>
                 <Text className='cart-list__item-spec-txt'>
                   暂不支持规格选择
                   {/* {item.specList.map(sepc => sepc.specValue).join(' ')} */}
