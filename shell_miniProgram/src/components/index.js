@@ -21,3 +21,5 @@ export { default as WriteOffButton } from './write-off-button'
 export { default as Mongolia } from "./mongolia"
 export { default as Empty } from './empty'
 export { default as Register } from './register'
+export { default as FormInput } from './form-entity/form-input'
+export { default as FormIphone } from './form-entity/form-iphone'

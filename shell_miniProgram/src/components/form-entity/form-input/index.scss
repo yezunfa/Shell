@@ -1,0 +1,24 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import '@styles/theme.scss';
+
+.form-input-component {
+    width: 100%;
+    padding: 20px 40px;
+    &-title {
+        font-size: $title-size;
+        font-weight: $title-weight;
+        color: $title-color;
+        &-star {
+            margin-left: 5px;
+            color: red;
+        }
+    }
+    &-value {
+        margin: 10px 0;
+        font-size: $value-size;
+    }
+    &-line {
+        margin-top: 15px;
+        border-bottom: 2px solid $form-line;
+    }
+}
