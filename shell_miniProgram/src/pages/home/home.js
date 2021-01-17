@@ -9,6 +9,7 @@ import * as globalactions from '@actions/global'
 import { Login } from '@utils/wechat'
 import HomeContainer from './homeContainer/index'
 import { getWindowHeight } from '@utils/style'
+import { ListNavGridTo } from './constants'
 import './home.scss'
 
 @connect(({global}) => ({...global}),{...globalactions})
@@ -23,10 +24,9 @@ class Home extends Component {
   }
 
   Pictures = [
-    {url: 'https://assets.51fusion.com/8650769d-3fe9-4b64-8535-dddc89c3b495.png'},
-    {url: 'https://assets.51fusion.com/5bddbf4e-5b3a-4402-8ec3-1ed1983fc958.png'},
-    {url: 'https://assets.51fusion.com/f60048bd-82ac-41f9-9161-e75a587cbc6a.png'},
-    {url: 'https://assets.51fusion.com/1afa4357-37a3-41a5-b47b-cb39fc0d6f7c.png'}
+    {url: 'https://assets.51fusion.com/1d40604d-2bc8-42df-bc33-3bccb5e0cb5b.png'},
+    {url: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png'},
+    {url: 'https://assets.51fusion.com/b2b9a97e-9cd9-41f3-abe4-2427fd448482.png'},
   ]
 
   async componentDidShow() {
@@ -91,7 +91,12 @@ class Home extends Component {
 
   navTo = (item, index) => {
     // todo: 各项导航页面的调整 
-    console.log(item, index)
+    // console.log(item, index)
+    const { url, type, message } = ListNavGridTo[index]
+    if (!url) return Taro.showToast({ title: message, icon: 'none' })
+    if (type === 'tab') return Taro.switchTab({ url })
+    if (type === 'page') return Taro.navigateTo({ url })
+    
   }
 
   renderStoreDescription = () => {
