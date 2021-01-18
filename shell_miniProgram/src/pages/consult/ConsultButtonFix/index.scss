@@ -1,3 +1,24 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import '@styles/theme.scss';
+
 .consult-button-fix-component {
-    border: 1px solid black;
+    height: 100px;
+    width: 100%;
+    &-left {
+        font-size: 35px;
+        height: 100px;
+        text-align: center;
+        line-height: 100px;
+        width: 30%;
+    }
+    &-right {
+        font-size: 40px;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+        width: 70%;
+        background-color: $primary-color;
+    }
 }
