@@ -2,11 +2,13 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import * as globalactions from '@actions/global'
-import { Popup, Loading, Spec } from '@components'
+import { Popup, Loading, Spec, Mongolia } from '@components'
 import { 
     GET_PRODUCT_DETAIL,
-    POST_CREATE_CART_PRODUCT
+    POST_CREATE_CART_PRODUCT,
+    API_GET_PRODUCT_QRCODE
 } from '@constants/api'
+import { uuid_compression } from '@utils/methods'
 import { Login } from '@utils/wechat'
 import { getWindowHeight } from '@utils/style'
 import fetch from '@utils/request'
@@ -15,6 +17,7 @@ import InfoBase from './info-base'
 import InfoParam from './info-param'
 import Footer from './footer'
 import Detail from './detail'
+import NewQrcode from './new-qrcode'
 import './index.scss'
 
 const baseClass = 'page'
@@ -27,6 +30,8 @@ class Index extends Component {
         productInfo: {},
         gallery: [],
         visible: false,
+        qrcode: null,
+        switchs: {},
     }
 
     componentDidMount() {
@@ -43,6 +48,9 @@ class Index extends Component {
         if (!userinfo || !userinfo.Id) {
             await this.wechatLogin()  // 获取用户id
         }
+        const url = `${API_GET_PRODUCT_QRCODE}?scene=${uuid_compression(userinfo.Id)}`
+        const qrcode = await fetch({ url }) // 获取签到二维码
+        await this.asyncSetState({ qrcode })
     }
 
     onShareAppMessage () {
@@ -187,8 +195,15 @@ class Index extends Component {
         return Taro.showToast({ title: '服务器繁忙，请重试', icon: 'none' })
     }
 
+    // 控制二维码窗口的打开/关闭
+    Qrcode = async (qrcode = true) => {
+        const { switchs } = this.state
+        const newSwitchs = { ...switchs, qrcode }
+        this.setState({ switchs: newSwitchs })
+    }
+
     render() {
-        const { productInfo={}, gallery, visible, selected } = this.state
+        const { productInfo={}, gallery, visible, selected, switchs, qrcode } = this.state
         const { productDetail } = productInfo
         const height = getWindowHeight(false)
         
@@ -210,7 +225,7 @@ class Index extends Component {
                         {/* 产品图列表 */}
                         <Gallery list={gallery} />
                         {/* 产品信息 */}
-                        <InfoBase data={productInfo} />
+                        <InfoBase data={productInfo} onOpenCode={this.Qrcode}/>
                         {/* 产品参数 */}
                         <InfoParam list={productInfo.attrList} />
                         {/* 产品详情 */}
@@ -232,6 +247,21 @@ class Index extends Component {
                 <View className='page__footer'>
                     <Footer onAdd={this.handleAdd} />
                 </View>
+                {<Mongolia show={!!switchs.qrcode}>
+                    {/* <ModalQRcode 
+                        qrcode={qrcode} 
+                        list={memberlist} 
+                        onClose={()=>this.Qrcode(false)}
+                        title={`预约签到: ${sign.membersign}/${memberlist.length}`}
+                    /> */}
+                    <NewQrcode 
+                        qrcode={qrcode} 
+                        data={productInfo}
+                        // list={memberlist} 
+                        onClose={()=>this.Qrcode(false)}
+                        title={`商品分享二维码`}
+                    />
+                </Mongolia>}
             </View>
         )
     }

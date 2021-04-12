@@ -1,0 +1,83 @@
+@import '@styles/theme.scss';
+
+.newQrcode-component {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background-color: rgba(20, 20, 20, 0.5);
+
+    &-qrcode {
+        width: 100%;
+        height: 35%;
+        border-radius: 15px;
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        image {
+            height: 90%;
+        }
+    }
+    &-main {
+        height: 55%;
+        &-title {
+            height: 20%;
+            color: white;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        &-list {
+            height: 80%;
+            &-view {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                &-item{
+                    flex: 0 1 20%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px 0;
+                    position: relative;
+                    .badage {
+                        position: absolute;
+                        width: 40px;
+                        height: 40px;
+                        right: 10px;
+                        bottom: 15px;
+                    }
+                }
+            }
+        }
+    }
+    &-buttonView {
+        height: 10%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        .modalBtn {
+            width: 30%;
+            border-radius: 30px;
+            font-size: 30px;
+            height: 70px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .okBtn {
+            color: white;
+            background-color: $primary-color;
+        }
+        .cancelBtn {
+            color: rgb(148, 148, 148);
+            background-color: black;
+        }
+    }
+}

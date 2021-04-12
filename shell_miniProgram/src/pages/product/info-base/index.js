@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-02 21:19:00
- * @LastEditTime: 2020-11-04 12:52:02
+ * @LastEditTime: 2021-04-11 17:00:25
  * @Description: Do not edit
  */
 import Taro, { Component } from '@tarojs/taro'
@@ -12,6 +12,11 @@ import './index.scss'
 export default class InfoBase extends Component {
   static defaultProps = {
     data: {}
+  }
+
+   shareCode() {
+    const { onOpenCode } = this.props
+    onOpenCode && onOpenCode()
   }
 
   render () {
@@ -30,7 +35,7 @@ export default class InfoBase extends Component {
             <Text className='item-info-base__header-star-txt'>
               {`${parseFloat(itemStar.goodCmtRate) || 0}%`}
             </Text>
-            <Text className='item-info-base__header-star-link'>{'好评率>'}</Text>
+            <Text className='item-info-base__header-star-link' onClick={this.shareCode}>{'海报分享 >'}</Text>
           </View>
         </View>
 

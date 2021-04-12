@@ -1,3 +1,9 @@
+/*
+ * @Author: yezunfa
+ * @Date: 2020-12-02 00:39:12
+ * @LastEditTime: 2021-04-08 21:27:18
+ * @Description: Do not edit
+ */
 import Taro from '@tarojs/taro'
 
 const NAVIGATOR_HEIGHT = 44
@@ -45,4 +51,29 @@ export function postcss(style) {
     newStyle.backgroundColor = background
   }
   return { ...restStyle, ...newStyle }
+}
+ /**
+ * 返回屏幕可用宽度
+ */
+export function getWindowWidth() {
+  const info = Taro.getSystemInfoSync()
+  const { windowWidth } = info
+  return `${windowWidth}px`
+}
+/**
+* 端口尺寸转换规则(单位换算)
+* @param {*} num rpx
+*/
+export function getEmbeddedStyle(num) {
+  // if (process.env.TARO_ENV === 'rn') {
+  //     //return `${2 * num}px`
+  //     return `${parseFloat(windowWidth) * num / 750}px`
+  // }
+  // if (process.env.TARO_ENV === 'h5') {
+      
+  // }
+  // if (process.env.TARO_ENV === 'weapp') {
+  //     return `${num}rpx`
+  // }
+  return Taro.pxTransform(num)
 }

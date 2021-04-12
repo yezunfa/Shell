@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-07-20 10:28:57
- * @LastEditTime: 2020-10-28 15:35:11
+ * @LastEditTime: 2021-04-08 21:43:23
  * @Description: Do not edit
  */ 
 /**
@@ -76,4 +76,5 @@ export const POST_ORDER_WRITEOFF = `${HOST}/api/order/writeOff`
 export const GET_ALL_ORDER_MAIN = `${HOST}/api/order/get_all` 
 
 // 获取主订单二维码 qrcode
-export const API_GET_APP_QRCODE = `${host}/api/wx/qr_code`
+export const API_GET_APP_QRCODE = `${host}/api/wx/qr_code`// 获取签到二维码
+export const API_GET_PRODUCT_QRCODE = `${host}/api/product/qr_code`
