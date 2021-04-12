@@ -2,6 +2,7 @@ import Taro, { PureComponent } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { FormInput, FormIphone } from '@components'
 import ConsultButtonFix from './ConsultButtonFix/index'
+import './index.scss'
 
 const baseClass = 'consult-page'
 
