@@ -63,78 +63,219 @@ export default class Index extends PureComponent {
 
       asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
 
-      drawBall() {
+      async drawBall() {
 
         // this.getQrcode()
 
         const { data:ProdectInfo } = this.props
-        const { filePath, qrcode } = this.state
+        // const { filePath, qrcode } = this.state
         const { simpleDesc, BannerList, Name, Price } = ProdectInfo
-        const context = Taro.createCanvasContext('canvas',this)
+        // const context = Taro.createCanvasContext('shareCanvas',this)
+        // const imgPath1 = BannerList ? JSON.parse(BannerList)[0]: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
+        // const imgPath2 = 'https://assets.51fusion.com/15c310cd-03f3-4f62-a372-632e6c1fed86.png'// filePath; // 小程序图片临时路径
+        // const _this = this;
+
+        // Taro.getImageInfo({
+        //   src: imgPath1,
+        // }).then((res)=>{
+        //     context.drawImage(res.path, 0, 0, 375, 190);
+        //       Taro.getImageInfo({
+        //         src: imgPath2,
+        //       }).then((res2)=>{
+        //         context.drawImage(res2.path, 250, 195, 86, 86);
+        //         const h = _this.fillTextWrap(context, `[${Name}] ${simpleDesc}`, 20, 230, 190, 20);
+        //         context.font = 'normal 11px ArialMT sans-serif';
+        //         context.setFontSize(16);
+        //         context.setFillStyle('#FF6066');
+        //         context.fillText(`¥${Price}`, 20, 310);
+        //         context.font = 'normal 11px  PingFangSC-Regular sans-serif';
+        //         context.setFontSize(12);
+        //         context.setFillStyle('#FA2E9A');
+        //         context.fillText('扫描小程序码查看', 245, 300);
+        //         context.draw(false);
+        //         context.draw(false, ()=> {
+        //             Taro.canvasToTempFilePath({
+        //               canvasId: 'canvas',
+        //               success: function(res) {
+        //                 // 获得图片临时路径
+        //                 _this.setState({
+        //                   imageTempPath:res.tempFilePath
+        //                 })
+        //               }
+        //             })
+        //           });
+      
+        //       });
+        // });
+
+        var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
+        const imgPath1 = BannerList ? JSON.parse(BannerList)[0]: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
+        // const imgPath1 = 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
+        const imgPath2 = 'https://assets.51fusion.com/15c310cd-03f3-4f62-a372-632e6c1fed86.png'// filePath; // 小程序图片临时路径
+        const imgTempPath1 = await Taro.downloadFile({ url: imgPath1 });
+        const imgTempPath2 = await Taro.downloadFile({ url: imgPath2 });
+        ctx.drawImage(imgTempPath1.tempFilePath, 0, 0, 375, 190);
+        ctx.drawImage(imgTempPath2.tempFilePath, 250, 195, 86, 86);
+        this.fillTextWrap(ctx, `[${Name}] ${simpleDesc}`, 20, 230, 190, 20);
+        ctx.font = 'normal 11px ArialMT sans-serif';
+        ctx.setFontSize(16);
+        ctx.setFillStyle('#FF6066');
+        ctx.fillText(`¥${Price}`, 20, 310);
+        ctx.font = 'normal 11px  PingFangSC-Regular sans-serif';
+        ctx.setFontSize(12);
+        ctx.setFillStyle('#FA2E9A');
+        ctx.fillText('扫描小程序码查看', 245, 300);
+        ctx.draw(false);
+
+      }
+
+      async wxDrawImage(callback){
+        const { data:ProdectInfo } = this.props
+        const { simpleDesc, BannerList, Name, Price } = ProdectInfo
+
+        var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
         const imgPath1 = BannerList ? JSON.parse(BannerList)[0]: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
         const imgPath2 = 'https://assets.51fusion.com/15c310cd-03f3-4f62-a372-632e6c1fed86.png'// filePath; // 小程序图片临时路径
-        console.log(filePath)
-        const _this = this;
-
-        Taro.getImageInfo({
-          src: imgPath1,
-        }).then((res)=>{
-            context.drawImage(res.path, 0, 0, 375, 190);
-              Taro.getImageInfo({
-                src: imgPath2,
-              }).then((res2)=>{
-                context.drawImage(res2.path, 250, 195, 86, 86);
-                const h = _this.fillTextWrap(context, `[${Name}] ${simpleDesc}`, 20, 230, 190, 20);
-                context.font = 'normal 11px ArialMT sans-serif';
-                context.setFontSize(16);
-                context.setFillStyle('#FF6066');
-                context.fillText(`¥${Price}`, 20, 310);
-                context.font = 'normal 11px  PingFangSC-Regular sans-serif';
-                context.setFontSize(12);
-                context.setFillStyle('#FA2E9A');
-                context.fillText('扫描小程序码查看', 245, 300);
-                context.draw(false, ()=> {
-                    Taro.canvasToTempFilePath({
-                      canvasId: 'canvas',
-                      success: function(res) {
-                        // 获得图片临时路径
-                        _this.setState({
-                          imageTempPath:res.tempFilePath
-                        })
-                      }
-                    })
-                  });
-      
-              });
-        });
+        const imgTempPath1 = await Taro.downloadFile({ url: imgPath1 });
+        const imgTempPath2 = await Taro.downloadFile({ url: imgPath2 });
+        ctx.drawImage(imgTempPath1.tempFilePath, 0, 0, 375, 190);
+        ctx.drawImage(imgTempPath2.tempFilePath, 250, 195, 86, 86);
+        this.fillTextWrap(ctx, `[${Name}] ${simpleDesc}`, 20, 230, 190, 20);
+        ctx.font = 'normal 11px ArialMT sans-serif';
+        ctx.setFontSize(16);
+        ctx.setFillStyle('#FF6066');
+        ctx.fillText(`¥${Price}`, 20, 310);
+        ctx.font = 'normal 11px  PingFangSC-Regular sans-serif';
+        ctx.setFontSize(12);
+        ctx.setFillStyle('#FA2E9A');
+        ctx.fillText('扫描小程序码查看', 245, 300);
+        // ctx.draw(false);
+        ctx.draw(false,()=>{
+            callback && callback()
+        })
+    
       }
-     
-      saveImage(){
-        // 查看是否授权
-        Taro.getSetting({  complete(){
-            console.log(444)
-          }}).then(res=>{
-          if (res.authSetting['scope.writePhotosAlbum']) {
-            Taro.saveImageToPhotosAlbum({
-              filePath:this.state.imageTempPath
-            }).then(res=>{
-              console.log(res)
-            })
-          }else {
-            Taro.authorize({
-              scope: 'scope.writePhotosAlbum',
-            }).then(()=>{
-              Taro.saveImageToPhotosAlbum({
-                filePath:this.state.imageTempPath
-              }).then(res=>{
-                console.log(res)
+
+      // 获取微信相册授权信息
+      getSetting(){
+        return new Promise((resolve,reject)=>{
+          Taro.getSetting()
+          .then((res)=>{
+            if (!res.authSetting['scope.writePhotosAlbum']) {
+              Taro.authorize({
+                scope:'scope.writePhotosAlbum',
               })
-            })
-          }
-        }).catch((e)=>{
-          console.log(e)
+              .then(res=>{
+                if(res.errMsg == 'authorize:ok'){
+                  resolve(true)
+                }else{
+                  reject(false)
+                }
+              })
+              .catch(()=>{
+                reject(false)
+              })
+            }else{
+              resolve(true)
+            }
+          })
+          .catch(()=>{
+            reject(false)
+          })
         })
       }
+
+      openShareImg(){
+        this.getSetting().then((res)=>{
+          if(!res){
+            this.showModal()
+          }else{
+            this.wxDrawImage(()=>{
+              this.saveImage()
+            })
+          }
+        }).catch(()=>{
+          this.showModal()
+        })
+      }
+
+      // 授权提示
+  showModal(){
+    let that = this;
+    Taro.showModal({
+      title: '授权提示',
+      content: '打开保存图片权限',
+      success (res) {
+        if (res.confirm) {
+        Taro.openSetting({
+          success (res) {
+            if(res.authSetting['scope.writePhotosAlbum']){
+              // 调用画图
+              console.log('授权成功');
+              that.wxDrawImage(()=>{
+                that.saveImage()
+              })
+            }else{
+              Taro.showToast({
+                title: '授权失败',
+                icon: 'none'
+              });
+            }
+          },
+          fail(){
+            Taro.showToast({
+              title: '授权失败',
+              icon: 'none'
+            });
+          }
+        })
+        } else if (res.cancel) {
+          Taro.showToast({
+            title: '授权失败',
+            icon: 'none'
+          });
+        }
+      }
+    })
+  }
+     
+  downLoad(){
+    let that = this;
+    that.openShareImg();
+  }
+
+  // 图片保存
+  saveImage(){
+    let that = this;
+    const {canvasWidth, canvasHeight} = this.state
+    Taro.canvasToTempFilePath({
+      width: canvasWidth,
+      height: canvasHeight,
+      destWidth: canvasWidth * 2,
+      destHeight: canvasHeight * 2,
+      x: 0,
+      y: 0,
+      canvasId: 'shareCanvas',
+      success: function(res) {
+        console.log('canvas转temp path成功:', res);
+        Taro.hideLoading();
+        Taro.showToast({ title: '海报生成成功' });
+        Taro.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath
+        }).then(res=>{
+            console.log('保存图片至本地：', res)
+        })
+        // that.setState({
+        //   posterImage: res.tempFilePath
+        // })
+      },
+      fail: function(fail) {
+        console.log('canvas转temp path失败:', fail);
+        Taro.showToast({ title: `海报生成失败：${fail}` });
+        Taro.hideLoading();
+      }
+    },that.$scope)
+  }
     
        // 文字换行
     fillTextWrap(ctx, text, x, y, maxWidth, lineHeight) {
@@ -238,13 +379,13 @@ export default class Index extends PureComponent {
                 }} 
                 className={`${baseClass}`}
             >
-                <canvas style="width: 375px; height: 320px;background:#fff" canvas-id="canvas"></canvas>
+                <canvas style="width: 375px; height: 320px;background:#fff" canvas-id="shareCanvas"></canvas>
                 <View className={`${baseClass}-qrcode`}>
                     <Image src={qrcode} mode='aspectFit' />
                 </View>
 
                 <View className={`${baseClass}-buttonView`}>
-                    <View className='okBtn modalBtn' onClick={this.saveImage.bind(this)}>
+                    <View className='okBtn modalBtn' onClick={this.downLoad.bind(this)}>
                         保存图片
                     </View>
                     <View className='cancelBtn modalBtn' onClick={() => { onClose && onClose() }}>
