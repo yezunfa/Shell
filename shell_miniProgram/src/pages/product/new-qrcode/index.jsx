@@ -128,7 +128,7 @@ export default class Index extends PureComponent {
         const imgTempPath1 = await Taro.downloadFile({ url: imgPath1 });
         const backgroundImg = await Taro.downloadFile({ url: bgImgPath });
         const logoImg = await Taro.downloadFile({ url: logImgPath });
-        const imgTempPath2 = filePath;
+        const imgTempPath2 = qrCodeTempPath;
 
 
         ctx.drawImage(backgroundImg.tempFilePath, 0, 0, 375, 400);
