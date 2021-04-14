@@ -49,24 +49,29 @@ export default class Index extends PureComponent {
         const { simpleDesc, BannerList, Name, Price } = ProdectInfo
         
         var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
-        const imgPath1 = 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
-        // const imgPath1 = 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
-        const imgPath2 = 'https://assets.51fusion.com/15c310cd-03f3-4f62-a372-632e6c1fed86.png'// filePath; // 小程序图片临时路径
-        console.log('imgPath1', imgPath1);
-        console.log('qrCodeTempPath', qrCodeTempPath);
+        const imgPath1 = BannerList ? JSON.parse(BannerList)[0]: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
+        const bgImgPath = 'https://assets.51fusion.com/efe5af92-35e9-45ed-bcf5-22bedf4c174b.png'
+        const logImgPath = 'https://assets.51fusion.com/2d089d8c-35d2-4cf2-ba7e-11a533865029.png'
         const imgTempPath1 = await Taro.downloadFile({ url: imgPath1 });
+        const backgroundImg = await Taro.downloadFile({ url: bgImgPath });
+        const logoImg = await Taro.downloadFile({ url: logImgPath });
         const imgTempPath2 = qrCodeTempPath;
-        ctx.drawImage(imgTempPath1.tempFilePath, 0, 0, 375, 190);
-        ctx.drawImage(imgTempPath2, 250, 195, 86, 86);
-        this.fillTextWrap(ctx, `[${Name}] ${simpleDesc}`, 20, 230, 190, 20);
+
+
+        ctx.drawImage(backgroundImg.tempFilePath, 0, 0, 375, 400);
+        this.fillTextWrap(ctx, `${Name}  贝壳口腔`, 20, 30, 190, 20);
+        ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
+        ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
+        ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
+        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 315, 190, 20);
         ctx.font = 'normal 11px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
-        ctx.fillText(`¥${Price}`, 20, 310);
+        ctx.fillText(`¥${Price}`, 20, 270);
         ctx.font = 'normal 11px  PingFangSC-Regular sans-serif';
         ctx.setFontSize(12);
         ctx.setFillStyle('#FA2E9A');
-        ctx.fillText('扫描小程序码查看', 245, 300);
+        ctx.fillText('扫描小程序码查看', 245, 370);
         ctx.draw(false);
 
       }
@@ -77,20 +82,28 @@ export default class Index extends PureComponent {
 
         var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
         const imgPath1 = BannerList ? JSON.parse(BannerList)[0]: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
-        const imgPath2 = 'https://assets.51fusion.com/15c310cd-03f3-4f62-a372-632e6c1fed86.png'// filePath; // 小程序图片临时路径
+        const bgImgPath = 'https://assets.51fusion.com/efe5af92-35e9-45ed-bcf5-22bedf4c174b.png'
+        const logImgPath = 'https://assets.51fusion.com/2d089d8c-35d2-4cf2-ba7e-11a533865029.png'
         const imgTempPath1 = await Taro.downloadFile({ url: imgPath1 });
-        const imgTempPath2 = await Taro.downloadFile({ url: imgPath2 });
-        ctx.drawImage(imgTempPath1.tempFilePath, 0, 0, 375, 190);
-        ctx.drawImage(imgTempPath2.tempFilePath, 250, 195, 86, 86);
-        this.fillTextWrap(ctx, `[${Name}] ${simpleDesc}`, 20, 230, 190, 20);
+        const backgroundImg = await Taro.downloadFile({ url: bgImgPath });
+        const logoImg = await Taro.downloadFile({ url: logImgPath });
+        const imgTempPath2 = qrCodeTempPath;
+
+
+        ctx.drawImage(backgroundImg.tempFilePath, 0, 0, 375, 400);
+        this.fillTextWrap(ctx, `${Name}  贝壳口腔`, 20, 30, 190, 20);
+        ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
+        ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
+        ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
+        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 315, 190, 20);
         ctx.font = 'normal 11px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
-        ctx.fillText(`¥${Price}`, 20, 310);
+        ctx.fillText(`¥${Price}`, 20, 270);
         ctx.font = 'normal 11px  PingFangSC-Regular sans-serif';
         ctx.setFontSize(12);
         ctx.setFillStyle('#FA2E9A');
-        ctx.fillText('扫描小程序码查看', 245, 300);
+        ctx.fillText('扫描小程序码查看', 245, 370);
         // ctx.draw(false);
         ctx.draw(false,()=>{
             callback && callback()
@@ -153,7 +166,6 @@ export default class Index extends PureComponent {
           success (res) {
             if(res.authSetting['scope.writePhotosAlbum']){
               // 调用画图
-              console.log('授权成功');
               that.wxDrawImage(()=>{
                 that.saveImage()
               })
@@ -199,20 +211,19 @@ export default class Index extends PureComponent {
       y: 0,
       canvasId: 'shareCanvas',
       success: function(res) {
-        console.log('canvas转temp path成功:', res);
         Taro.hideLoading();
         Taro.showToast({ title: '海报生成成功' });
         Taro.saveImageToPhotosAlbum({
             filePath: res.tempFilePath
         }).then(res=>{
-            console.log('保存图片至本地：', res)
+            // console.log('保存图片至本地：', res)
         })
         // that.setState({
         //   posterImage: res.tempFilePath
         // })
       },
       fail: function(fail) {
-        console.log('canvas转temp path失败:', fail);
+        // console.log('canvas转temp path失败:', fail);
         Taro.showToast({ title: `海报生成失败：${fail}` });
         Taro.hideLoading();
       }
@@ -258,20 +269,20 @@ export default class Index extends PureComponent {
     render() {
         const { list=[], title, onClose, qrcode } = this.props;
         // const { qrcode } = this.state
-        const screenHeight = parseInt(getWindowHeight())
+        // const screenHeight = parseInt(getWindowHeight())
         const screenWidth = parseInt(getWindowWidth())
         return (
             <View 
                 style={{ 
-                    height: `${screenHeight*0.85}px`, 
+                    height: `480px`, 
                     width: `${screenWidth*0.9}px` 
                 }} 
                 className={`${baseClass}`}
             >
-                <canvas style="width: 375px; height: 320px;background:#fff" canvas-id="shareCanvas"></canvas>
-                <View className={`${baseClass}-qrcode`}>
+                <canvas style="width: 375px; height: 400px;background:#fff" canvas-id="shareCanvas"></canvas>
+                {/* <View className={`${baseClass}-qrcode`}>
                     <Image src={qrcode} mode='aspectFit' />
-                </View>
+                </View> */}
 
                 <View className={`${baseClass}-buttonView`}>
                     <View className='okBtn modalBtn' onClick={this.downLoad.bind(this)}>
