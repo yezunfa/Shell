@@ -121,7 +121,7 @@ export default class Index extends PureComponent {
         const { qrCodeTempPath } = this.state
         const { simpleDesc, BannerList, Name, Price } = ProdectInfo
 
-        var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
+        var ctx = Taro.createCanvasContext('saveCanvas',this.$scope)
         const imgPath1 = BannerList ? JSON.parse(BannerList)[0]: 'https://assets.51fusion.com/39aed86d-0a40-4335-935e-25939d2a6c6a.png';
         const bgImgPath = 'https://assets.51fusion.com/efe5af92-35e9-45ed-bcf5-22bedf4c174b.png'
         const logImgPath = 'https://assets.51fusion.com/2d089d8c-35d2-4cf2-ba7e-11a533865029.png'
@@ -321,6 +321,7 @@ export default class Index extends PureComponent {
                 className={`${baseClass}`}
             >
                 <canvas style="width: 375px; height: 400px;background:#fff" canvas-id="shareCanvas"></canvas>
+                <canvas style="width: 0px; height: 0px;background:#fff" canvas-id="saveCanvas"></canvas>
                 {/* <View className={`${baseClass}-qrcode`}>
                     <Image src={qrcode} mode='aspectFit' />
                 </View> */}
