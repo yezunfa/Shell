@@ -36,6 +36,7 @@ export default class Index extends PureComponent {
         let that = this;
         fsm.writeFileSync(filePath, qrcode, 'base64');
         that.drawBall(filePath);
+        await this.asyncSetState({ filePath })
       }
 
       asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
@@ -63,7 +64,7 @@ export default class Index extends PureComponent {
         ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
         ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
         ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
-        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 265, 190, 20);
+        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 295, 190, 20);
         ctx.font = 'normal 11px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
@@ -78,6 +79,7 @@ export default class Index extends PureComponent {
 
       async wxDrawImage(callback){
         const { data:ProdectInfo } = this.props
+        const { filePath } = this.state
         const { simpleDesc, BannerList, Name, Price } = ProdectInfo
 
         var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
@@ -87,7 +89,7 @@ export default class Index extends PureComponent {
         const imgTempPath1 = await Taro.downloadFile({ url: imgPath1 });
         const backgroundImg = await Taro.downloadFile({ url: bgImgPath });
         const logoImg = await Taro.downloadFile({ url: logImgPath });
-        const imgTempPath2 = qrCodeTempPath;
+        const imgTempPath2 = filePath;
 
 
         ctx.drawImage(backgroundImg.tempFilePath, 0, 0, 375, 400);
@@ -95,7 +97,7 @@ export default class Index extends PureComponent {
         ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
         ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
         ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
-        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 265, 190, 20);
+        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 295, 190, 20);
         ctx.font = 'normal 11px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
