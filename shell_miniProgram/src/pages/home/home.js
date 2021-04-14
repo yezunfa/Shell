@@ -12,6 +12,16 @@ import { getWindowHeight } from '@utils/style'
 import { ListNavGridTo } from './constants'
 import './home.scss'
 
+const StorePictures = [
+  'http://cdn.shuaixiaoxiao.com/image/20200630020338.jpg',
+  'http://cdn.shuaixiaoxiao.com/image/20200630020420.jpg',
+  'http://cdn.shuaixiaoxiao.com/image/20200630020446.jpg',
+  'http://cdn.shuaixiaoxiao.com/image/20200630020514.jpg',
+  'http://cdn.shuaixiaoxiao.com/image/20200630020539.jpg',
+  'http://cdn.shuaixiaoxiao.com/image/20200630020623.jpg',
+  'http://cdn.shuaixiaoxiao.com/image/20200630020651.jpg',
+]
+
 @connect(({global}) => ({...global}),{...globalactions})
 class Home extends Component {
   config = {
@@ -160,7 +170,14 @@ class Home extends Component {
           <Swiper
             displayMultipleItems={3}
             >
-            <SwiperItem>
+              {StorePictures && StorePictures.length && StorePictures.map(item => {
+                return (
+                  <SwiperItem style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <Image className='storeImages' mode='aspectFit' src={item} />
+                  </SwiperItem>
+                )
+              })}
+            {/* <SwiperItem style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020338.jpg' />
             </SwiperItem>
             <SwiperItem>
@@ -180,7 +197,7 @@ class Home extends Component {
             </SwiperItem>
             <SwiperItem>
               <Image className='storeImages' mode='aspectFit' src='http://cdn.shuaixiaoxiao.com/image/20200630020651.jpg' />
-            </SwiperItem>
+            </SwiperItem> */}
           </Swiper>
         </HomeContainer>
       </View>
