@@ -1,45 +1,85 @@
 import Taro, { PureComponent } from '@tarojs/taro'
-import { Avatar } from '@components/'
+import { connect } from '@tarojs/redux'
+import * as globalactions from '@actions/global'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { API_GET_PRODUCT_QRCODE } from '@constants/api'
 import fetch from '@utils/request'
 import { uuid_compression } from '@utils/methods'
 import { getWindowWidth, getWindowHeight } from '@utils/style'
-import IconTure from './assets/paysuccess.png'
+import { Login } from '@utils/wechat'
 import './index.scss'
 
 const baseClass = 'newQrcode-component'
+@connect(({global}) => ({...global}),{...globalactions})
 export default class Index extends PureComponent {
     constructor (props) {
         super(props)
         this.state = {
           filePath: '',
-          // qrCodeTempPath:{}
+          qrCodeTempPath:{}
         }
       }
 
     async componentDidMount() {
       // await this.getQrcode()
+       await this.getQrcode()
     }
 
-    async componentWillReceiveProps() {
-      await this.getQrcode()
-    }
 
-      async getQrcode(){
-        const { qrcode: _qrcode } = this.props
-        var qrcode = _qrcode.replace(/^data:image\/\w+;base64,/, "");
+    async getQrcode(){
+      const { userinfo, data:ProdectInfo } = this.props
+      if (!userinfo || !userinfo.Id) {
+          await this.wechatLogin()  // 获取用户id
+      }
+      // 获取二维码
+      try {
+        const url = `${API_GET_PRODUCT_QRCODE}?scene=${uuid_compression(ProdectInfo.Id)}`
+        const qrcode = await fetch({ url }) // 获取签到二维码
+        await this.asyncSetState({ qrcode })
+
+        var _qrcode = qrcode.replace(/^data:image\/\w+;base64,/, "");
         const timestamp = new Date().getTime();
         const fsm = wx.getFileSystemManager();
         const FILE_BASE_NAME = timestamp;
         let filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}.png`;
         let that = this;
-        fsm.writeFileSync(filePath, qrcode, 'base64');
-        that.drawBall(filePath);
+        fsm.writeFileSync(filePath, _qrcode, 'base64');
+        await that.drawBall(filePath);
+        await this.asyncSetState({qrCodeTempPath:filePath})
+      } catch (error) {
+          console.log(error)
+          throw error
+        }
       }
 
       asyncSetState = async state => new Promise(resolve => { this.setState(state, (res => { res({ message: '更新完成', state }) }).bind(this, resolve)) })
-
+        
+      /**
+     * 登录事件
+     * @param {*} params 
+     */
+      async wechatLogin(params = {}) {
+        const { dispatchUserInformation } = this.props
+        try {
+            await Taro.showLoading({title:'加载中～', mask:true })
+            //  await Taro.showLoading({title: '更新用户信息', mask: true})
+            const { scene, userdata, redirect, redirectparams } = params
+            const response = await Login({scene, userdata}) // 登录
+            if (response.code === 200 ) {
+                const { userinfo } = response.data
+                await dispatchUserInformation({ ...userinfo })
+            }
+            // 更新用户信息
+            await Taro.hideLoading()
+        } catch (error) {
+            console.error(error)
+            const icon = 'none'
+            const title = "网络异常, 请刷新重试"
+            // await Taro.hideLoading()
+            Taro.showToast({icon, error})
+        }
+      }
+  
       async drawBall(qrCodeTempPath) {
 
         // this.getQrcode()
@@ -60,17 +100,17 @@ export default class Index extends PureComponent {
 
         ctx.drawImage(backgroundImg.tempFilePath, 0, 0, 375, 400);
         this.fillTextWrap(ctx, `${Name}  贝壳口腔`, 20, 30, 190, 20);
-        ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
+        ctx.drawImage(logoImg.tempFilePath, 320, 0, 60, 60);
         ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
         ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
         this.fillTextWrap(ctx, `${simpleDesc}`, 20, 315, 190, 20);
-        ctx.font = 'normal 11px ArialMT sans-serif';
+        ctx.font = 'normal 15px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
         ctx.fillText(`¥${Price}`, 20, 270);
         ctx.font = 'normal 11px  PingFangSC-Regular sans-serif';
         ctx.setFontSize(12);
-        ctx.setFillStyle('#FA2E9A');
+        ctx.setFillStyle('#999999');
         ctx.fillText('扫描小程序码查看', 245, 370);
         ctx.draw(false);
 
@@ -78,6 +118,7 @@ export default class Index extends PureComponent {
 
       async wxDrawImage(callback){
         const { data:ProdectInfo } = this.props
+        const { qrCodeTempPath } = this.state
         const { simpleDesc, BannerList, Name, Price } = ProdectInfo
 
         var ctx = Taro.createCanvasContext('shareCanvas',this.$scope)
@@ -92,17 +133,17 @@ export default class Index extends PureComponent {
 
         ctx.drawImage(backgroundImg.tempFilePath, 0, 0, 375, 400);
         this.fillTextWrap(ctx, `${Name}  贝壳口腔`, 20, 30, 190, 20);
-        ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
+        ctx.drawImage(logoImg.tempFilePath, 320, 0, 60, 60);
         ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
         ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
         this.fillTextWrap(ctx, `${simpleDesc}`, 20, 315, 190, 20);
-        ctx.font = 'normal 11px ArialMT sans-serif';
+        ctx.font = 'normal 15px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
         ctx.fillText(`¥${Price}`, 20, 270);
         ctx.font = 'normal 11px  PingFangSC-Regular sans-serif';
         ctx.setFontSize(12);
-        ctx.setFillStyle('#FA2E9A');
+        ctx.setFillStyle('#999999');
         ctx.fillText('扫描小程序码查看', 245, 370);
         // ctx.draw(false);
         ctx.draw(false,()=>{
@@ -270,7 +311,7 @@ export default class Index extends PureComponent {
         const { list=[], title, onClose, qrcode } = this.props;
         // const { qrcode } = this.state
         // const screenHeight = parseInt(getWindowHeight())
-        const screenWidth = parseInt(getWindowWidth())
+        const screenWidth = '375px' // parseInt(getWindowWidth())
         return (
             <View 
                 style={{ 
