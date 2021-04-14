@@ -49,22 +49,34 @@ export default class PageIndex extends Component {
 
     asyncSetState = state => new Promise(resolve => { this.setState(state, (res => res({ state })).bind(this, resolve))})
     
-    onRegister = async ({detail}) => {
+    onRegister = async () => {
         const errmsg = '授权失败'
-        try {
-            const { errMsg } = detail
-            this.detail = detail.userInfo
-            if (errMsg !== "getUserInfo:ok") throw new Error(errMsg)
-            await this.initForm()
-            await this.asyncSetState({visible: true})
-        } catch (error) {
-            const icon = "none"
-            const title = error.message || errmsg
-            console.error(error)
-            Taro.showToast({ title, icon })
-        }
-    }
+        const that = this
+         //只能用户点击调用
+        //fail can only be invoked by user TAP
+        wx.getUserProfile({
+            lang: 'zh_CN',
+            desc:'用于关联用户/更新用户信息',
+            success(res){
+                try {
+                    const { errMsg } = res
+                    that.detail = res.userInfo
+                    if (errMsg !== "getUserProfile:ok") throw new Error(errMsg)
+                    that.initForm()
+                    that.setState({visible: true})
+                } catch (error) {
+                    const icon = "none"
+                    const title = error.message || errmsg
+                    console.error(error)
+                    Taro.showToast({ title, icon })
+                }
+            },
+            fail(res){
+                console.log(res)
+            }
+        });
 
+    }
     /**
      * 用户同意获取手机号码
      * 解密code并保存
@@ -182,7 +194,7 @@ export default class PageIndex extends Component {
         const buttonclass = type === 'default' ? 'register-button' : 'register-jcombobox'
         return (
             <View className='register'>
-                <Button lang='zh_CN' openType='getUserInfo' className={buttonclass} onGetUserInfo={this.onRegister}>
+                <Button lang='zh_CN'  className={buttonclass} bindType='handleClick' onClick={this.onRegister}>
                     {type === 'default' ? '点击注册' : '修改个人信息'}
                     {type === 'update' && <Image src={IconEnter} className='register-jcombobox-icon'/>}
                 </Button>
