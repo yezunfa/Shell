@@ -1,7 +1,7 @@
 /*
  * @Author: yezunfa
  * @Date: 2020-03-28 19:05:39
- * @LastEditTime: 2020-10-28 17:28:28
+ * @LastEditTime: 2021-04-14 11:57:43
  * @Description: Do not edit
  */ 
 import Taro from '@tarojs/taro'
@@ -39,21 +39,23 @@ exports.Login = async () => {
 
 /**
  * 获取用户信息
+ * 目前只能拿来获取手机号码
  */
 exports.getUserInfo = async () => {
     try {
         const $scope = await Taro.getSetting()
         const { authSetting } = $scope
         let result = {}
+
         if (!authSetting["scope.userInfo"]) await Taro.authorize({ scope: 'scope.userInfo' })
+
         let loginresult = await Taro.login({ timeout: 2000 })
-        console.log(loginresult)
         await Taro.checkSession({
             success: function(res) {
                 console.log("处于登录态");
                 const { code } = loginresult
-                const userInfo =  Taro.getUserInfo()
-                result = { ...userInfo, code }
+                // const userInfo =  Taro.getUserInfo()
+                result = { code } // ...userInfo  该接口已废弃，只能通过click & getUserProfile 获取
 
             },
             fail: function(res) {
@@ -68,5 +70,6 @@ exports.getUserInfo = async () => {
         throw error
     }
 }
+
 
    

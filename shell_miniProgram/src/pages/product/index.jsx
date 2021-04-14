@@ -8,7 +8,7 @@ import {
     POST_CREATE_CART_PRODUCT,
     API_GET_PRODUCT_QRCODE
 } from '@constants/api'
-import { uuid_compression } from '@utils/methods'
+import { uuid_decompression } from '@utils/methods'
 import { Login } from '@utils/wechat'
 import { getWindowHeight } from '@utils/style'
 import fetch from '@utils/request'
@@ -30,7 +30,7 @@ class Index extends Component {
         productInfo: {},
         gallery: [],
         visible: false,
-        qrcode: null,
+        // qrcode: null,
         switchs: {},
     }
 
@@ -48,9 +48,9 @@ class Index extends Component {
         if (!userinfo || !userinfo.Id) {
             await this.wechatLogin()  // 获取用户id
         }
-        const url = `${API_GET_PRODUCT_QRCODE}?scene=${uuid_compression(userinfo.Id)}`
-        const qrcode = await fetch({ url }) // 获取签到二维码
-        await this.asyncSetState({ qrcode })
+        // const url = `${API_GET_PRODUCT_QRCODE}?scene=${uuid_compression(userinfo.Id)}`
+        // const qrcode = await fetch({ url }) // 获取签到二维码
+        // await this.asyncSetState({ qrcode })
     }
 
     onShareAppMessage () {
@@ -102,8 +102,12 @@ class Index extends Component {
 
     getDetail = async () => {
         await this.asyncSetState({ loaded: false })
-        const { Id } = this.$router.params
-        const payload = { Id }
+        const { Id, scene } = this.$router.params
+        let SceneId = ''
+        if (!Id) {
+            SceneId = uuid_decompression(scene)
+        }
+        const payload = { Id: Id ? Id : SceneId }
         const params = {
             url: GET_PRODUCT_DETAIL,
             payload
@@ -255,7 +259,7 @@ class Index extends Component {
                         title={`预约签到: ${sign.membersign}/${memberlist.length}`}
                     /> */}
                     <NewQrcode 
-                        qrcode={qrcode} 
+                        // qrcode={qrcode} 
                         data={productInfo}
                         // list={memberlist} 
                         onClose={()=>this.Qrcode(false)}
