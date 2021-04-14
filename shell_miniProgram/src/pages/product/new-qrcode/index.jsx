@@ -63,7 +63,7 @@ export default class Index extends PureComponent {
         ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
         ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
         ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
-        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 315, 190, 20);
+        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 265, 190, 20);
         ctx.font = 'normal 11px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
@@ -95,7 +95,7 @@ export default class Index extends PureComponent {
         ctx.drawImage(logoImg.tempFilePath, 320, 0, 50, 50);
         ctx.drawImage(imgTempPath1.tempFilePath, 0, 50, 375, 190);
         ctx.drawImage(imgTempPath2, 250, 265, 86, 86);
-        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 315, 190, 20);
+        this.fillTextWrap(ctx, `${simpleDesc}`, 20, 265, 190, 20);
         ctx.font = 'normal 11px ArialMT sans-serif';
         ctx.setFontSize(16);
         ctx.setFillStyle('#FF6066');
