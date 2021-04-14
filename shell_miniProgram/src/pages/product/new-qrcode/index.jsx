@@ -272,12 +272,12 @@ export default class Index extends PureComponent {
         const { list=[], title, onClose, qrcode } = this.props;
         // const { qrcode } = this.state
         // const screenHeight = parseInt(getWindowHeight())
-        const screenWidth = parseInt(getWindowWidth())
+        // const screenWidth = parseInt(getWindowWidth())
         return (
             <View 
                 style={{ 
                     height: `480px`, 
-                    width: `${screenWidth*0.9}px` 
+                    width: `375px` 
                 }} 
                 className={`${baseClass}`}
             >
