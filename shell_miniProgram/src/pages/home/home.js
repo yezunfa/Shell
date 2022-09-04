@@ -29,7 +29,7 @@ class Home extends Component {
     {url: 'https://assets.51fusion.com/b2b9a97e-9cd9-41f3-abe4-2427fd448482.png'},
   ]
 
-  async componentDidShow() {
+  async componentDidShow() { // 111
     await this.wechatLogin()  // 首页登陆获取用户id
     Taro.showShareMenu({
       withShareTicket:true,
